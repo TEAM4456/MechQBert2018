@@ -1,0 +1,39 @@
+plugins {
+    id "java"
+    id "eclipse"
+    id "idea"
+    id "jaci.openrio.gradle.GradleRIO" version "2017.1.5"
+}
+
+frc {
+    team = "4456"
+    robotClass = "org.usfirst.frc.team4456.Robot"
+}
+
+wpi {
+    wpilibVersion = "2017.1.1"
+    ntcoreVersion = "3.1.5"
+    opencvVersion = "3.1.0"
+    cscoreVersion = "1.0.0"
+    talonSrxVersion = "4.4.1.14"
+}
+
+dependencies {
+    compile wpilib()
+    compile talonSrx()
+    compile navx()
+}
+
+def robotManifest = {
+  attributes 'Main-Class': 'edu.wpi.first.wpilibj.RobotBase'
+  attributes 'Robot-Class': frc.robotClass
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest robotManifest
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
+}
