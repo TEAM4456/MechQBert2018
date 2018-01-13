@@ -1,14 +1,14 @@
 package org.usfirst.frc.team4456.subsystems;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import org.usfirst.frc.team4456.RobotMap;
 
 
 public class DriveDistance extends PIDSubsystem { // This system extends PIDSubsystem
 
-	public CANTalon DriveTalon1;
-	public CANTalon DriveTalon2;
+	public WPI_TalonSRX DriveTalon1;
+	public WPI_TalonSRX DriveTalon2;
 	// you will have to define the DriveTalon when instantiating this class,
 	// e.g.
 	// driveDistanceLeft = new DriveDistance();
