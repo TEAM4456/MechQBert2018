@@ -20,7 +20,7 @@ public class homeDeflector extends Command {
 		if (!RobotMap.deflectorSwitch.get()) {
 			Robot.deflector.raiseDeflector();
 		} else {
-			RobotMap.deflectorTalon.setPosition(0);
+			RobotMap.deflectorTalon.setSelectedSensorPosition(0,0,0);
 			finished = true;
 		}
 		

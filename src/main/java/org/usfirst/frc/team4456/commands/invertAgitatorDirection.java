@@ -16,11 +16,11 @@ public class invertAgitatorDirection extends Command {
 	protected boolean isFinished() { return !finished; }
 	
 	protected void execute() {
-		RobotMap.agitatorTalon.reverseOutput(true);
+		RobotMap.agitatorTalon.setInverted(true);
 		finished = true;
 	}
 	
-	protected void end() { RobotMap.agitatorTalon.reverseOutput(false); }
+	protected void end() { RobotMap.agitatorTalon.setInverted(false); }
 	
 	protected void interrupted() { end(); }
 	

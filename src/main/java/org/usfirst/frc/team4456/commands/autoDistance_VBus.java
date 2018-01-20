@@ -27,12 +27,12 @@ public class autoDistance_VBus extends Command {
 	protected void execute() {
 		if (forward) {
 			Robot.drive.robotDrive.tankDrive(-speed, -speed);
-			if (RobotMap.leftDriveTalon1.getPosition() >= setPoint) {
+			if (RobotMap.leftDriveTalon1.getSelectedSensorPosition(0) >= setPoint) {
 				finished = true;
 			}
 		} else {
 			Robot.drive.robotDrive.tankDrive(speed, speed);
-			if (RobotMap.leftDriveTalon1.getPosition() <= setPoint) {
+			if (RobotMap.leftDriveTalon1.getSelectedSensorPosition(0) <= setPoint) {
 				finished = true;
 			}
 		}
