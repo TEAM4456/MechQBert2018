@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 	//Command homeDeflector;
 	Command autonomousCommand;
 	
-	SendableChooser autonomousChooser;
+	SendableChooser<Command> autonomousChooser;
 	
 	public void robotInit() {
 		
@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
 		
 		autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
-		autonomousChooser = new SendableChooser();
+		autonomousChooser = new SendableChooser<Command>();
 		autonomousChooser.addDefault("Auto Middle", new autoMiddle());
 		autonomousChooser.addObject("Auto Shoot Blue", new autoShootBlue());
 		autonomousChooser.addObject("Auto Shoot Red", new autoShootRed());
@@ -70,7 +70,7 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
 		}
 		*/
-		SmartDashboard.putBoolean("Deflector Switch", RobotMap.deflectorSwitch.get()/*not correct*/);
+		SmartDashboard.putBoolean("Deflector Switch", RobotMap.deflectorSwitch.get());
 		SmartDashboard.putNumber("Deflector Encoder", RobotMap.deflectorTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
