@@ -3,7 +3,7 @@ package org.usfirst.frc.team4456.subsystems;
 import org.usfirst.frc.team4456.RobotMap;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -13,7 +13,7 @@ public class Drive extends Subsystem {
 	public final WPI_TalonSRX leftDriveTalon1 = RobotMap.leftDriveTalon1;
 	public final WPI_TalonSRX rightDriveTalon1 = RobotMap.rightDriveTalon1;
 	
-	public final RobotDrive robotDrive = new RobotDrive(leftDriveTalon1, rightDriveTalon1);
+	public final DifferentialDrive robotDrive = new DifferentialDrive(leftDriveTalon1, rightDriveTalon1);
 	
 	protected void initDefaultCommand() { /* setDefaultCommand(new teleopDrive()); */ }
 	
