@@ -2,7 +2,7 @@ package org.usfirst.frc.team4456;
 
 import org.usfirst.frc.team4456.commands.*;
 import org.usfirst.frc.team4456.subsystems.*;
-//import org.usfirst.frc.team4456.commands.homeDeflector;
+
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,17 +16,15 @@ public class Robot extends IterativeRobot {
 	public static Controls controls;
 	
 	// Subsystem declarations here
-	public static Agitator agitator;
-	public static Deflector deflector;
+
+
 	public static Drive drive;
-	public static Intake intake;
-	public static Lidar lidar;
-	public static Shooter shooter;
-	public static Winch winch;
+
+
 	
 	boolean enabledInitialized = false;
 	
-	//Command homeDeflector;
+
 	Command autonomousCommand;
 	
 	SendableChooser<Command> autonomousChooser;
@@ -38,17 +36,15 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		
 		// construct subsystems here
-		agitator = new Agitator();
-		deflector = new Deflector();
+
+
 		drive = new Drive();
-		intake = new Intake();
-		/*lidar = new Lidar();*/
-		shooter = new Shooter();
-		winch = new Winch();
+
+
 		
 		controls = new Controls();
 		
-		//homeDeflector = new homeDeflector();
+
 		
 		// autonomous choosing stuff here
 		
@@ -56,8 +52,7 @@ public class Robot extends IterativeRobot {
 		
 		autonomousChooser = new SendableChooser<Command>();
 		autonomousChooser.addDefault("Auto Middle", new autoMiddle());
-		autonomousChooser.addObject("Auto Shoot Blue", new autoShootBlue());
-		autonomousChooser.addObject("Auto Shoot Red", new autoShootRed());
+
 		autonomousChooser.addObject("Auto Gear Left", new autoGearLeft());
 		autonomousChooser.addObject("Auto Gear Right (EXPERIMENTAL)", new autoGearRight());
 		SmartDashboard.putData("Starting Position", autonomousChooser);
@@ -70,11 +65,11 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
 		}
 		*/
-		SmartDashboard.putBoolean("Deflector Switch", RobotMap.deflectorSwitch.get());
-		SmartDashboard.putNumber("Deflector Encoder", RobotMap.deflectorTalon.getSelectedSensorPosition(0));
+
+
 		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Actual Shooter RPM", RobotMap.shooterTalon.get());
+
 		SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
 		SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
 		
@@ -85,7 +80,7 @@ public class Robot extends IterativeRobot {
 	
 	// custom methods called by robotPeriodic()
 	void enabledInit() {
-		//homeDeflector.start();
+
 		
 		enabledInitialized = true;
 	}
@@ -94,7 +89,7 @@ public class Robot extends IterativeRobot {
 	public void disabledInit() {
 		enabledInitialized = false;
 		
-		//homeDeflector.cancel();
+
 		autonomousCommand.cancel();
 	}
 	public void disabledPeriodic() {}
