@@ -26,44 +26,47 @@ public class RobotMap {
 	public static void init() {
 		
 		leftDriveTalon1 = new WPI_TalonSRX (6);
-		leftDriveTalon1.changeControlMode(ControlMode.PercentVbus);
-		leftDriveTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		leftDriveTalon1.set(ControlMode.PercentOutput, value);
+		leftDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, pidIdx, timeoutMs);
 		//leftDriveTalon1.reverseSensor(true);
-		leftDriveTalon1.setPosition(0);
+		leftDriveTalon1.setSelectedSensorPosition(0, pidIdx, timeoutMs);
 		leftDriveTalon2 = new WPI_TalonSRX (4);
-		leftDriveTalon2.changeControlMode(ControlMode.Follower);
-		leftDriveTalon2.set(leftDriveTalon1.getDeviceID());
+		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
 		
 		rightDriveTalon1 = new WPI_TalonSRX (1);
-		rightDriveTalon1.changeControlMode(ControlMode.PercentVbus);
-		rightDriveTalon1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		rightDriveTalon1.reverseSensor(true);
-		rightDriveTalon1.setPosition(0);
+		rightDriveTalon1.set(ControlMode.PercentOutput, value);
+		rightDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, pidIdx, timeoutMs);
+		rightDriveTalon1.setInverted(true);
+		rightDriveTalon1.setSelectedSensorPosition(0, pidIdx, timeoutMs);
 		rightDriveTalon2 = new WPI_TalonSRX (2);
-		rightDriveTalon2.changeControlMode(ControlMode.Follower);
-		rightDriveTalon2.set(rightDriveTalon1.getDeviceID());
+		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
 		shooterTalon = new WPI_TalonSRX (3);
-		shooterTalon.changeControlMode(ControlMode.Voltage);
-		shooterTalon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		shooterTalon.set(ControlMode.Voltage, value);
+		shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, pidIdx, timeoutMs);
 		//shooterTalon.setPID(.45, 0, 0);
-		shooterTalon.reverseSensor(true);
-		shooterTalon.setVoltageCompensationRampRate(0);
+		shooterTalon.setInverted(true);
+		//shooterTalon.setVoltageCompensationRampRate(0);
+		shooterTalon.configVoltageCompSaturation(voltage, timeoutMs);
 		shooterTalon.setInverted(true);
 		
 		winchTalon = new WPI_TalonSRX (8);
 		
 		deflectorTalon = new WPI_TalonSRX (7);
-		deflectorTalon.changeControlMode(ControlMode.Position);
-		deflectorTalon.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		deflectorTalon.reverseSensor(true);
-		deflectorTalon.setPID(1.5, 0, 0);
+		deflectorTalon.set(ControlMode.Position, value);
+		deflectorTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidIdx, timeoutMs);
+		deflectorTalon.setInverted(true);
+		//deflectorTalon.setPID(1.5, 0, 0);
+		deflectorTalon.config_kP(slotIdx, 1.5, timeoutMs);
+		deflectorTalon.config_kI(slotIdx, 0, timeoutMs);
+		deflectorTalon.config_kD(slotIdx, 0, timeoutMs);
 		
 		intakeTalon = new WPI_TalonSRX (5);
 		
 		agitatorTalon = new WPI_TalonSRX (9);
-		agitatorTalon.changeControlMode(ControlMode.Voltage);
-		agitatorTalon.setVoltageCompensationRampRate(0);
+		agitatorTalon.set(ControlMode.PercentOutput, 1);
+		//agitatorTalon.setVoltageCompensationRampRate(0);
+		agitatorTalon.configVoltageCompSaturation(voltage, timeoutMs);
 		agitatorTalon.setSafetyEnabled(false);
 		
 		try {

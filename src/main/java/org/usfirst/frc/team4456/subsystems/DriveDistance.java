@@ -25,7 +25,7 @@ public class DriveDistance extends PIDSubsystem { // This system extends PIDSubs
 	}
 
 	protected double returnPIDInput() {
-		return DriveTalon1.getPosition(); // returns the sensor value that is providing the feedback for the system
+		return DriveTalon1.getSelectedSensorPosition(pidIdx); // returns the sensor value that is providing the feedback for the system
 	}
 
 	protected void usePIDOutput(double output) {

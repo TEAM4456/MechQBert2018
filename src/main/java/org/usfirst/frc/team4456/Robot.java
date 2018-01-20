@@ -70,11 +70,11 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
 		}
 		*/
-		SmartDashboard.putBoolean("Deflector Switch", RobotMap.deflectorSwitch.get());
-		SmartDashboard.putNumber("Deflector Encoder", RobotMap.deflectorTalon.getPosition());
-		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getPosition());
-		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getPosition());
-		SmartDashboard.putNumber("Actual Shooter RPM", RobotMap.shooterTalon.getSpeed());
+		SmartDashboard.putBoolean("Deflector Switch", RobotMap.deflectorSwitch.get()/*not correct*/);
+		SmartDashboard.putNumber("Deflector Encoder", RobotMap.deflectorTalon.getSelectedSensorPosition(pidIdx));
+		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(pidIdx));
+		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(pidIdx));
+		SmartDashboard.putNumber("Actual Shooter RPM", RobotMap.shooterTalon.get());
 		SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
 		SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
 		
