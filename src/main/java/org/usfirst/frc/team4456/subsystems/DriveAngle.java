@@ -1,13 +1,13 @@
 package org.usfirst.frc.team4456.subsystems;
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.*;
 import org.usfirst.frc.team4456.RobotMap;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 
 public class DriveAngle extends PIDSubsystem { // This system extends PIDSubsystem
 
-	public final CANTalon leftDriveTalon1 = RobotMap.leftDriveTalon1;
-	public final CANTalon rightDriveTalon1 = RobotMap.rightDriveTalon1;
+	public final WPI_TalonSRX leftDriveTalon1 = RobotMap.leftDriveTalon1;
+	public final WPI_TalonSRX rightDriveTalon1 = RobotMap.rightDriveTalon1;
 
 	public DriveAngle() {
 		super("DriveAngle", 0.015, 0.0, 0.0);// The constructor passes a name for the subsystem and the P, I and D constants that are sueed when computing the motor output
