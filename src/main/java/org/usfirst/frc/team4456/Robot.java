@@ -20,7 +20,7 @@ public class Robot extends IterativeRobot {
 
 	public static Drive drive;
 
-
+	public static Winch winch;
 	
 	boolean enabledInitialized = false;
 	
