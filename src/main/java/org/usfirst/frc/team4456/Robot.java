@@ -48,14 +48,14 @@ public class Robot extends IterativeRobot {
 		
 		// autonomous choosing stuff here
 		
-		autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
+		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
 		autonomousChooser = new SendableChooser<Command>();
 		autonomousChooser.addDefault("Auto Middle", new autoMiddle());
 
 		autonomousChooser.addObject("Auto Gear Left", new autoGearLeft());
 		autonomousChooser.addObject("Auto Gear Right (EXPERIMENTAL)", new autoGearRight());
-		SmartDashboard.putData("Starting Position", autonomousChooser);
+		SmartDashboard.putData("Starting Position", autonomousChooser);*/
 		
 	}
 	public void robotPeriodic() {
