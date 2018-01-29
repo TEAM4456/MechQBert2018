@@ -35,8 +35,10 @@ public class Controls {
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);
 		JoystickButton backButton = new JoystickButton(joystick, 7);
 		//selectButton command configuration here
+		backButton.whileHeld(new winchDown());
 		JoystickButton startButton = new JoystickButton(joystick, 8);
 		//startButton command configuration here
+		startButton.whileHeld(new winchUp());
 		JoystickButton leftStick = new JoystickButton(joystick, 9);
 		//leftStick command configuration here
 		JoystickButton rightStick = new JoystickButton(joystick, 10);
