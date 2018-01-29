@@ -17,4 +17,8 @@ public class Winch extends Subsystem{
     public void winchDown(){
         RobotMap.winchTalon1.set(ControlMode.Current, -1);
     }
+
+    public void winchStop(){
+        RobotMap.winchTalon1.set(ControlMode.Current, 0);
+    }
 }
