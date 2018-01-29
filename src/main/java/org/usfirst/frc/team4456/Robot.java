@@ -108,5 +108,4 @@ public class Robot extends IterativeRobot {
 	
 }
 
-// "deplooy" -Andrew Rose, 2017, trying to type "deploy"
-// pronounced "de-ploo-ee"
+
