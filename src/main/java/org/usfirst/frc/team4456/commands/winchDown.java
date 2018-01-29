@@ -7,14 +7,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.subsystems.Winch;
 
 public class winchDown extends Command{
-
-
     boolean finished;
 
-    public winchDown() { requires(Robot.drive); }
+    public winchDown() { requires(Robot.winch); }
 
-    protected void initialize() { finished = false; }
+    protected void initialize() {
+        Robot.winch.winchDown();
+    }
+
     protected boolean isFinished() { return finished; }
+
+    protected void end() {Robot.winch.winchStop();}
+
+    protected void interrupted() { end(); }
 
 
 
