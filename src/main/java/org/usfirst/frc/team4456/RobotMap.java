@@ -15,6 +15,8 @@ public class RobotMap {
 	public static WPI_TalonSRX rightDriveTalon2; // <-- slave to rightDriveTalon2
 	public static WPI_TalonSRX vertActTalon;
 	public static WPI_TalonSRX diagActTalon;
+	public static WPI_TalonSRX winchTalon1;
+	public static WPI_TalonSRX winchTalon2;
 	public static WPI_TalonSRX wristTalon;
 	public static WPI_TalonSRX clawTalon;
 
@@ -40,19 +42,25 @@ public class RobotMap {
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
 		vertActTalon = new WPI_TalonSRX(5);
-		vertActTalon.set(ControlMode.Position, 0);
+		vertActTalon.set(ControlMode.PercentOutput, 0);
 		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
 		diagActTalon = new WPI_TalonSRX(6);
-		diagActTalon.set(ControlMode.Position, 0);
+		diagActTalon.set(ControlMode.PercentOutput, 0);
 		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
-		wristTalon = new WPI_TalonSRX(7);
-		wristTalon.set(ControlMode.Position, 0);
+		winchTalon1 = new WPI_TalonSRX(7);
+		winchTalon1.set(ControlMode.PercentOutput, 0);
+
+		winchTalon2 = new WPI_TalonSRX(8);
+		winchTalon2.set(ControlMode.Follower, winchTalon1.getDeviceID());
+
+		wristTalon = new WPI_TalonSRX(9);
+		wristTalon.set(ControlMode.PercentOutput, 0);
 		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
-		clawTalon = new WPI_TalonSRX(8);
-		clawTalon.set(ControlMode.Position, 0);
+		clawTalon = new WPI_TalonSRX(10);
+		clawTalon.set(ControlMode.PercentOutput, 0);
 		clawTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
 		//NAVX init
