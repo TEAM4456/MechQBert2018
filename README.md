@@ -1,8 +1,15 @@
-# MechQBert2018
+# MechQBert2018-Amy
 
-To get the CANTalon libraries from Cross The Road: 
-http://www.ctr-electronics.com//downloads/lib/CTRE_FRCLibs_NON-WINDOWS_v4.4.1.9.zip
-and follow the instructions in the included README.txt
+Amy's branch of MechQBert2018
 
-See the CTRE wiki for more information, including the migration guide for the new class organization.
-https://github.com/CrossTheRoadElec/Phoenix-Documentation
+Programmed to work on the 2016 robot, then adapted to the 2018 robot
+
+##TODO
+* [ ] figure out new library stuffs
+* [ ] add PID control to Drive using Talon SRX features
+* [ ] add autonomous functionality
+    - [ ] recording
+    - [ ] playback
+    - [ ] pathfinding (maybe)
+    - [ ] easy way to automate short sequences?
+* [ ] ~~conquer world~~
