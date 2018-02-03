@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.CameraServer;
 
-public class Robot extends IterativeRobot {
+public abstract class Robot extends IterativeRobot {
 	
 	public static Controls controls;
 	
@@ -21,7 +21,8 @@ public class Robot extends IterativeRobot {
 	public static Drive drive;
 
 	public static Winch winch;
-	
+
+
 	boolean enabledInitialized = false;
 	
 
@@ -41,7 +42,7 @@ public class Robot extends IterativeRobot {
 		drive = new Drive();
 
 
-		
+
 		controls = new Controls();
 		
 
