@@ -3,18 +3,18 @@ package org.usfirst.frc.team4456.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.Robot;
 
-public class armUp extends Command {
+public class armDiagExtend extends Command {
     boolean finished;
 
-    public armUp() { requires(Robot.arm); }
+    public armDiagExtend() { requires(Robot.arm); }
 
     protected void initialize() {
-        Robot.arm.armUp();
+        Robot.arm.armDiagExtend();
     }
 
     protected boolean isFinished() { return finished; }
 
-    protected void end() {Robot.arm.armVertStop();}
+    protected void end() {Robot.arm.armDiagStop();}
 
     protected void interrupted() { end(); }
 }

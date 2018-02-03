@@ -14,7 +14,7 @@ public class armDown extends Command {
 
     protected boolean isFinished() { return finished; }
 
-    protected void end() {Robot.arm.armStop();}
+    protected void end() {Robot.arm.armVertStop();}
 
     protected void interrupted() { end(); }
 }
