@@ -24,6 +24,8 @@ public abstract class Robot extends IterativeRobot {
 
 	public static Arm arm;
 
+	public static Wrist wrist;
+
 	boolean enabledInitialized = false;
 	
 
