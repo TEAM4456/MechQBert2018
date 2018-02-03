@@ -12,17 +12,17 @@ public class Arm extends Subsystem{
     protected void initDefaultCommand() { }
 
     public void armUp(){
-        RobotMap.diagActTalon.set(ControlMode.Current, 1);
-        RobotMap.vertActTalon.set(ControlMode.Current, 1);
+        RobotMap.diagActTalon.set(ControlMode.Position, 1);
+        RobotMap.vertActTalon.set(ControlMode.Position, 1);
     }
 
     public void armDown(){
-        RobotMap.diagActTalon.set(ControlMode.Current, -1);
-        RobotMap.vertActTalon.set(ControlMode.Current, -1);
+        RobotMap.diagActTalon.set(ControlMode.Position, -1);
+        RobotMap.vertActTalon.set(ControlMode.Position, -1);
     }
 
     public void armStop(){
-        RobotMap.diagActTalon.set(ControlMode.Current, 0);
-        RobotMap.vertActTalon.set(ControlMode.Current, 0);
+        RobotMap.diagActTalon.set(ControlMode.Position, 0);
+        RobotMap.vertActTalon.set(ControlMode.Position, 0);
     }
 }
