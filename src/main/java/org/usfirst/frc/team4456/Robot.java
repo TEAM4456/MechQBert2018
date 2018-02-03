@@ -21,6 +21,8 @@ public class Robot extends IterativeRobot {
 	public static Drive drive;
 
 	public static Winch winch;
+
+	public static Arm arm;
 	
 	boolean enabledInitialized = false;
 	
