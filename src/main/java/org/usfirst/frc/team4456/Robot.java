@@ -22,7 +22,7 @@ public abstract class Robot extends IterativeRobot {
 
 	public static Winch winch;
 
-
+	public static Arm arm;
 
 	boolean enabledInitialized = false;
 	
