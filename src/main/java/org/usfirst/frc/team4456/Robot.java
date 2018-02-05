@@ -43,12 +43,10 @@ public abstract class Robot extends IterativeRobot {
 
 
 		drive = new Drive();
-
-
-
 		controls = new Controls();
-		
-
+		arm = new Arm();
+		wrist = new Wrist();
+		winch = new Winch();
 		
 		// autonomous choosing stuff here
 		
