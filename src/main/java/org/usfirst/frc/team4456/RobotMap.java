@@ -27,7 +27,8 @@ public class RobotMap {
 		leftDriveTalon1 = new WPI_TalonSRX(1);
 		leftDriveTalon1.set(ControlMode.Velocity, 0);
 		leftDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		//leftDriveTalon1.reverseSensor(true);
+		leftDriveTalon1.setInverted(true);
+		leftDriveTalon1.setSensorPhase(false);
 		leftDriveTalon1.setSelectedSensorPosition(0, 0, 0);
 		leftDriveTalon2 = new WPI_TalonSRX(4);
 		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
@@ -35,9 +36,11 @@ public class RobotMap {
 		rightDriveTalon1 = new WPI_TalonSRX(2);
 		rightDriveTalon1.set(ControlMode.Velocity, 0);
 		rightDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		//rightDriveTalon1.setInverted(true);
+		rightDriveTalon1.setInverted(true);
+		rightDriveTalon1.setSensorPhase(true);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		rightDriveTalon2 = new WPI_TalonSRX(32);
+		rightDriveTalon2 = new WPI_TalonSRX(3);
+		rightDriveTalon2.setInverted(true);
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
 		
