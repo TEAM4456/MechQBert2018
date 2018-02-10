@@ -16,38 +16,28 @@ public class Robot extends IterativeRobot {
 	public static Controls controls;
 	
 	// Subsystem declarations here
-
-
 	public static Drive drive;
-
-	public static Winch winch;
+	public static Winch winch; /* KEPT FOR NOW */
 	
 	boolean enabledInitialized = false;
 	
-
 	Command autonomousCommand;
-	
 	SendableChooser<Command> autonomousChooser;
 	
 	public void robotInit() {
 		
-		CameraServer.getInstance().startAutomaticCapture();
+		//CameraServer.getInstance().startAutomaticCapture();
 		
 		RobotMap.init();
 		
 		// construct subsystems here
-
-
 		drive = new Drive();
-
-
+		winch = new Winch(); /* KEPT FOR NOW */
 		
 		controls = new Controls();
 		
-
 		
 		// autonomous choosing stuff here
-		
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
 		autonomousChooser = new SendableChooser<Command>();
@@ -58,53 +48,66 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Starting Position", autonomousChooser);*/
 		
 	}
+	
 	public void robotPeriodic() {
 		/*
-		if (RobotMap.lidarSerial != null) {
-			lidar.update();
-			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
-		}
-		*/
-
-
 		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
 
 		SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
 		SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
+		*/
 		
 		// call custom enabled methods
-		if (!enabledInitialized && isEnabled()) { enabledInit(); }
-		if (isEnabled()) { enabledPeriodic(); }
+		if (!enabledInitialized && isEnabled()) {
+			enabledInit();
+		}
+		if (isEnabled()) {
+			enabledPeriodic();
+		}
 	}
 	
 	// custom methods called by robotPeriodic()
 	void enabledInit() {
-
-		
+		// init stuff upon enable here
 		enabledInitialized = true;
 	}
-	void enabledPeriodic() { Scheduler.getInstance().run(); }
+	
+	void enabledPeriodic() {
+		// run stuff periodically while enabled
+		Scheduler.getInstance().run();
+	}
 	
 	public void disabledInit() {
 		enabledInitialized = false;
 		
-
-		autonomousCommand.cancel();
+		//autonomousCommand.cancel();
 	}
-	public void disabledPeriodic() {}
+	
+	public void disabledPeriodic() {
+	}
 	
 	public void autonomousInit() {
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
 	}
-	public void autonomousPeriodic() {}
 	
-	public void teleopInit() { autonomousCommand.cancel(); }
-	public void teleopPeriodic() { drive.betterArcadeDrive(controls.joystick); }
+	public void autonomousPeriodic() {
+	}
 	
-	public void testInit() {}
-	public void testPeriodic() {}
+	public void teleopInit() {
+		//autonomousCommand.cancel();
+	}
+	
+	public void teleopPeriodic() {
+		drive.betterArcadeDrive(controls.joystick);
+	}
+	
+	public void testInit() {
+	}
+	
+	public void testPeriodic() {
+	}
 	
 }
 

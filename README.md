@@ -13,3 +13,8 @@ Programmed to work on the 2016 robot, then adapted to the 2018 robot
     - [ ] pathfinding (maybe)
     - [ ] easy way to automate short sequences?
 * [ ] ~~conquer world~~
+
+Plans for drive stuff
+- make CadetTalon class with recording/playback capability and easy configuration
+- make Drive take in CadetTalons and use them
+- ...?

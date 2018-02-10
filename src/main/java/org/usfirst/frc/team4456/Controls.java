@@ -23,26 +23,24 @@ public class Controls {
 		 */
 		
 		JoystickButton aButton = new JoystickButton(joystick, 1);
-
+		
 		JoystickButton bButton = new JoystickButton(joystick, 2);
-
+		
 		JoystickButton xButton = new JoystickButton(joystick, 3);
-
+		
 		JoystickButton yButton = new JoystickButton(joystick, 4);
-
+		
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
-
+		
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);
+		
 		JoystickButton backButton = new JoystickButton(joystick, 7);
-		//selectButton command configuration here
-		backButton.whileHeld(new winchDown());
+		
 		JoystickButton startButton = new JoystickButton(joystick, 8);
-		//startButton command configuration here
-		startButton.whileHeld(new winchUp());
+		
 		JoystickButton leftStick = new JoystickButton(joystick, 9);
-		//leftStick command configuration here
+		
 		JoystickButton rightStick = new JoystickButton(joystick, 10);
-		//rightStick command configuration here
 		
 	}
 	

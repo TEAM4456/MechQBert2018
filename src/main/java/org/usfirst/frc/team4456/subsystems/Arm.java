@@ -5,11 +5,11 @@ import org.usfirst.frc.team4456.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Arm extends Subsystem{
-    public final WPI_TalonSRX vertActTalon = RobotMap.vertActTalon;
-    public final WPI_TalonSRX diagActTalon = RobotMap.diagActTalon;
-
-    protected void initDefaultCommand() {
-
-    }
+public class Arm extends Subsystem {
+	public final WPI_TalonSRX vertActTalon = RobotMap.vertActTalon;
+	public final WPI_TalonSRX diagActTalon = RobotMap.diagActTalon;
+	
+	protected void initDefaultCommand() {
+	
+	}
 }
