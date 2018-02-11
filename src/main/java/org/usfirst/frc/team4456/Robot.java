@@ -107,7 +107,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void teleopPeriodic() {
-		drive.dataDrive();
+		drive.testDrive(controls.joystick);
 	}
 	
 	public void testInit() {

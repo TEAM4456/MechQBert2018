@@ -48,15 +48,17 @@ public class RobotMap {
 		
 		// PID CONTROL
 		
+		// F-gain: F-gain = ([Percent Output] * 1023) / [Velocity]
+		
 		double leftP = 0.2;
 		double leftI = 0;
 		double leftD = 0;
-		double leftF = 0;
+		double leftF = 0.3431872467; // F-gain = (1 * 1023) / 2980.88 = 0.3431872467
 		
 		double rightP = 0.2;
 		double rightI = 0;
 		double rightD = 0;
-		double rightF = 0;
+		double rightF = 0.3439511004; // F-gain = (1 * 1023) / 2974.26 = 0.3439511004
 		
 		leftDriveTalon1.config_kP(0, leftP, 0);
 		leftDriveTalon1.config_kI(0, leftI, 0);

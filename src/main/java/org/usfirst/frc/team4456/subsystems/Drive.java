@@ -46,6 +46,7 @@ public class Drive extends Subsystem {
 	
 	public void testDrive(Joystick joystick) {
 		
+		/*
 		double xValue = joystick.getRawAxis(0);
 		double yValue = joystick.getRawAxis(1);
 		
@@ -59,14 +60,23 @@ public class Drive extends Subsystem {
 		
 		double leftValue = -(yValue - (xValue / 2)) * 500;
 		double rightValue = -(yValue + (xValue / 2)) * 500;
+		*/
 		
-		leftDriveTalon1.set(ControlMode.Velocity, leftValue);
-		rightDriveTalon1.set(ControlMode.Velocity, -rightValue);
+		double leftTargetVelocity = 500;
+		double rightTargetVelocity = 500;
 		
+		leftDriveTalon1.set(ControlMode.Velocity, leftTargetVelocity);
+		rightDriveTalon1.set(ControlMode.Velocity, rightTargetVelocity);
+		
+		SmartDashboard.putNumber("Left Error", leftDriveTalon1.getSelectedSensorVelocity(0) - leftTargetVelocity);
+		SmartDashboard.putNumber("Right Error", rightDriveTalon1.getSelectedSensorVelocity(0) - rightTargetVelocity);
+		
+		/*
 		SmartDashboard.putNumber("xValue", xValue);
 		SmartDashboard.putNumber("yValue", yValue);
 		SmartDashboard.putNumber("leftValue", leftValue);
 		SmartDashboard.putNumber("rightValue", rightValue);
+		*/
 		
 	}
 	
