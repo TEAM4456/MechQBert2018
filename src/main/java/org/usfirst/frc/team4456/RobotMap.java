@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotMap {
 	
@@ -37,13 +38,44 @@ public class RobotMap {
 		rightDriveTalon1 = new WPI_TalonSRX(2);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
 		rightDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		rightDriveTalon1.setInverted(true);
-		rightDriveTalon1.setSensorPhase(true);
+		//rightDriveTalon1.setInverted(true);
+		rightDriveTalon1.setSensorPhase(false);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
 		rightDriveTalon2 = new WPI_TalonSRX(3);
-		rightDriveTalon2.setInverted(true);
+		//rightDriveTalon2.setInverted(true);
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
+		
+		// PID CONTROL
+		
+		double leftP = 0.2;
+		double leftI = 0;
+		double leftD = 0;
+		double leftF = 0;
+		
+		double rightP = 0.2;
+		double rightI = 0;
+		double rightD = 0;
+		double rightF = 0;
+		
+		leftDriveTalon1.config_kP(0, leftP, 0);
+		leftDriveTalon1.config_kI(0, leftI, 0);
+		leftDriveTalon1.config_kD(0, leftD, 0);
+		leftDriveTalon1.config_kF(0, leftF, 0);
+		
+		rightDriveTalon1.config_kP(0, rightP, 0);
+		rightDriveTalon1.config_kI(0, rightI, 0);
+		rightDriveTalon1.config_kD(0, rightD, 0);
+		rightDriveTalon1.config_kF(0, rightF, 0);
+		
+		SmartDashboard.putNumber("Left P", leftP);
+		SmartDashboard.putNumber("Left I", leftI);
+		SmartDashboard.putNumber("Left D", leftD);
+		SmartDashboard.putNumber("Left F", leftF);
+		SmartDashboard.putNumber("Right P", rightP);
+		SmartDashboard.putNumber("Right I", rightI);
+		SmartDashboard.putNumber("Right D", rightD);
+		SmartDashboard.putNumber("Right F", rightF);
 		
 		/* UNUSED TALONS -- KEPT FOR NOW -- DISABLED BY TALON ID */
 		vertActTalon = new WPI_TalonSRX(999);
