@@ -6,15 +6,13 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class winchUp extends Command{
 
-    boolean finished;
-
     public winchUp() { requires(Robot.winch); }
 
     protected void initialize() {
         Robot.winch.winchUp();
     }
 
-    protected boolean isFinished() { return finished; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.winch.winchStop();}
 

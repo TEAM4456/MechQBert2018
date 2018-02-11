@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.Robot;
 
 public class armUp extends Command {
-    boolean finished;
 
     public armUp() { requires(Robot.arm); }
 
@@ -12,7 +11,7 @@ public class armUp extends Command {
         Robot.arm.armUp();
     }
 
-    protected boolean isFinished() { return finished; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.arm.armVertStop();}
 

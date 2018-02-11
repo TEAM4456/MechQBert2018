@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import org.usfirst.frc.team4456.RobotMap;
 
 
-public class DriveDistance extends PIDSubsystem { // This system extends PIDSubsystem
-
+public class DriveDistance /*extends PIDSubsystem*/ { // This system extends PIDSubsystem
+/*
 	public WPI_TalonSRX DriveTalon1;
 	public WPI_TalonSRX DriveTalon2;
 	// you will have to define the DriveTalon when instantiating this class,
@@ -37,7 +37,10 @@ public class DriveDistance extends PIDSubsystem { // This system extends PIDSubs
 			limitedOutput = Math.max(output, -.25);
 		}
 		*/
+		/*
 		DriveTalon1.pidWrite(-output); // this is where the computed output value fromthe PIDController is applied to the motor
 		DriveTalon2.pidWrite(output);
-	}
+		*/
+	//}
+
 }
