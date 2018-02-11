@@ -62,11 +62,14 @@ public class Drive extends Subsystem {
 		double rightValue = -(yValue + (xValue / 2)) * 500;
 		*/
 		
-		double leftTargetVelocity = 500;
-		double rightTargetVelocity = 500;
+		double leftTargetVelocity = 1500;
+		double rightTargetVelocity = 1500;
 		
 		leftDriveTalon1.set(ControlMode.Velocity, leftTargetVelocity);
 		rightDriveTalon1.set(ControlMode.Velocity, rightTargetVelocity);
+		
+		//leftDriveTalon1.set(ControlMode.PercentOutput, 0.48);
+		//rightDriveTalon1.set(ControlMode.PercentOutput, 0.48);
 		
 		SmartDashboard.putNumber("Left Error", leftDriveTalon1.getSelectedSensorVelocity(0) - leftTargetVelocity);
 		SmartDashboard.putNumber("Right Error", rightDriveTalon1.getSelectedSensorVelocity(0) - rightTargetVelocity);

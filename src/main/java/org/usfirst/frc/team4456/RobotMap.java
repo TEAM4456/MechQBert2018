@@ -31,6 +31,7 @@ public class RobotMap {
 		leftDriveTalon1.setInverted(true);
 		//leftDriveTalon1.setSensorPhase(false);
 		leftDriveTalon1.setSelectedSensorPosition(0, 0, 0);
+		leftDriveTalon1.configClosedloopRamp(1, 0);
 		leftDriveTalon2 = new WPI_TalonSRX(4);
 		leftDriveTalon2.setInverted(true);
 		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
@@ -41,6 +42,7 @@ public class RobotMap {
 		//rightDriveTalon1.setInverted(true);
 		rightDriveTalon1.setSensorPhase(false);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
+		rightDriveTalon1.configClosedloopRamp(1, 0);
 		rightDriveTalon2 = new WPI_TalonSRX(3);
 		//rightDriveTalon2.setInverted(true);
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
@@ -50,14 +52,14 @@ public class RobotMap {
 		
 		// F-gain: F-gain = ([Percent Output] * 1023) / [Velocity]
 		
-		double leftP = 0.2;
-		double leftI = 0;
-		double leftD = 0;
+		double leftP = 0.001;
+		double leftI = 0.000001;
+		double leftD = 1.0;
 		double leftF = 0.3431872467; // F-gain = (1 * 1023) / 2980.88 = 0.3431872467
 		
-		double rightP = 0.2;
-		double rightI = 0;
-		double rightD = 0;
+		double rightP = 0.001;
+		double rightI = 0.000001;
+		double rightD = 1.0;
 		double rightF = 0.3439511004; // F-gain = (1 * 1023) / 2974.26 = 0.3439511004
 		
 		leftDriveTalon1.config_kP(0, leftP, 0);
