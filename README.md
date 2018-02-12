@@ -6,7 +6,7 @@ Programmed to work on the 2016 robot, then adapted to the 2018 robot
 
 ##TODO
 * [x] figure out new library stuffs
-* [ ] add PID control to Drive using Talon SRX features
+* [x] add PID control to Drive using Talon SRX features
 * [ ] add autonomous functionality
     - [ ] recording
     - [ ] playback
