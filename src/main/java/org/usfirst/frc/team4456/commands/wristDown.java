@@ -6,15 +6,13 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class wristDown extends Command{
 
-    boolean finished;
-
     public wristDown() { requires(Robot.wrist); }
 
     protected void initialize() {
         Robot.wrist.wristDown();
     }
 
-    protected boolean isFinished() { return finished; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.wrist.wristStop();}
 

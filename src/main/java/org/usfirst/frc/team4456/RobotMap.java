@@ -21,7 +21,7 @@ public class RobotMap {
 	public static WPI_TalonSRX clawTalon;
 
 
-	public static AHRS navx;
+	//public static AHRS navx;
 	
 	public static void init() {
 		
@@ -33,37 +33,38 @@ public class RobotMap {
 		leftDriveTalon2 = new WPI_TalonSRX (4);
 		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
 		
-		rightDriveTalon1 = new WPI_TalonSRX (1);
+		rightDriveTalon1 = new WPI_TalonSRX (2);
 		rightDriveTalon1.set(ControlMode.Velocity, 0);
 		rightDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		rightDriveTalon1.setInverted(true);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		rightDriveTalon2 = new WPI_TalonSRX (2);
+		rightDriveTalon2 = new WPI_TalonSRX (1);
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
-		vertActTalon = new WPI_TalonSRX(5);
+		vertActTalon = new WPI_TalonSRX(7);
 		vertActTalon.set(ControlMode.PercentOutput, 0);
 		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
-		diagActTalon = new WPI_TalonSRX(6);
+		diagActTalon = new WPI_TalonSRX(8);
 		diagActTalon.set(ControlMode.PercentOutput, 0);
 		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
-		winchTalon1 = new WPI_TalonSRX(7);
+		winchTalon1 = new WPI_TalonSRX(5);
 		winchTalon1.set(ControlMode.PercentOutput, 0);
 
-		winchTalon2 = new WPI_TalonSRX(8);
+		winchTalon2 = new WPI_TalonSRX(6);
 		winchTalon2.set(ControlMode.Follower, winchTalon1.getDeviceID());
 
-		wristTalon = new WPI_TalonSRX(9);
+		/*wristTalon = new WPI_TalonSRX(9);
 		wristTalon.set(ControlMode.PercentOutput, 0);
 		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
 		clawTalon = new WPI_TalonSRX(10);
 		clawTalon.set(ControlMode.PercentOutput, 0);
-		clawTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		clawTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);*/
 
 		//NAVX init
+		/*
 		try
 		{
 			//serialPortMXP = new SerialPort(57600, SerialPort.Port.kMXP);
@@ -74,7 +75,7 @@ public class RobotMap {
 		{
 			System.out.println("ERROR!: NAVX INIT" + "\n" + ex);
 		}
-		
+		*/
 	}
 	
 }
