@@ -31,7 +31,7 @@ public class RobotMap {
 		leftDriveTalon1.setInverted(true);
 		//leftDriveTalon1.setSensorPhase(false);
 		leftDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		leftDriveTalon1.configClosedloopRamp(1, 0);
+		leftDriveTalon1.configClosedloopRamp(0.25, 0);
 		leftDriveTalon2 = new WPI_TalonSRX(4);
 		leftDriveTalon2.setInverted(true);
 		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
@@ -42,7 +42,7 @@ public class RobotMap {
 		//rightDriveTalon1.setInverted(true);
 		rightDriveTalon1.setSensorPhase(false);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		rightDriveTalon1.configClosedloopRamp(1, 0);
+		rightDriveTalon1.configClosedloopRamp(0.25, 0);
 		rightDriveTalon2 = new WPI_TalonSRX(3);
 		//rightDriveTalon2.setInverted(true);
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
