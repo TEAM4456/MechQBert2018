@@ -19,4 +19,4 @@ public class clawOpen extends Command {
 
     protected void interrupted() { end(); }
 }
-}
+

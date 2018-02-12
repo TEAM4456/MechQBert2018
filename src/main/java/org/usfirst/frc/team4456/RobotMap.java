@@ -33,29 +33,29 @@ public class RobotMap {
 		leftDriveTalon2 = new WPI_TalonSRX (4);
 		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
 		
-		rightDriveTalon1 = new WPI_TalonSRX (2);
+		rightDriveTalon1 = new WPI_TalonSRX (1);
 		rightDriveTalon1.set(ControlMode.Velocity, 0);
 		rightDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		rightDriveTalon1.setInverted(true);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		rightDriveTalon2 = new WPI_TalonSRX (1);
+		rightDriveTalon2 = new WPI_TalonSRX (2);
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
-		vertActTalon = new WPI_TalonSRX(7);
+		vertActTalon = new WPI_TalonSRX(8);
 		vertActTalon.set(ControlMode.PercentOutput, 0);
 		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
-		diagActTalon = new WPI_TalonSRX(8);
+		diagActTalon = new WPI_TalonSRX(6);
 		diagActTalon.set(ControlMode.PercentOutput, 0);
 		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
 		winchTalon1 = new WPI_TalonSRX(5);
 		winchTalon1.set(ControlMode.PercentOutput, 0);
 
-		winchTalon2 = new WPI_TalonSRX(6);
+		/*winchTalon2 = new WPI_TalonSRX(6);
 		winchTalon2.set(ControlMode.Follower, winchTalon1.getDeviceID());
 
-		/*wristTalon = new WPI_TalonSRX(9);
+		wristTalon = new WPI_TalonSRX(9);
 		wristTalon.set(ControlMode.PercentOutput, 0);
 		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 

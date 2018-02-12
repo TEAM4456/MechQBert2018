@@ -17,11 +17,16 @@ public class Robot extends IterativeRobot {
 	
 	// Subsystem declarations here
 
+	public static Arm arm;
+
+	public static Wrist wrist;
 
 	public static Drive drive;
 
 	public static Winch winch;
-	
+
+	public static Claw claw;
+
 	boolean enabledInitialized = false;
 	
 
@@ -43,6 +48,7 @@ public class Robot extends IterativeRobot {
 		arm = new Arm();
 		wrist = new Wrist();
 		winch = new Winch();
+		claw = new Claw();
 		controls = new Controls();
 		RobotMap.init();
 		// autonomous choosing stuff here
