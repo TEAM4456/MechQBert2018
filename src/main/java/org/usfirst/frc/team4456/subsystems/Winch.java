@@ -11,14 +11,14 @@ public class Winch extends Subsystem{
     protected void initDefaultCommand() { }
 
     public void winchUp(){
-        RobotMap.winchTalon1.set(ControlMode.Current, 1);
+        RobotMap.winchTalon1.set(ControlMode.PercentOutput, 1);
     }
 
     public void winchDown(){
-        RobotMap.winchTalon1.set(ControlMode.Current, -1);
+        RobotMap.winchTalon1.set(ControlMode.PercentOutput, -1);
     }
 
     public void winchStop(){
-        RobotMap.winchTalon1.set(ControlMode.Current, 0);
+        RobotMap.winchTalon1.set(ControlMode.PercentOutput, 0);
     }
 }

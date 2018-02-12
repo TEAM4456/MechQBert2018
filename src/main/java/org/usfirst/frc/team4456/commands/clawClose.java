@@ -17,5 +17,6 @@ public class clawClose extends Command {
     protected void end() {Robot.claw.clawStop();}
 
     protected void interrupted() { end(); }
+}
 
 }

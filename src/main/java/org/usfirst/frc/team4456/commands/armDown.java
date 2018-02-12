@@ -1,22 +1,20 @@
 package org.usfirst.frc.team4456.commands;
 
-import org.usfirst.frc.team4456.Robot;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4456.subsystems.Claw;
-public class clawOpen extends Command {
+import org.usfirst.frc.team4456.Robot;
 
+public class armDown extends Command {
     boolean finished;
 
-    public clawOpen() { requires(Robot.claw); }
+    public armDown() { requires(Robot.arm); }
 
     protected void initialize() {
-        Robot.claw.clawOpen();
+        Robot.arm.armDown();
     }
 
     protected boolean isFinished() { return finished; }
 
-    protected void end() {Robot.claw.clawStop();}
+    protected void end() {Robot.arm.armVertStop();}
 
     protected void interrupted() { end(); }
-}
 }

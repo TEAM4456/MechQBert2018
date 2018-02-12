@@ -9,11 +9,11 @@ public class Claw extends Subsystem {
     protected void initDefaultCommand() { }
 
     public void clawOpen(){
-        RobotMap.clawTalon.set(ControlMode.Current, 1);
+        RobotMap.clawTalon.set(ControlMode.PercentOutput, .1);
     }
 
     public void clawClose(){
-        RobotMap.clawTalon.set(ControlMode.Current, -1);
+        RobotMap.clawTalon.set(ControlMode.PercentOutput, -.1);
     }
 
 
@@ -21,13 +21,5 @@ public class Claw extends Subsystem {
         RobotMap.clawTalon.set(ControlMode.Current, 0);
     }
 
-    public void clawOpenFull(){
-
-        RobotMap.clawTalon.set(ControlMode.Position, 0);
-    }
-
-    public void clawCloseFull(){
-        RobotMap.clawTalon.set(ControlMode.Position, 0);
-    }
 
 }
