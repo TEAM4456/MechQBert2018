@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
 		
+		/*
 		RobotMap.leftDriveTalon1.config_kP(0, SmartDashboard.getNumber("Left P", 0), 0);
 		RobotMap.leftDriveTalon1.config_kI(0, SmartDashboard.getNumber("Left I", 0), 0);
 		RobotMap.leftDriveTalon1.config_kD(0, SmartDashboard.getNumber("Left D", 0), 0);
@@ -64,6 +65,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.rightDriveTalon1.config_kI(0, SmartDashboard.getNumber("Right I", 0), 0);
 		RobotMap.rightDriveTalon1.config_kD(0, SmartDashboard.getNumber("Right D", 0), 0);
 		RobotMap.rightDriveTalon1.config_kF(0, SmartDashboard.getNumber("Right F", 0), 0);
+		*/
 		
 		//SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
 		//SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
@@ -107,7 +109,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void teleopPeriodic() {
-		drive.testDrive(controls.joystick);
+		drive.betterArcadeDrive(controls.joystick);
 	}
 	
 	public void testInit() {

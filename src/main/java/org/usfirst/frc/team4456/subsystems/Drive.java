@@ -37,6 +37,9 @@ public class Drive extends Subsystem {
 		
 		//robotDrive.tankDrive(leftValue, rightValue);
 		
+		leftDriveTalon1.set(ControlMode.Velocity, leftValue * 2900);
+		rightDriveTalon1.set(ControlMode.Velocity, rightValue * 2900);
+		
 		SmartDashboard.putNumber("xValue", xValue);
 		SmartDashboard.putNumber("yValue", yValue);
 		SmartDashboard.putNumber("leftValue", leftValue);
@@ -68,8 +71,8 @@ public class Drive extends Subsystem {
 		leftDriveTalon1.set(ControlMode.Velocity, leftTargetVelocity);
 		rightDriveTalon1.set(ControlMode.Velocity, rightTargetVelocity);
 		
-		//leftDriveTalon1.set(ControlMode.PercentOutput, 0.48);
-		//rightDriveTalon1.set(ControlMode.PercentOutput, 0.48);
+		//leftDriveTalon1.set(ControlMode.PercentOutput, 0.7);
+		//rightDriveTalon1.set(ControlMode.PercentOutput, 0.7);
 		
 		SmartDashboard.putNumber("Left Error", leftDriveTalon1.getSelectedSensorVelocity(0) - leftTargetVelocity);
 		SmartDashboard.putNumber("Right Error", rightDriveTalon1.getSelectedSensorVelocity(0) - rightTargetVelocity);
