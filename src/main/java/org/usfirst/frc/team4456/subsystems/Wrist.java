@@ -11,14 +11,14 @@ public class Wrist extends Subsystem {
     protected void initDefaultCommand() { }
 
     public void wristUp() {
-        RobotMap.wristTalon.set(ControlMode.Position, 1 );
+        RobotMap.wristTalon.set(ControlMode.PercentOutput, 1);//Position, 1 );
     }
 
     public void wristDown() {
-        RobotMap.wristTalon.set(ControlMode.Position, -1);
+        RobotMap.wristTalon.set(ControlMode.PercentOutput, -1);//Position, -1);
     }
 
     public void wristStop() {
-        RobotMap.wristTalon.set(ControlMode.Position,0 );
+        RobotMap.wristTalon.set(ControlMode.PercentOutput, 0);//Position,0 );
     }
 }
