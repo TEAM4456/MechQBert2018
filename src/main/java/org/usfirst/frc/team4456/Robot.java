@@ -17,7 +17,6 @@ public class Robot extends IterativeRobot {
 	
 	// Subsystem declarations here
 	public static Drive drive;
-	public static Winch winch; /* KEPT FOR NOW */
 	
 	boolean enabledInitialized = false;
 	
@@ -32,7 +31,6 @@ public class Robot extends IterativeRobot {
 		
 		// construct subsystems here
 		drive = new Drive();
-		winch = new Winch(); /* KEPT FOR NOW */
 		
 		controls = new Controls();
 		
