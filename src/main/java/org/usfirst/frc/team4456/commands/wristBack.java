@@ -1,20 +1,22 @@
 package org.usfirst.frc.team4456.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+public class wristBack extends Command {
 
-public class wristDown extends Command{
-
-    public wristDown() { requires(Robot.wrist); }
+    public wristBack() { requires(Robot.wrist); }
 
     protected void initialize() {
-        Robot.wrist.wristDown();
+        Robot.wrist.move(0);
     }
 
-    protected boolean isFinished() { return false; }
+
+
+    protected boolean isFinished() { return true; }
 
     protected void end() {Robot.wrist.wristStop();}
 
     protected void interrupted() { end(); }
+
 }

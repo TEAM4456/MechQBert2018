@@ -4,18 +4,23 @@ import org.usfirst.frc.team4456.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class wristUp extends Command  {
+public class wristOut extends Command{
 
-public wristUp() { requires(Robot.wrist); }
-
-    protected void initialize() {
-        Robot.wrist.wristUp();
+    public wristOut() {
+        requires(Robot.wrist);
+        requires(Robot.arm);
     }
 
-    protected boolean isFinished() { return false; }
+    protected void initialize() {
+        if()
+        Robot.wrist.move();
+    }
+
+
+
+    protected boolean isFinished() { return true; }
 
     protected void end() {Robot.wrist.wristStop();}
 
     protected void interrupted() { end(); }
-
 }
