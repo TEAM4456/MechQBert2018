@@ -33,4 +33,9 @@ public class Arm extends Subsystem{
     public void armDiagStop(){
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, 0);
     }
+
+    public double[] getArmPosition(){
+        double[] pos = {RobotMap.vertActTalon.getSensorCollection().getAnalogIn(), RobotMap.diagActTalon.getSensorCollection().getAnalogIn()};
+        return pos;
+    }
 }

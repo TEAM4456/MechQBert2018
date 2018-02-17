@@ -12,8 +12,9 @@ public class Wrist extends Subsystem {
 
     protected void initDefaultCommand() { }
 
+
     public void wristStop() {
-        RobotMap.wristTalon.set(ControlMode.Position,0 );
+        RobotMap.wristTalon.set(ControlMode.PercentOutput, 0);//Position,0 );
     }
 
     public void move (double targetPosition)

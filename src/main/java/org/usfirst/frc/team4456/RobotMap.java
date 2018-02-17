@@ -43,11 +43,10 @@ public class RobotMap {
 		
 		vertActTalon = new WPI_TalonSRX(8);
 		vertActTalon.set(ControlMode.PercentOutput, 0);
-		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-
+		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);
 		diagActTalon = new WPI_TalonSRX(6);
-		diagActTalon.set(ControlMode.PercentOutput, 0);
-		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		diagActTalon.set(ControlMode.Follower, vertActTalon.getDeviceID());
+		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);
 
 		winchTalon1 = new WPI_TalonSRX(5);
 		winchTalon1.set(ControlMode.PercentOutput, 0);
