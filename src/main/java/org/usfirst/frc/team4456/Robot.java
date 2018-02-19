@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 public class Robot extends TimedRobot {
 	
+	public static AutonomousManager autonomousManager;
+	
 	public static Controls controls;
 	
 	// Subsystem declarations here
@@ -34,6 +36,7 @@ public class Robot extends TimedRobot {
 		
 		controls = new Controls();
 		
+		autonomousManager = new AutonomousManager();
 		
 		// autonomous choosing stuff here
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
@@ -98,7 +101,9 @@ public class Robot extends TimedRobot {
 		//autonomousCommand.start();
 	}
 	
-	public void autonomousPeriodic() {}
+	public void autonomousPeriodic() {
+		autonomousManager.run();
+	}
 	
 	public void teleopInit() {
 		//autonomousCommand.cancel();

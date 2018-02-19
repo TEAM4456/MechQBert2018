@@ -6,7 +6,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 public class AutonomousManager {
@@ -15,9 +14,14 @@ public class AutonomousManager {
 	
 	private List<WPI_TalonSRX> talonList;
 	
-	private int cycleNum;
+	private int tick;
 	
-	NetworkTable table;
+	NetworkTable autonomousData;
+	NetworkTable robotData;
+	NetworkTable bufferData;
+	
+	NetworkTableEntry tickEntry;
+	NetworkTableEntry testEntry;
 	
 	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
 	
@@ -25,33 +29,37 @@ public class AutonomousManager {
 		
 		mode = ManagerMode.IDLE;
 		
-		talonList = new ArrayList<>();
+		tick = 0;
 		
-		cycleNum = 0;
+		talonList = new ArrayList<>();
 		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		
-		table = inst.getTable("datatable");
+		autonomousData = inst.getTable("AutonomousData");
+		robotData = autonomousData.getSubTable("RobotState");
+		bufferData = autonomousData.getSubTable("BufferData");
 		
+		tickEntry = robotData.getEntry("tick");
+		tickEntry.setNumber(0);
+		
+		testEntry = bufferData.getEntry("test");
+		testEntry.setDouble(100);
 		
 	}
 	
 	public void run() {
-		if (mode == ManagerMode.RECORD) {
-		
-		} else if (mode == ManagerMode.PLAYBACK) {
-		
-		}
+	
+		tick++;
+		testEntry.setDouble(tick);
+	
 	}
 	
 	public void addTalon(String name, WPI_TalonSRX talon) {
 		if (mode == ManagerMode.IDLE) {
-		
+			talonList.add(talon);
 		}
 	}
 	
-	public ManagerMode getMode() {
-		return mode;
-	}
+	public ManagerMode getMode() { return mode; }
 	
 }
