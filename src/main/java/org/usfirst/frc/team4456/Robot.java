@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4456;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc.team4456.commands.*;
 import org.usfirst.frc.team4456.subsystems.*;
 
@@ -36,7 +37,10 @@ public class Robot extends TimedRobot {
 		
 		controls = new Controls();
 		
-		autonomousManager = new AutonomousManager();
+		autonomousManager = new AutonomousManager(new WPI_TalonSRX[] {
+				RobotMap.leftDriveTalon1,
+				RobotMap.rightDriveTalon1
+		});
 		
 		// autonomous choosing stuff here
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception

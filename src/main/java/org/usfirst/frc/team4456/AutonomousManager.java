@@ -13,9 +13,10 @@ public class AutonomousManager {
 	
 	private ManagerMode mode;
 	
-	private List<WPI_TalonSRX> talonList;
+	private WPI_TalonSRX[] talonArray;
 	
 	private int tick;
+	private int bufferSize;
 	
 	private Timer tickTimer;
 	
@@ -24,18 +25,19 @@ public class AutonomousManager {
 	private NetworkTable bufferData;
 	
 	private NetworkTableEntry tickEntry;
-	
-	private NetworkTableEntry testEntry;
+	private NetworkTableEntry tickTimerEntry;
+	private NetworkTableEntry bufferSizeEntry;
 	
 	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
 	
-	public AutonomousManager() {
+	public AutonomousManager(WPI_TalonSRX[] talons) {
+		
+		talonArray = talons;
 		
 		mode = ManagerMode.IDLE;
 		
 		tick = 0;
-		
-		talonList = new ArrayList<>();
+		bufferSize = 11; // 1 current + 10 advance
 		
 		tickTimer = new Timer();
 		tickTimer.start();
@@ -47,29 +49,40 @@ public class AutonomousManager {
 		bufferData = autonomousData.getSubTable("BufferData");
 		
 		tickEntry = robotData.getEntry("tick");
-		testEntry = bufferData.getEntry("test");
+		tickTimerEntry = robotData.getEntry("tickTimer");
+		bufferSizeEntry = robotData.getEntry("bufferSize");
 		
+		for (WPI_TalonSRX talon : talonArray) {
+			generateTalonEntries(talon);
+		}
+		
+	}
+	
+	private void generateTalonEntries(WPI_TalonSRX talon) {
+		List<NetworkTableEntry> entries = new ArrayList<>();
+		for (int i = 0; i < bufferSize; i++) {
+			NetworkTableEntry entry = bufferData.getEntry(talon.getName() + "-" + i);
+			entry.setDouble(0);
+			entries.add(entry);
+		}
 	}
 	
 	public void run() {
 		
-		if (tickTimer.get() > 0.1) {
+		double tickTimerVal = tickTimer.get();
+		
+		if (tickTimerVal > 0.1) {
+			
+			
+			
+			// update tick info
 			tick++;
 			tickEntry.setNumber(tick);
+			tickTimerEntry.setDouble(tickTimerVal);
 			tickTimer.reset();
 			tickTimer.start();
 		}
-		double velocity = RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0);
-		testEntry.setDouble(velocity);
 		
 	}
-	
-	public void addTalon(String name, WPI_TalonSRX talon) {
-		if (mode == ManagerMode.IDLE) {
-			talonList.add(talon);
-		}
-	}
-	
-	public ManagerMode getMode() { return mode; }
 	
 }
