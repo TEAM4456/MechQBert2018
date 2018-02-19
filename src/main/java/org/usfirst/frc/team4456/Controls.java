@@ -31,9 +31,9 @@ public class Controls {
 		JoystickButton yButton = new JoystickButton(joystick, 4);
 		yButton.whileHeld(new armDiagRetract());
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
-		leftBumper.whileHeld(new wristDown());
+		leftBumper.whileHeld(new wristOut());
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);
-		rightBumper.whileHeld(new wristUp());
+		rightBumper.whileHeld(new wristBack());
 		JoystickButton backButton = new JoystickButton(joystick, 7);
 		//selectButton command configuration here
 		backButton.whileHeld(new winchDown());
