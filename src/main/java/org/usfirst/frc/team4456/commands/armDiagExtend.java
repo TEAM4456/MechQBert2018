@@ -11,7 +11,7 @@ public class armDiagExtend extends Command {
         Robot.arm.armDiagExtend();
     }
 
-    protected boolean isFinished() { return false; }
+    protected boolean isFinished() { return true; }
 
     protected void end() {Robot.arm.armDiagStop();}
 

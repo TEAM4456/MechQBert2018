@@ -12,7 +12,7 @@ public class winchUp extends Command{
         Robot.winch.winchUp();
     }
 
-    protected boolean isFinished() { return false; }
+    protected boolean isFinished() { return true; }
 
     protected void end() {Robot.winch.winchStop();}
 
