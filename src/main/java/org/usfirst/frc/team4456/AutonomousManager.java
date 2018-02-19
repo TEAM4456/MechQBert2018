@@ -17,7 +17,7 @@ public class AutonomousManager {
 	
 	private int tick;
 	
-	private Timer timer;
+	private Timer tickTimer;
 	
 	private NetworkTable autonomousData;
 	private NetworkTable robotData;
@@ -37,8 +37,8 @@ public class AutonomousManager {
 		
 		talonList = new ArrayList<>();
 		
-		timer = new Timer();
-		timer.start();
+		tickTimer = new Timer();
+		tickTimer.start();
 		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		
@@ -53,11 +53,11 @@ public class AutonomousManager {
 	
 	public void run() {
 		
-		if (timer.get() > 0.1) {
+		if (tickTimer.get() > 0.1) {
 			tick++;
 			tickEntry.setNumber(tick);
-			timer.reset();
-			timer.start();
+			tickTimer.reset();
+			tickTimer.start();
 		}
 		double velocity = RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0);
 		testEntry.setDouble(velocity);
