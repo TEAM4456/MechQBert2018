@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 		
 		controls = new Controls();
 		
-		autonomousManager = new AutonomousManager(new WPI_TalonSRX[] {
+		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
 		});

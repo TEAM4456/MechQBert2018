@@ -16,6 +16,7 @@ public class AutonomousManager {
 	private WPI_TalonSRX[] talonArray;
 	
 	private int tick;
+	private double tickInterval;
 	private int bufferSize;
 	
 	private Timer tickTimer;
@@ -25,19 +26,22 @@ public class AutonomousManager {
 	private NetworkTable bufferData;
 	
 	private NetworkTableEntry tickEntry;
+	private NetworkTableEntry tickIntervalMsEntry;
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
 	
 	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
 	
-	public AutonomousManager(WPI_TalonSRX[] talons) {
+	public AutonomousManager(int bufferSizeAdvance, double tickIntervalMs, WPI_TalonSRX[] talons) {
 		
 		talonArray = talons;
 		
 		mode = ManagerMode.IDLE;
 		
 		tick = 0;
-		bufferSize = 11; // 1 current + 10 advance
+		bufferSize = bufferSizeAdvance + 1;
+		
+		tickInterval = tickIntervalMs / 1000;
 		
 		tickTimer = new Timer();
 		tickTimer.start();
@@ -49,8 +53,11 @@ public class AutonomousManager {
 		bufferData = autonomousData.getSubTable("BufferData");
 		
 		tickEntry = robotData.getEntry("tick");
+		tickIntervalMsEntry = robotData.getEntry("tickIntervalMs");
+		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		tickTimerEntry = robotData.getEntry("tickTimer");
 		bufferSizeEntry = robotData.getEntry("bufferSize");
+		bufferSizeEntry.setNumber(bufferSize);
 		
 		for (WPI_TalonSRX talon : talonArray) {
 			generateTalonEntries(talon);
@@ -71,7 +78,7 @@ public class AutonomousManager {
 		
 		double tickTimerVal = tickTimer.get();
 		
-		if (tickTimerVal > 0.1) {
+		if (tickTimerVal > tickInterval) {
 			
 			
 			
