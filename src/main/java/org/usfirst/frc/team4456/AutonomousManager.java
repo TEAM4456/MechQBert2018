@@ -74,6 +74,11 @@ public class AutonomousManager {
 		}
 	}
 	
+	private void writeEntryForTalon(WPI_TalonSRX talon, double value) {
+		NetworkTableEntry entry = bufferData.getEntry(talon.getName() + "-" + (tick % bufferSize));
+		entry.setDouble(value);
+	}
+	
 	public void run() {
 		
 		double tickTimerVal = tickTimer.get();
