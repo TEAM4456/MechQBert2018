@@ -86,6 +86,21 @@ public class Drive extends Subsystem {
 		
 	}
 	
+	public void magicTestDrive(Joystick joystick) {
+		
+		double leftPosition = leftDriveTalon1.getSelectedSensorPosition(0);
+		double rightPosition = rightDriveTalon1.getSelectedSensorPosition(0);
+		
+		double leftTargetPosition = leftPosition + 2500;
+		double rightTargetPosition = rightPosition + 2500;
+		
+		if (joystick.getRawButton(1)) {
+			leftDriveTalon1.set(ControlMode.MotionMagic, leftTargetPosition);
+			rightDriveTalon1.set(ControlMode.MotionMagic, rightTargetPosition);
+		}
+		
+	}
+	
 	public void dataDrive() {
 		
 		// just for gathering data for tuning PID

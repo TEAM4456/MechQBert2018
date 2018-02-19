@@ -91,16 +91,14 @@ public class Robot extends TimedRobot {
 		//autonomousCommand.cancel();
 	}
 	
-	public void disabledPeriodic() {
-	}
+	public void disabledPeriodic() {}
 	
 	public void autonomousInit() {
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
 	}
 	
-	public void autonomousPeriodic() {
-	}
+	public void autonomousPeriodic() {}
 	
 	public void teleopInit() {
 		//autonomousCommand.cancel();
@@ -110,11 +108,9 @@ public class Robot extends TimedRobot {
 		drive.betterArcadeDrive(controls.joystick);
 	}
 	
-	public void testInit() {
-	}
+	public void testInit() {}
 	
-	public void testPeriodic() {
-	}
+	public void testPeriodic() {}
 	
 }
 
