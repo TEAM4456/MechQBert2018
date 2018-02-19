@@ -11,7 +11,7 @@ public class armUp extends Command {
         Robot.arm.armUp();
     }
 
-    protected boolean isFinished() { return false; }
+    protected boolean isFinished() { return true; }
 
     protected void end() {Robot.arm.armVertStop();}
 

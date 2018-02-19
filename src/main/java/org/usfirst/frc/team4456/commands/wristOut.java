@@ -12,8 +12,13 @@ public class wristOut extends Command{
     }
 
     protected void initialize() {
-        if()
-        Robot.wrist.move();
+
+        double [] x = Robot.arm.getArmPosition();
+        double y = x[0];
+        if(y <= 512)
+            Robot.wrist.move(10.0);
+        else
+            Robot.wrist.move(20.0);
     }
 
 

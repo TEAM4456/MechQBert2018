@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.subsystems.Claw;
 public class clawOpen extends Command {
 
-    boolean finished;
+    boolean finished = true;
 
     public clawOpen() { requires(Robot.claw); }
 
