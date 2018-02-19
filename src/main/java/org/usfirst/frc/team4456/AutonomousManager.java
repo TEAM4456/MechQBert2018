@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
@@ -16,12 +17,15 @@ public class AutonomousManager {
 	
 	private int tick;
 	
-	NetworkTable autonomousData;
-	NetworkTable robotData;
-	NetworkTable bufferData;
+	private Timer timer;
 	
-	NetworkTableEntry tickEntry;
-	NetworkTableEntry testEntry;
+	private NetworkTable autonomousData;
+	private NetworkTable robotData;
+	private NetworkTable bufferData;
+	
+	private NetworkTableEntry tickEntry;
+	
+	private NetworkTableEntry testEntry;
 	
 	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
 	
@@ -33,6 +37,9 @@ public class AutonomousManager {
 		
 		talonList = new ArrayList<>();
 		
+		timer = new Timer();
+		timer.start();
+		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		
 		autonomousData = inst.getTable("AutonomousData");
@@ -40,18 +47,21 @@ public class AutonomousManager {
 		bufferData = autonomousData.getSubTable("BufferData");
 		
 		tickEntry = robotData.getEntry("tick");
-		tickEntry.setNumber(0);
-		
 		testEntry = bufferData.getEntry("test");
-		testEntry.setDouble(100);
 		
 	}
 	
 	public void run() {
-	
-		tick++;
-		testEntry.setDouble(tick);
-	
+		
+		if (timer.get() > 0.1) {
+			tick++;
+			tickEntry.setNumber(tick);
+			timer.reset();
+			timer.start();
+		}
+		double velocity = RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0);
+		testEntry.setDouble(velocity);
+		
 	}
 	
 	public void addTalon(String name, WPI_TalonSRX talon) {

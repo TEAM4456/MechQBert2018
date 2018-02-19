@@ -111,6 +111,7 @@ public class Robot extends TimedRobot {
 	
 	public void teleopPeriodic() {
 		drive.betterArcadeDrive(controls.joystick);
+		autonomousManager.run();
 	}
 	
 	public void testInit() {}
