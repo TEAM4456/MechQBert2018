@@ -2,6 +2,9 @@ package org.usfirst.frc.team4456;
 
 import java.util.List;
 import java.util.ArrayList;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -14,11 +17,9 @@ public class AutonomousManager {
 	
 	private int cycleNum;
 	
-	private enum ManagerMode {
-		IDLE,
-		RECORD,
-		PLAYBACK
-	}
+	NetworkTable table;
+	
+	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
 	
 	public AutonomousManager() {
 		
@@ -27,6 +28,11 @@ public class AutonomousManager {
 		talonList = new ArrayList<>();
 		
 		cycleNum = 0;
+		
+		NetworkTableInstance inst = NetworkTableInstance.getDefault();
+		
+		table = inst.getTable("datatable");
+		
 		
 	}
 	
@@ -42,22 +48,6 @@ public class AutonomousManager {
 		if (mode == ManagerMode.IDLE) {
 		
 		}
-	}
-	
-	public void startRecording() {
-		mode = ManagerMode.RECORD;
-	}
-	
-	public void stopRecording() {
-		mode = ManagerMode.IDLE;
-	}
-	
-	public void startPlayback() {
-		mode = ManagerMode.PLAYBACK;
-	}
-	
-	public void stopPlayback() {
-		mode = ManagerMode.IDLE;
 	}
 	
 	public ManagerMode getMode() {
