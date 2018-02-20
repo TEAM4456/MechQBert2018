@@ -72,8 +72,13 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
 		}
 		*/
-
+		double[] armPosition = arm.getArmPosition();
 		SmartDashboard.putNumber("Wrist Output", RobotMap.wristTalon.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Vert Act Talon", armPosition[0]);
+		SmartDashboard.putNumber("Diag Act Talon", armPosition[1]);
+		SmartDashboard.putNumber("Claw Output", RobotMap.clawTalon.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Right Drive Output", RobotMap.rightDriveTalon1.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Left Drive Output", RobotMap.leftDriveTalon1.getMotorOutputVoltage());
 		/*
 		 * Put these values on the SmartDashboard:
 		 * arm position (method in arm subsystem) *print out both values in the array independently
