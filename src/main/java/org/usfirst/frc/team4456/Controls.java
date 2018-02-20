@@ -23,27 +23,24 @@ public class Controls {
 		 */
 		
 		JoystickButton aButton = new JoystickButton(joystick, 1);
-		aButton.whileHeld(new armUp());
+		
 		JoystickButton bButton = new JoystickButton(joystick, 2);
-		bButton.whileHeld(new armDown());
+		
 		JoystickButton xButton = new JoystickButton(joystick, 3);
-		xButton.whileHeld(new armDiagExtend());
+		
 		JoystickButton yButton = new JoystickButton(joystick, 4);
-		yButton.whileHeld(new armDiagRetract());
+		
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
-		leftBumper.whileHeld(new wristOut());
+		
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);
-		rightBumper.whileHeld(new wristBack());
+
 		JoystickButton backButton = new JoystickButton(joystick, 7);
-		//selectButton command configuration here
-		backButton.whileHeld(new winchDown());
+		
 		JoystickButton startButton = new JoystickButton(joystick, 8);
-		//startButton command configuration here
-		startButton.whileHeld(new winchUp());
+		
 		JoystickButton leftStick = new JoystickButton(joystick, 9);
-		//leftStick command configuration here
+		
 		JoystickButton rightStick = new JoystickButton(joystick, 10);
-		//rightStick command configuration here
 		
 	}
 	

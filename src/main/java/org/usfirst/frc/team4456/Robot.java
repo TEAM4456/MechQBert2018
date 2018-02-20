@@ -1,21 +1,25 @@
 package org.usfirst.frc.team4456;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc.team4456.commands.*;
 import org.usfirst.frc.team4456.subsystems.*;
 
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.CameraServer;
 
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
+	
+	public static AutonomousManager autonomousManager;
 	
 	public static Controls controls;
 	
 	// Subsystem declarations here
+
 
 	public static Arm arm;
 
@@ -30,29 +34,35 @@ public class Robot extends IterativeRobot {
 	boolean enabledInitialized = false;
 	
 
-	//Command autonomousCommand;
+	Command autonomousCommand;
 	
-	//SendableChooser<Command> autonomousChooser;
+	SendableChooser<Command> autonomousChooser;
 	
 	public void robotInit() {
 		
-		CameraServer.getInstance().startAutomaticCapture();
+		//CameraServer.getInstance().startAutomaticCapture();
 		
 
 		
 		// construct subsystems here
 
 
-		//drive = new Drive();
+		drive = new Drive();
 
 		arm = new Arm();
 		wrist = new Wrist();
 		winch = new Winch();
 		claw = new Claw();
 
+		controls = new Controls();
+		
+		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
+				RobotMap.leftDriveTalon1,
+				RobotMap.rightDriveTalon1
+		});
+
 		RobotMap.init();
 		// autonomous choosing stuff here
-		
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
 		autonomousChooser = new SendableChooser<Command>();
@@ -63,13 +73,13 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Starting Position", autonomousChooser);*/
 		
 	}
+	
 	public void robotPeriodic() {
-		/*
-		if (RobotMap.lidarSerial != null) {
-			lidar.update();
-			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
-		}
-		*/
+		
+		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("Right Velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Wrist Output", RobotMap.wristTalon.getMotorOutputVoltage());
 		SmartDashboard.putNumber("Diag Act Talon", RobotMap.diagActTalon.getSensorCollection().getAnalogIn());
 		SmartDashboard.putNumber("Claw Output", RobotMap.clawTalon.getMotorOutputVoltage());
@@ -77,12 +87,27 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Drive Output", RobotMap.leftDriveTalon1.getMotorOutputVoltage());
 		SmartDashboard.putNumber("Wrist Position", RobotMap.wristTalon.getSensorCollection().getQuadraturePosition());
 
-		
-		/*SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
+		/*
+		RobotMap.leftDriveTalon1.config_kP(0, SmartDashboard.getNumber("Left P", 0), 0);
+		RobotMap.leftDriveTalon1.config_kI(0, SmartDashboard.getNumber("Left I", 0), 0);
+		RobotMap.leftDriveTalon1.config_kD(0, SmartDashboard.getNumber("Left D", 0), 0);
+		RobotMap.leftDriveTalon1.config_kF(0, SmartDashboard.getNumber("Left F", 0), 0);
+		RobotMap.rightDriveTalon1.config_kP(0, SmartDashboard.getNumber("Right P", 0), 0);
+		RobotMap.rightDriveTalon1.config_kI(0, SmartDashboard.getNumber("Right I", 0), 0);
+		RobotMap.rightDriveTalon1.config_kD(0, SmartDashboard.getNumber("Right D", 0), 0);
+		RobotMap.rightDriveTalon1.config_kF(0, SmartDashboard.getNumber("Right F", 0), 0);
+		*/
 
-		SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
-		SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());*/
+		/*
+		if (RobotMap.lidarSerial != null) {
+			lidar.update();
+			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
+		}
+		*/
+
+		//SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
+		//SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
+
 
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
@@ -91,18 +116,21 @@ public class Robot extends IterativeRobot {
 
 	// custom methods called by robotPeriodic()
 	void enabledInit() {
-
-
+		// init stuff upon enable here
 		enabledInitialized = true;
 	}
-	void enabledPeriodic() {Scheduler.getInstance().run(); }
-
+	
+	void enabledPeriodic() {
+		// run stuff periodically while enabled
+		Scheduler.getInstance().run();
+	}
+	
 	public void disabledInit() {
 		enabledInitialized = false;
-
-
+		
 		//autonomousCommand.cancel();
 	}
+	
 	public void disabledPeriodic() {}
 
 	public void autonomousInit() {
@@ -110,19 +138,24 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
 	}
-	public void autonomousPeriodic() {}
-
+	
+	public void autonomousPeriodic() {
+		autonomousManager.run();
+	}
+	
 	public void teleopInit() {
-		controls = new Controls();
-		/*autonomousCommand.cancel();*/
-	}
-	public void teleopPeriodic() { /*drive.betterArcadeDrive(controls.joystick);*/ }
-	
-	public void testInit() {
-	}
-	public void testPeriodic() {
+		//autonomousCommand.cancel();
 	}
 	
+	public void teleopPeriodic() {
+		drive.betterArcadeDrive(controls.joystick);
+		autonomousManager.run(); // for testing
+	}
+	
+	public void testInit() {}
+	
+	public void testPeriodic() {}
+
 }
 
 
