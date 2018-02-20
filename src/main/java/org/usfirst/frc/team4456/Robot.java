@@ -19,29 +19,49 @@ public class Robot extends TimedRobot {
 	public static Controls controls;
 	
 	// Subsystem declarations here
+
+
+	public static Arm arm;
+
+	public static Wrist wrist;
+
 	public static Drive drive;
-	
+
+	public static Winch winch;
+
+	public static Claw claw;
+
 	boolean enabledInitialized = false;
 	
+
 	Command autonomousCommand;
+	
 	SendableChooser<Command> autonomousChooser;
 	
 	public void robotInit() {
 		
 		//CameraServer.getInstance().startAutomaticCapture();
 		
-		RobotMap.init();
+
 		
 		// construct subsystems here
+
+
 		drive = new Drive();
-		
+
+		arm = new Arm();
+		wrist = new Wrist();
+		winch = new Winch();
+		claw = new Claw();
+
 		controls = new Controls();
 		
 		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
 		});
-		
+
+		RobotMap.init();
 		// autonomous choosing stuff here
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
@@ -60,7 +80,13 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Left Velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
-		
+		SmartDashboard.putNumber("Wrist Output", RobotMap.wristTalon.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Diag Act Talon", RobotMap.diagActTalon.getSensorCollection().getAnalogIn());
+		SmartDashboard.putNumber("Claw Output", RobotMap.clawTalon.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Right Drive Output", RobotMap.rightDriveTalon1.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Left Drive Output", RobotMap.leftDriveTalon1.getMotorOutputVoltage());
+		SmartDashboard.putNumber("Wrist Position", RobotMap.wristTalon.getSensorCollection().getQuadraturePosition());
+
 		/*
 		RobotMap.leftDriveTalon1.config_kP(0, SmartDashboard.getNumber("Left P", 0), 0);
 		RobotMap.leftDriveTalon1.config_kI(0, SmartDashboard.getNumber("Left I", 0), 0);
@@ -71,16 +97,23 @@ public class Robot extends TimedRobot {
 		RobotMap.rightDriveTalon1.config_kD(0, SmartDashboard.getNumber("Right D", 0), 0);
 		RobotMap.rightDriveTalon1.config_kF(0, SmartDashboard.getNumber("Right F", 0), 0);
 		*/
-		
+
+		/*
+		if (RobotMap.lidarSerial != null) {
+			lidar.update();
+			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
+		}
+		*/
+
 		//SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
 		//SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
-		
-		
+
+
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
 		if (isEnabled()) { enabledPeriodic(); }
 	}
-	
+
 	// custom methods called by robotPeriodic()
 	void enabledInit() {
 		// init stuff upon enable here
@@ -99,8 +132,9 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void disabledPeriodic() {}
-	
+
 	public void autonomousInit() {
+		controls = new Controls();
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
 	}
@@ -121,7 +155,7 @@ public class Robot extends TimedRobot {
 	public void testInit() {}
 	
 	public void testPeriodic() {}
-	
+
 }
 
 

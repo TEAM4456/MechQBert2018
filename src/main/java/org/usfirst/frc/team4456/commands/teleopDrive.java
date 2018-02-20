@@ -5,7 +5,7 @@ import org.usfirst.frc.team4456.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class teleopDrive extends Command {
-	
+
 	boolean finished;
 	
 	public teleopDrive() {
@@ -26,9 +26,8 @@ public class teleopDrive extends Command {
 	}
 	
 	protected void end() {}
-	
+
 	protected void interrupted() {
 		end();
 	}
-	
 }
