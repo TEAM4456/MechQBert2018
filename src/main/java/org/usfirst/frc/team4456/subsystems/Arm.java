@@ -10,9 +10,7 @@ public class Arm extends Subsystem{
 
     protected void initDefaultCommand() { }
 
-    public void armUp(){
-        RobotMap.vertActTalon.set(ControlMode.PercentOutput, .5);
-    }
+    public void armUp(){ RobotMap.vertActTalon.set(ControlMode.PercentOutput, .5); }
 
     public void armDown(){
         RobotMap.vertActTalon.set(ControlMode.PercentOutput, -.5);
