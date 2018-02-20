@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.CameraServer;
 public class Robot extends IterativeRobot {
 	
 	public static Controls controls;
-
-	public static Controls testControls;
 	
 	// Subsystem declarations here
 
@@ -38,7 +36,7 @@ public class Robot extends IterativeRobot {
 	
 	public void robotInit() {
 		
-		//CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
 		
 
 		
@@ -72,20 +70,14 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
 		}
 		*/
-		double[] armPosition = arm.getArmPosition();
 		SmartDashboard.putNumber("Wrist Output", RobotMap.wristTalon.getMotorOutputVoltage());
-		SmartDashboard.putNumber("Vert Act Talon", armPosition[0]);
-		SmartDashboard.putNumber("Diag Act Talon", armPosition[1]);
+		SmartDashboard.putNumber("Diag Act Talon", RobotMap.diagActTalon.getSensorCollection().getAnalogIn());
 		SmartDashboard.putNumber("Claw Output", RobotMap.clawTalon.getMotorOutputVoltage());
 		SmartDashboard.putNumber("Right Drive Output", RobotMap.rightDriveTalon1.getMotorOutputVoltage());
 		SmartDashboard.putNumber("Left Drive Output", RobotMap.leftDriveTalon1.getMotorOutputVoltage());
-		/*
-		 * Put these values on the SmartDashboard:
-		 * arm position (method in arm subsystem) *print out both values in the array independently
-		 * velocity of either arm talon (getSelectedSensorVelocity)
-		 * wrist position
-		 */
+		SmartDashboard.putNumber("Wrist Position", RobotMap.wristTalon.getSensorCollection().getQuadraturePosition());
 
+		
 		/*SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
 
@@ -127,9 +119,9 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() { /*drive.betterArcadeDrive(controls.joystick);*/ }
 	
 	public void testInit() {
-		testControls = new Controls();
 	}
-	public void testPeriodic() {}
+	public void testPeriodic() {
+	}
 	
 }
 
