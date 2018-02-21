@@ -2,6 +2,7 @@ package org.usfirst.frc.team4456;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -30,7 +31,7 @@ public class AutonomousManager {
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
 	
-	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
+	private enum ManagerMode {IDLE, RECORD, PLAYBACK}
 	
 	public AutonomousManager(int bufferSizeAdvance, double tickIntervalMs, WPI_TalonSRX[] talons) {
 		
@@ -84,7 +85,6 @@ public class AutonomousManager {
 		double tickTimerVal = tickTimer.get();
 		
 		if (tickTimerVal > tickInterval) {
-			
 			
 			
 			// update tick info

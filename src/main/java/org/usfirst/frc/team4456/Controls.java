@@ -33,7 +33,7 @@ public class Controls {
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
 		
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);
-
+		
 		JoystickButton backButton = new JoystickButton(joystick, 7);
 		
 		JoystickButton startButton = new JoystickButton(joystick, 8);

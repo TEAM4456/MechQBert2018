@@ -19,22 +19,13 @@ public class Robot extends TimedRobot {
 	public static Controls controls;
 	
 	// Subsystem declarations here
-
-
 	public static Arm arm;
-
 	public static Wrist wrist;
-
 	public static Drive drive;
-
 	public static Winch winch;
-
 	public static Claw claw;
-
-	boolean enabledInitialized = false;
 	
-
-	Command autonomousCommand;
+	boolean enabledInitialized = false;
 	
 	SendableChooser<Command> autonomousChooser;
 	
@@ -45,31 +36,28 @@ public class Robot extends TimedRobot {
 		RobotMap.init();
 		
 		// construct subsystems here
-		
 		drive = new Drive();
-
 		arm = new Arm();
 		wrist = new Wrist();
 		winch = new Winch();
 		claw = new Claw();
-
+		
 		controls = new Controls();
 		
-		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
+		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[]{
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
 		});
-
 		
 		// autonomous choosing stuff here
-		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
-		
+		/*
 		autonomousChooser = new SendableChooser<Command>();
-		autonomousChooser.addDefault("Auto Middle", new autoMiddle());
-
-		autonomousChooser.addObject("Auto Gear Left", new autoGearLeft());
-		autonomousChooser.addObject("Auto Gear Right (EXPERIMENTAL)", new autoGearRight());
-		SmartDashboard.putData("Starting Position", autonomousChooser);*/
+		
+		autonomousChooser.addDefault("PLACEHOLDER", PLACEHOLDER);
+		autonomousChooser.addObject("PLACEHOLDER", PLACEHOLDER);
+		autonomousChooser.addObject("PLACEHOLDER", PLACEHOLDER);
+		SmartDashboard.putData("Autonomous Mode", autonomousChooser);
+		*/
 		
 	}
 	
@@ -103,16 +91,16 @@ public class Robot extends TimedRobot {
 			SmartDashboard.putNumber("LiDAR Distance", lidar.getDistance());
 		}
 		*/
-
+		
 		//SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
 		//SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
-
-
+		
+		
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
 		if (isEnabled()) { enabledPeriodic(); }
 	}
-
+	
 	// custom methods called by robotPeriodic()
 	void enabledInit() {
 		// init stuff upon enable here
@@ -131,7 +119,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void disabledPeriodic() {}
-
+	
 	public void autonomousInit() {
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
@@ -153,7 +141,7 @@ public class Robot extends TimedRobot {
 	public void testInit() {}
 	
 	public void testPeriodic() {}
-
+	
 }
 
 
