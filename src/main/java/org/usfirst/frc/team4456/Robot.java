@@ -42,11 +42,10 @@ public class Robot extends TimedRobot {
 		
 		//CameraServer.getInstance().startAutomaticCapture();
 		
-
+		RobotMap.init();
 		
 		// construct subsystems here
-
-
+		
 		drive = new Drive();
 
 		arm = new Arm();
@@ -61,7 +60,7 @@ public class Robot extends TimedRobot {
 				RobotMap.rightDriveTalon1
 		});
 
-		RobotMap.init();
+		
 		// autonomous choosing stuff here
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
@@ -134,7 +133,6 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {}
 
 	public void autonomousInit() {
-		controls = new Controls();
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
 	}
