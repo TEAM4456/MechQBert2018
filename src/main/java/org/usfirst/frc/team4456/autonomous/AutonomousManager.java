@@ -36,6 +36,9 @@ public class AutonomousManager {
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
 	private NetworkTableEntry talonModesEntry;
+	private NetworkTableEntry managerStateEntry; // string (maybe change to int)
+	private NetworkTableEntry robotReadyEntry; // bool
+	private NetworkTableEntry clientReadyEntry; // bool
 	
 	private enum ManagerMode { IDLE, RECORD_WAITING, PLAYBACK_WAITING, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
@@ -56,7 +59,7 @@ public class AutonomousManager {
 		tickInterval = tickIntervalMs / 1000;
 		
 		tickTimer = new Timer();
-		tickTimer.start();
+		tickTimer.start(); // move to start methods later
 		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		autonomousData = inst.getTable("AutonomousData");
@@ -65,13 +68,20 @@ public class AutonomousManager {
 		
 		tickEntry = robotData.getEntry("tick");
 		tickIntervalMsEntry = robotData.getEntry("tickIntervalMs");
-		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		tickTimerEntry = robotData.getEntry("tickTimer");
 		bufferSizeEntry = robotData.getEntry("bufferSize");
+		talonModesEntry = robotData.getEntry("talonModes");
+		managerStateEntry = robotData.getEntry("managerState");
+		robotReadyEntry = robotData.getEntry("robotReady");
+		clientReadyEntry = robotData.getEntry("clientReady");
+		
+		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		bufferSizeEntry.setNumber(bufferSize);
+		managerStateEntry.setString("IDLE");
+		robotReadyEntry.setBoolean(false);
+		clientReadyEntry.setDefaultBoolean(false);
 		
 		talonModeMap = new HashMap<>();
-		talonModesEntry = robotData.getEntry("talonModes");
 		updateAndWriteTalonModes();
 		
 		talonBufferArray = new NetworkTableEntry[talonArray.length][];
@@ -116,8 +126,6 @@ public class AutonomousManager {
 			}
 			
 			updateAndWriteTalonModes();
-			NetworkTableEntry testEntry = robotData.getEntry("test");
-			testEntry.setString(talonModeMap.get(talonArray[0].getName()).toString());
 			
 			/*
 			NOTE: change behavior based on talon control mode:
