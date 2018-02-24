@@ -2,11 +2,13 @@ package org.usfirst.frc.team4456.autonomous;
 
 import java.util.Map;
 import java.util.HashMap;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
-import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class AutonomousManager {
 	
@@ -15,7 +17,8 @@ public class AutonomousManager {
 	private ManagerMode mode;
 	
 	private WPI_TalonSRX[] talonArray;
-	private Map<String, Integer> talonNameMap;
+	private Map<String, Integer> talonIndexMap;
+	private Map<String, ControlMode> talonModeMap;
 	private NetworkTableEntry[][] talonBufferArray;
 	
 	private int tick;
@@ -32,16 +35,17 @@ public class AutonomousManager {
 	private NetworkTableEntry tickIntervalMsEntry;
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
+	private NetworkTableEntry talonModesEntry;
 	
 	private enum ManagerMode { IDLE, RECORD_WAITING, PLAYBACK_WAITING, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
 	public AutonomousManager(int bufferSizeAdvance, double tickIntervalMs, WPI_TalonSRX[] talons) {
 		
 		talonArray = talons;
-		talonNameMap = new HashMap<>();
+		talonIndexMap = new HashMap<>();
 		for (int i = 0; i < talonArray.length; i++) {
 			// using name->index map ensures that recording and playback works, not dependent on talon order
-			talonNameMap.put(talons[i].getName(), i);
+			talonIndexMap.put(talonArray[i].getName(), i);
 		}
 		
 		mode = ManagerMode.IDLE;
@@ -66,7 +70,11 @@ public class AutonomousManager {
 		bufferSizeEntry = robotData.getEntry("bufferSize");
 		bufferSizeEntry.setNumber(bufferSize);
 		
-		talonBufferArray = new NetworkTableEntry[talons.length][];
+		talonModeMap = new HashMap<>();
+		talonModesEntry = robotData.getEntry("talonModes");
+		updateAndWriteTalonModes();
+		
+		talonBufferArray = new NetworkTableEntry[talonArray.length][];
 		for (int i = 0; i < talonArray.length; i++) {
 			talonBufferArray[i] = generateEntriesForTalonBuffer(talonArray[i]);
 		}
@@ -84,7 +92,17 @@ public class AutonomousManager {
 	}
 	
 	private void writeToTalonBuffer(WPI_TalonSRX talon, double value) {
-		talonBufferArray[talonNameMap.get(talon.getName())][tick % bufferSize].setDouble(value); // oh jeez
+		talonBufferArray[talonIndexMap.get(talon.getName())][tick % bufferSize].setDouble(value); // oh jeez
+	}
+	
+	private void updateAndWriteTalonModes() {
+		String talonModes = "";
+		for (int i = 0; i < talonArray.length; i++) {
+			talonModeMap.put(talonArray[i].getName(), talonArray[i].getControlMode()); // will overwrite value for key
+			talonModes += talonArray[i].getName() + ":" + talonArray[i].getControlMode().toString() + "|";
+		}
+		talonModes = talonModes.substring(0, talonModes.length() - 1); // remove trailing delimiter
+		talonModesEntry.setString(talonModes);
 	}
 	
 	public void run() {
@@ -93,8 +111,13 @@ public class AutonomousManager {
 		
 		if (tickTimerVal > tickInterval) {
 			
-			writeToTalonBuffer(talonArray[0], tick); // testing
-			writeToTalonBuffer(talonArray[1], tick); // testing
+			for (WPI_TalonSRX talon : talonArray) {
+				writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
+			}
+			
+			updateAndWriteTalonModes();
+			NetworkTableEntry testEntry = robotData.getEntry("test");
+			testEntry.setString(talonModeMap.get(talonArray[0].getName()).toString());
 			
 			/*
 			NOTE: change behavior based on talon control mode:
