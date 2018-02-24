@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4456;
+package org.usfirst.frc.team4456.autonomous;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 public class AutonomousManager {
@@ -32,7 +31,7 @@ public class AutonomousManager {
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
 	
-	private enum ManagerMode { IDLE, RECORD, PLAYBACK }
+	private enum ManagerMode { IDLE, RECORD_WAITING, PLAYBACK_WAITING, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
 	public AutonomousManager(int bufferSizeAdvance, double tickIntervalMs, WPI_TalonSRX[] talons) {
 		
@@ -92,16 +91,83 @@ public class AutonomousManager {
 		
 		if (tickTimerVal > tickInterval) {
 			
-			writeToTalonBuffer(talonArray[0], tick);
+			writeToTalonBuffer(talonArray[0], tick); // testing
+			writeToTalonBuffer(talonArray[1], tick); // testing
+			
+			/*
+			NOTE: change behavior based on talon control mode:
+			  - closed-loop: velocity
+			  - open-loop: voltage or percentoutput
+			 */
 			
 			// update tick info
 			tick++;
 			tickEntry.setNumber(tick);
-			tickTimerEntry.setDouble(tickTimerVal);
-			tickTimer.reset();
-			tickTimer.start();
+			tickTimerEntry.setDouble(tickTimerVal); // testing (maybe not?)
+			tickTimer.reset(); // might not be ideal solution
+			tickTimer.start(); // might not be ideal solution
 		}
 		
+	}
+	
+	public void setRecordingMode(/*...*/) throws AutonomousManagerException {
+		switch (mode) {
+			case RECORD_RUNNING:
+				throw new AutonomousManagerException("setRecordingMode() called while recording is running!");
+			case PLAYBACK_RUNNING:
+				throw new AutonomousManagerException("setRecordingMode() called while playback is running!");
+			default:
+				mode = ManagerMode.RECORD_WAITING;
+				// recording setup stuff here
+				break;
+		}
+	}
+	
+	public void setPlaybackMode(/*...*/) throws AutonomousManagerException {
+		switch (mode) {
+			case RECORD_RUNNING:
+				throw new AutonomousManagerException("setPlaybackMode() called while recording is running!");
+			case PLAYBACK_RUNNING:
+				throw new AutonomousManagerException("setPlaybackMode() called while playback is running!");
+			default:
+				mode = ManagerMode.PLAYBACK_WAITING;
+				// playback setup stuff here
+				break;
+		}
+	}
+	
+	public void startRecording(/*...*/) throws AutonomousManagerException {
+		switch (mode) {
+			case IDLE:
+				throw new AutonomousManagerException("startRecording() called without setting mode!");
+			case RECORD_RUNNING:
+				throw new AutonomousManagerException("startRecording() called while recording is running!");
+			case PLAYBACK_RUNNING:
+				throw new AutonomousManagerException("startRecording() called while playback is running!");
+			case PLAYBACK_WAITING:
+				throw new AutonomousManagerException("startRecording() called in playback mode!");
+			case RECORD_WAITING:
+				mode = ManagerMode.RECORD_RUNNING;
+				// recording start stuff here
+				break;
+		}
+	}
+	
+	public void startPlayback(/*...*/) throws AutonomousManagerException {
+		switch (mode) {
+			case IDLE:
+				throw new AutonomousManagerException("startPlayback() called without setting mode!");
+			case RECORD_RUNNING:
+				throw new AutonomousManagerException("");
+			case PLAYBACK_RUNNING:
+				throw new AutonomousManagerException("");
+			case RECORD_WAITING:
+				throw new AutonomousManagerException("");
+			case PLAYBACK_WAITING:
+				mode = ManagerMode.PLAYBACK_RUNNING;
+				// playback start stuff here
+				break;
+		}
 	}
 	
 }
