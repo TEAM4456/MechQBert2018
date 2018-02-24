@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 public class AutonomousManager {
 	
+	// Note: maybe improve exception messages about "x() called in y mode!"
+	
 	private ManagerMode mode;
 	
 	private WPI_TalonSRX[] talonArray;
@@ -166,6 +168,40 @@ public class AutonomousManager {
 			case PLAYBACK_WAITING:
 				mode = ManagerMode.PLAYBACK_RUNNING;
 				// playback start stuff here
+				break;
+		}
+	}
+	
+	public void stopRecording(/*...*/) throws AutonomousManagerException {
+		switch (mode) {
+			case IDLE:
+				throw new AutonomousManagerException("stopRecording() called without setting mode!");
+			case PLAYBACK_RUNNING:
+				throw new AutonomousManagerException("stopRecording() called while playback is running!");
+			case RECORD_WAITING:
+				throw new AutonomousManagerException("stopRecording() called without starting recording!");
+			case PLAYBACK_WAITING:
+				throw new AutonomousManagerException("stopRecording() called while in playback mode!");
+			case RECORD_RUNNING:
+				mode = ManagerMode.IDLE; // maybe change to ManagerMode.RECORD_WAITING?
+				// recording stop stuff here
+				break;
+		}
+	}
+	
+	public void stopPlayback() throws AutonomousManagerException {
+		switch (mode) {
+			case IDLE:
+				throw new AutonomousManagerException("stopPlayback() called without setting mode!");
+			case RECORD_RUNNING:
+				throw new AutonomousManagerException("stopPlayback() called while recording is running!");
+			case RECORD_WAITING:
+				throw new AutonomousManagerException("stopPlayback() called in recording mode!");
+			case PLAYBACK_WAITING:
+				throw new AutonomousManagerException("stopPlayback() called without starting playback!");
+			case PLAYBACK_RUNNING:
+				mode = ManagerMode.IDLE; // maybe change to ManagerMode.PLAYBACK_WAITING?
+				// playback stop stuff here
 				break;
 		}
 	}
