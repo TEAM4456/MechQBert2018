@@ -158,11 +158,11 @@ public class AutonomousManager {
 			case IDLE:
 				throw new AutonomousManagerException("startPlayback() called without setting mode!");
 			case RECORD_RUNNING:
-				throw new AutonomousManagerException("");
+				throw new AutonomousManagerException("startPlayback() called while recording is running!");
 			case PLAYBACK_RUNNING:
-				throw new AutonomousManagerException("");
+				throw new AutonomousManagerException("startPlayback() called while playback is running!");
 			case RECORD_WAITING:
-				throw new AutonomousManagerException("");
+				throw new AutonomousManagerException("startPlayback() called while in recording mode!");
 			case PLAYBACK_WAITING:
 				mode = ManagerMode.PLAYBACK_RUNNING;
 				// playback start stuff here
