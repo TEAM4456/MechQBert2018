@@ -34,9 +34,9 @@ public class AutonomousManager {
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
 	private NetworkTableEntry talonModesEntry;
-	private NetworkTableEntry managerStateEntry; // string (maybe change to int)
-	private NetworkTableEntry robotReadyEntry; // bool
-	private NetworkTableEntry clientReadyEntry; // bool
+	private NetworkTableEntry managerModeEntry;
+	private NetworkTableEntry robotReadyEntry;
+	private NetworkTableEntry clientReadyEntry;
 	
 	private enum ManagerMode { IDLE, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
@@ -48,8 +48,6 @@ public class AutonomousManager {
 			// using name->index map ensures that recording and playback works, not dependent on talon order
 			talonIndexMap.put(talonArray[i].getName(), i);
 		}
-		
-		mode = ManagerMode.IDLE;
 		
 		tick = 0;
 		bufferSize = bufferSizeAdvance + 1;
@@ -69,15 +67,16 @@ public class AutonomousManager {
 		tickTimerEntry = robotData.getEntry("tickTimer");
 		bufferSizeEntry = robotData.getEntry("bufferSize");
 		talonModesEntry = robotData.getEntry("talonModes");
-		managerStateEntry = robotData.getEntry("managerState");
+		managerModeEntry = robotData.getEntry("managerMode");
 		robotReadyEntry = robotData.getEntry("robotReady");
 		clientReadyEntry = robotData.getEntry("clientReady");
 		
 		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		bufferSizeEntry.setNumber(bufferSize);
-		managerStateEntry.setString("IDLE");
 		robotReadyEntry.setBoolean(false);
 		clientReadyEntry.setDefaultBoolean(false);
+		
+		setAndWriteManagerMode(ManagerMode.IDLE);
 		
 		talonModeMap = new HashMap<>();
 		updateAndWriteTalonModes();
@@ -111,6 +110,11 @@ public class AutonomousManager {
 		}
 		talonModes = talonModes.substring(0, talonModes.length() - 1); // remove trailing delimiter
 		talonModesEntry.setString(talonModes);
+	}
+	
+	private void setAndWriteManagerMode(ManagerMode newMode) {
+		mode = newMode;
+		managerModeEntry.setString(mode.toString());
 	}
 	
 	public void run() {
@@ -148,7 +152,7 @@ public class AutonomousManager {
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("startRecording() called while playback is running!");
 			case IDLE:
-				mode = ManagerMode.RECORD_RUNNING;
+				setAndWriteManagerMode(ManagerMode.RECORD_RUNNING);
 				// recording setup and start stuff here
 				break;
 		}
@@ -161,7 +165,7 @@ public class AutonomousManager {
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("startPlayback() called while playback is running!");
 			case IDLE:
-				mode = ManagerMode.PLAYBACK_RUNNING;
+				setAndWriteManagerMode(ManagerMode.PLAYBACK_RUNNING);
 				// playback setup and start stuff here
 				break;
 		}
@@ -174,7 +178,7 @@ public class AutonomousManager {
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("stopRecording() called while playback is running!");
 			case RECORD_RUNNING:
-				mode = ManagerMode.IDLE;
+				setAndWriteManagerMode(ManagerMode.IDLE);
 				// recording stop stuff here
 				break;
 		}
@@ -187,7 +191,7 @@ public class AutonomousManager {
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("stopPlayback() called while recording is running!");
 			case PLAYBACK_RUNNING:
-				mode = ManagerMode.IDLE;
+				setAndWriteManagerMode(ManagerMode.IDLE);
 				// playback stop stuff here
 				break;
 		}
