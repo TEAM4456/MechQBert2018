@@ -12,8 +12,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class AutonomousManager {
 	
-	// Note: maybe improve exception messages about "x() called in y mode!"
-	
 	private ManagerMode mode;
 	
 	private WPI_TalonSRX[] talonArray;
@@ -40,7 +38,7 @@ public class AutonomousManager {
 	private NetworkTableEntry robotReadyEntry; // bool
 	private NetworkTableEntry clientReadyEntry; // bool
 	
-	private enum ManagerMode { IDLE, RECORD_WAITING, PLAYBACK_WAITING, RECORD_RUNNING, PLAYBACK_RUNNING }
+	private enum ManagerMode { IDLE, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
 	public AutonomousManager(int bufferSizeAdvance, double tickIntervalMs, WPI_TalonSRX[] talons) {
 		
@@ -143,62 +141,28 @@ public class AutonomousManager {
 		
 	}
 	
-	public void setRecordingMode(/*...*/) throws AutonomousManagerException {
-		switch (mode) {
-			case RECORD_RUNNING:
-				throw new AutonomousManagerException("setRecordingMode() called while recording is running!");
-			case PLAYBACK_RUNNING:
-				throw new AutonomousManagerException("setRecordingMode() called while playback is running!");
-			default:
-				mode = ManagerMode.RECORD_WAITING;
-				// recording setup stuff here
-				break;
-		}
-	}
-	
-	public void setPlaybackMode(/*...*/) throws AutonomousManagerException {
-		switch (mode) {
-			case RECORD_RUNNING:
-				throw new AutonomousManagerException("setPlaybackMode() called while recording is running!");
-			case PLAYBACK_RUNNING:
-				throw new AutonomousManagerException("setPlaybackMode() called while playback is running!");
-			default:
-				mode = ManagerMode.PLAYBACK_WAITING;
-				// playback setup stuff here
-				break;
-		}
-	}
-	
 	public void startRecording(/*...*/) throws AutonomousManagerException {
 		switch (mode) {
-			case IDLE:
-				throw new AutonomousManagerException("startRecording() called without setting mode!");
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("startRecording() called while recording is running!");
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("startRecording() called while playback is running!");
-			case PLAYBACK_WAITING:
-				throw new AutonomousManagerException("startRecording() called in playback mode!");
-			case RECORD_WAITING:
+			case IDLE:
 				mode = ManagerMode.RECORD_RUNNING;
-				// recording start stuff here
+				// recording setup and start stuff here
 				break;
 		}
 	}
 	
 	public void startPlayback(/*...*/) throws AutonomousManagerException {
 		switch (mode) {
-			case IDLE:
-				throw new AutonomousManagerException("startPlayback() called without setting mode!");
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("startPlayback() called while recording is running!");
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("startPlayback() called while playback is running!");
-			case RECORD_WAITING:
-				throw new AutonomousManagerException("startPlayback() called while in recording mode!");
-			case PLAYBACK_WAITING:
+			case IDLE:
 				mode = ManagerMode.PLAYBACK_RUNNING;
-				// playback start stuff here
+				// playback setup and start stuff here
 				break;
 		}
 	}
@@ -206,32 +170,24 @@ public class AutonomousManager {
 	public void stopRecording(/*...*/) throws AutonomousManagerException {
 		switch (mode) {
 			case IDLE:
-				throw new AutonomousManagerException("stopRecording() called without setting mode!");
+				throw new AutonomousManagerException("stopRecording() called without starting recording!");
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("stopRecording() called while playback is running!");
-			case RECORD_WAITING:
-				throw new AutonomousManagerException("stopRecording() called without starting recording!");
-			case PLAYBACK_WAITING:
-				throw new AutonomousManagerException("stopRecording() called while in playback mode!");
 			case RECORD_RUNNING:
-				mode = ManagerMode.IDLE; // maybe change to ManagerMode.RECORD_WAITING?
+				mode = ManagerMode.IDLE;
 				// recording stop stuff here
 				break;
 		}
 	}
 	
-	public void stopPlayback() throws AutonomousManagerException {
+	public void stopPlayback(/*...*/) throws AutonomousManagerException {
 		switch (mode) {
 			case IDLE:
-				throw new AutonomousManagerException("stopPlayback() called without setting mode!");
+				throw new AutonomousManagerException("stopPlayback() called without starting playback!");
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("stopPlayback() called while recording is running!");
-			case RECORD_WAITING:
-				throw new AutonomousManagerException("stopPlayback() called in recording mode!");
-			case PLAYBACK_WAITING:
-				throw new AutonomousManagerException("stopPlayback() called without starting playback!");
 			case PLAYBACK_RUNNING:
-				mode = ManagerMode.IDLE; // maybe change to ManagerMode.PLAYBACK_WAITING?
+				mode = ManagerMode.IDLE;
 				// playback stop stuff here
 				break;
 		}
