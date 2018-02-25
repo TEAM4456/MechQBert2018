@@ -37,6 +37,7 @@ public class AutonomousManager {
 	private NetworkTableEntry managerModeEntry;
 	private NetworkTableEntry robotReadyEntry;
 	private NetworkTableEntry clientReadyEntry;
+	private NetworkTableEntry recordingNameEntry;
 	
 	private enum ManagerMode { IDLE, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
@@ -74,7 +75,7 @@ public class AutonomousManager {
 		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		bufferSizeEntry.setNumber(bufferSize);
 		robotReadyEntry.setBoolean(false);
-		clientReadyEntry.setDefaultBoolean(false);
+		clientReadyEntry.setDefaultBoolean(false); // sets if doesn't exist
 		
 		setAndWriteManagerMode(ManagerMode.IDLE);
 		
@@ -112,6 +113,17 @@ public class AutonomousManager {
 		talonModesEntry.setString(talonModes);
 	}
 	
+	private void readAndUpdateTalonModes() {
+		/* TODO: handle default of "" */
+		String talonModes = talonModesEntry.getString("");
+		if (!talonModes.equals("")) {
+			for (String talonAndMode : talonModes.split("\\|")) {
+				String[] talonAndModeArray = talonAndMode.split(":");
+				talonModeMap.put(talonAndModeArray[0], ControlMode.valueOf(talonAndModeArray[1]));
+			}
+		}
+	}
+	
 	private void setAndWriteManagerMode(ManagerMode newMode) {
 		mode = newMode;
 		managerModeEntry.setString(mode.toString());
@@ -128,6 +140,8 @@ public class AutonomousManager {
 			}
 			
 			updateAndWriteTalonModes();
+			
+			readAndUpdateTalonModes();
 			
 			/*
 			NOTE: change behavior based on talon control mode:
