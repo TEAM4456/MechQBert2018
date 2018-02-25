@@ -23,6 +23,8 @@ public class AutonomousManager {
 	private double tickInterval;
 	private int bufferSize;
 	
+	private boolean clientIsReady;
+	
 	private Timer tickTimer;
 	
 	private NetworkTable autonomousData;
@@ -36,7 +38,7 @@ public class AutonomousManager {
 	private NetworkTableEntry talonModesEntry;
 	private NetworkTableEntry managerModeEntry;
 	private NetworkTableEntry robotReadyEntry;
-	private NetworkTableEntry clientReadyEntry;
+	private NetworkTableEntry clientIsReadyEntry;
 	private NetworkTableEntry recordingNameEntry;
 	
 	private enum ManagerMode { IDLE, RECORD_RUNNING, PLAYBACK_RUNNING }
@@ -56,7 +58,7 @@ public class AutonomousManager {
 		tickInterval = tickIntervalMs / 1000;
 		
 		tickTimer = new Timer();
-		tickTimer.start(); // move to start methods later
+		tickTimer.reset(); // maybe unnecessary
 		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		autonomousData = inst.getTable("AutonomousData");
@@ -70,12 +72,12 @@ public class AutonomousManager {
 		talonModesEntry = robotData.getEntry("talonModes");
 		managerModeEntry = robotData.getEntry("managerMode");
 		robotReadyEntry = robotData.getEntry("robotReady");
-		clientReadyEntry = robotData.getEntry("clientReady");
+		clientIsReadyEntry = robotData.getEntry("clientIsReady");
 		
 		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		bufferSizeEntry.setNumber(bufferSize);
 		robotReadyEntry.setBoolean(false);
-		clientReadyEntry.setDefaultBoolean(false); // sets if doesn't exist
+		clientIsReadyEntry.setDefaultBoolean(false); // sets if doesn't exist
 		
 		setAndWriteManagerMode(ManagerMode.IDLE);
 		
@@ -86,6 +88,8 @@ public class AutonomousManager {
 		for (int i = 0; i < talonArray.length; i++) {
 			talonBufferArray[i] = generateEntriesForTalonBuffer(talonArray[i]);
 		}
+		
+		clientIsReady = false;
 		
 	}
 	
@@ -105,9 +109,15 @@ public class AutonomousManager {
 	
 	private void updateAndWriteTalonModes() {
 		String talonModes = "";
-		for (int i = 0; i < talonArray.length; i++) {
-			talonModeMap.put(talonArray[i].getName(), talonArray[i].getControlMode()); // will overwrite value for key
-			talonModes += talonArray[i].getName() + ":" + talonArray[i].getControlMode().toString() + "|";
+		for (WPI_TalonSRX talon : talonArray) {
+			ControlMode controlMode;
+			if (talon.getControlMode() == ControlMode.Velocity) {
+				controlMode = ControlMode.Velocity;
+			} else {
+				controlMode = ControlMode.Current;
+			}
+			talonModeMap.put(talon.getName(), controlMode); // will overwrite value for key
+			talonModes += talon.getName() + ":" + controlMode.toString() + "|";
 		}
 		talonModes = talonModes.substring(0, talonModes.length() - 1); // remove trailing delimiter
 		talonModesEntry.setString(talonModes);
@@ -129,32 +139,56 @@ public class AutonomousManager {
 		managerModeEntry.setString(mode.toString());
 	}
 	
-	public void run() {
+	public void run() throws AutonomousManagerException {
 		
 		double tickTimerVal = tickTimer.get();
 		
 		if (tickTimerVal > tickInterval) {
 			
-			for (WPI_TalonSRX talon : talonArray) {
-				writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
+			if (mode == ManagerMode.RECORD_RUNNING) {
+				
+				if (clientIsReady) {
+					
+					if (!clientIsReadyEntry.getBoolean(false)) {
+						clientIsReady = false;
+						throw new AutonomousManagerException("client became unready while recording!");
+					}
+					
+					for (WPI_TalonSRX talon : talonArray) {
+						
+						if (talon.getControlMode() == ControlMode.Velocity) {
+							writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
+						} else {
+							writeToTalonBuffer(talon, talon.getOutputCurrent());
+						}
+						
+					}
+					
+					tick++;
+				
+				} else {
+					clientIsReady = clientIsReadyEntry.getBoolean(false);
+				}
+				
+			} else if (mode == ManagerMode.PLAYBACK_RUNNING) {
+				
+				if (clientIsReady) {
+				
+					/* playback stuffs */
+					
+					tick++;
+				
+				} else {
+					clientIsReady = clientIsReadyEntry.getBoolean(false);
+				}
+				
 			}
 			
-			updateAndWriteTalonModes();
-			
-			readAndUpdateTalonModes();
-			
-			/*
-			NOTE: change behavior based on talon control mode:
-			  - closed-loop: velocity
-			  - open-loop: voltage or percentoutput
-			 */
-			
 			// update tick info
-			tick++;
 			tickEntry.setNumber(tick);
 			tickTimerEntry.setDouble(tickTimerVal); // testing (maybe not?)
-			tickTimer.reset(); // might not be ideal solution
-			tickTimer.start(); // might not be ideal solution
+			tickTimer.reset(); // maybe not ideal solution
+			tickTimer.start(); // maybe not ideal solution
 		}
 		
 	}
