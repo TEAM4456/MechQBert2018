@@ -19,6 +19,7 @@ public class AutonomousManager {
 	private Map<String, ControlMode> talonModeMap;
 	private NetworkTableEntry[][] talonBufferArray;
 	
+	private int timeoutCounter;
 	private int tick;
 	private double tickInterval;
 	private int bufferSize;
@@ -31,7 +32,9 @@ public class AutonomousManager {
 	private NetworkTable robotData;
 	private NetworkTable bufferData;
 	
+	private NetworkTableEntry pingEntry;
 	private NetworkTableEntry tickEntry;
+	private NetworkTableEntry syncStopTickEntry;
 	private NetworkTableEntry tickIntervalMsEntry;
 	private NetworkTableEntry tickTimerEntry;
 	private NetworkTableEntry bufferSizeEntry;
@@ -52,7 +55,9 @@ public class AutonomousManager {
 			talonIndexMap.put(talonArray[i].getName(), i);
 		}
 		
+		timeoutCounter = 0;
 		tick = 0;
+		
 		bufferSize = bufferSizeAdvance + 1;
 		
 		tickInterval = tickIntervalMs / 1000;
@@ -65,7 +70,9 @@ public class AutonomousManager {
 		robotData = autonomousData.getSubTable("RobotState");
 		bufferData = autonomousData.getSubTable("BufferData");
 		
+		pingEntry = robotData.getEntry("ping");
 		tickEntry = robotData.getEntry("tick");
+		syncStopTickEntry = robotData.getEntry("syncStopTick");
 		tickIntervalMsEntry = robotData.getEntry("tickIntervalMs");
 		tickTimerEntry = robotData.getEntry("tickTimer");
 		bufferSizeEntry = robotData.getEntry("bufferSize");
@@ -73,11 +80,15 @@ public class AutonomousManager {
 		managerModeEntry = robotData.getEntry("managerMode");
 		robotReadyEntry = robotData.getEntry("robotReady");
 		clientIsReadyEntry = robotData.getEntry("clientIsReady");
+		recordingNameEntry = robotData.getEntry("recordingName");
 		
+		pingEntry.setBoolean(false); // false = robot->client ping, true = client->robot pong
+		syncStopTickEntry.setDefaultNumber(-1);
 		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		bufferSizeEntry.setNumber(bufferSize);
 		robotReadyEntry.setBoolean(false);
 		clientIsReadyEntry.setDefaultBoolean(false); // sets if doesn't exist
+		recordingNameEntry.setDefaultString(""); // sets if doesn't exist
 		
 		setAndWriteManagerMode(ManagerMode.IDLE);
 		
@@ -91,6 +102,15 @@ public class AutonomousManager {
 		
 		clientIsReady = false;
 		
+	}
+	
+	private void pingClient() {
+		if (!pingEntry.getBoolean(false)) {
+			pingEntry.setBoolean(true);
+			timeoutCounter = 0;
+		} else {
+			timeoutCounter++;
+		}
 	}
 	
 	private NetworkTableEntry[] generateEntriesForTalonBuffer(WPI_TalonSRX talon) {
@@ -142,15 +162,21 @@ public class AutonomousManager {
 	public void run() throws AutonomousManagerException {
 		
 		double tickTimerVal = tickTimer.get();
+		tickTimerEntry.setDouble(tickTimerVal); // testing (maybe not?)
 		
 		if (tickTimerVal > tickInterval) {
 			
 			if (mode == ManagerMode.RECORD_RUNNING) {
 				
+				if (timeoutCounter >= bufferSize) {
+					stopRecording();
+					throw new AutonomousManagerException("timeout exceeded buffer size while recording!");
+				}
+				
 				if (clientIsReady) {
 					
 					if (!clientIsReadyEntry.getBoolean(false)) {
-						clientIsReady = false;
+						stopRecording();
 						throw new AutonomousManagerException("client became unready while recording!");
 					}
 					
@@ -170,7 +196,17 @@ public class AutonomousManager {
 					clientIsReady = clientIsReadyEntry.getBoolean(false);
 				}
 				
+				// update tick info
+				tickEntry.setNumber(tick);
+				tickTimer.reset(); // maybe not ideal solution
+				tickTimer.start(); // maybe not ideal solution
+				
 			} else if (mode == ManagerMode.PLAYBACK_RUNNING) {
+				
+				if (timeoutCounter >= bufferSize) {
+					stopPlayback();
+					throw new AutonomousManagerException("timeout exceeded buffer size during playback!");
+				}
 				
 				if (clientIsReady) {
 				
@@ -182,26 +218,34 @@ public class AutonomousManager {
 					clientIsReady = clientIsReadyEntry.getBoolean(false);
 				}
 				
+				// update tick info
+				tickEntry.setNumber(tick);
+				tickTimer.reset(); // maybe not ideal solution
+				tickTimer.start(); // maybe not ideal solution
+				
 			}
 			
-			// update tick info
-			tickEntry.setNumber(tick);
-			tickTimerEntry.setDouble(tickTimerVal); // testing (maybe not?)
-			tickTimer.reset(); // maybe not ideal solution
-			tickTimer.start(); // maybe not ideal solution
+			pingClient();
 		}
 		
 	}
 	
-	public void startRecording(/*...*/) throws AutonomousManagerException {
+	public void startRecording(String recordingName) throws AutonomousManagerException {
 		switch (mode) {
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("startRecording() called while recording is running!");
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("startRecording() called while playback is running!");
 			case IDLE:
-				setAndWriteManagerMode(ManagerMode.RECORD_RUNNING);
 				// recording setup and start stuff here
+				tick = 0;
+				tickEntry.setNumber(0);
+				syncStopTickEntry.setNumber(-1); // no tick to stop at
+				recordingNameEntry.setString(recordingName);
+				updateAndWriteTalonModes();
+				tickTimer.start();
+				setAndWriteManagerMode(ManagerMode.RECORD_RUNNING);
+				robotReadyEntry.setBoolean(true);
 				break;
 		}
 	}
@@ -226,8 +270,13 @@ public class AutonomousManager {
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("stopRecording() called while playback is running!");
 			case RECORD_RUNNING:
-				setAndWriteManagerMode(ManagerMode.IDLE);
 				// recording stop stuff here
+				syncStopTickEntry.setNumber(tick); // tell client to stop at tick
+				tickTimer.reset();
+				tickTimer.stop(); // maybe unnecessary
+				setAndWriteManagerMode(ManagerMode.IDLE);
+				clientIsReady = false;
+				robotReadyEntry.setBoolean(false);
 				break;
 		}
 	}
@@ -239,8 +288,8 @@ public class AutonomousManager {
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("stopPlayback() called while recording is running!");
 			case PLAYBACK_RUNNING:
-				setAndWriteManagerMode(ManagerMode.IDLE);
 				// playback stop stuff here
+				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;
 		}
 	}
