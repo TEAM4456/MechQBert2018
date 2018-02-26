@@ -1,18 +1,19 @@
 package org.usfirst.frc.team4456;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import org.usfirst.frc.team4456.autonomous.AutonomousHandler;
 import org.usfirst.frc.team4456.autonomous.AutonomousManager;
 import org.usfirst.frc.team4456.subsystems.*;
-
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Robot extends TimedRobot {
 	
+	public static AutonomousHandler autonomousHandler;
 	public static AutonomousManager autonomousManager;
 	
 	public static Controls controls;
@@ -21,9 +22,6 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
 	
 	boolean enabledInitialized = false;
-	
-	Command autonomousCommand;
-	SendableChooser<Command> autonomousChooser;
 	
 	public void robotInit() {
 		
@@ -40,8 +38,11 @@ public class Robot extends TimedRobot {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
 		});
+		autonomousHandler = new AutonomousHandler(autonomousManager);
 		
 		// autonomous choosing stuff here
+		
+		
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
 		autonomousChooser = new SendableChooser<Command>();
@@ -60,21 +61,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Left Velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
 		
-		/*
-		RobotMap.leftDriveTalon1.config_kP(0, SmartDashboard.getNumber("Left P", 0), 0);
-		RobotMap.leftDriveTalon1.config_kI(0, SmartDashboard.getNumber("Left I", 0), 0);
-		RobotMap.leftDriveTalon1.config_kD(0, SmartDashboard.getNumber("Left D", 0), 0);
-		RobotMap.leftDriveTalon1.config_kF(0, SmartDashboard.getNumber("Left F", 0), 0);
-		RobotMap.rightDriveTalon1.config_kP(0, SmartDashboard.getNumber("Right P", 0), 0);
-		RobotMap.rightDriveTalon1.config_kI(0, SmartDashboard.getNumber("Right I", 0), 0);
-		RobotMap.rightDriveTalon1.config_kD(0, SmartDashboard.getNumber("Right D", 0), 0);
-		RobotMap.rightDriveTalon1.config_kF(0, SmartDashboard.getNumber("Right F", 0), 0);
-		*/
-		
-		//SmartDashboard.putNumber("Navx yaw", RobotMap.navx.getYaw());
-		//SmartDashboard.putNumber("Navx x-displacement", RobotMap.navx.getDisplacementX());
-		
-		
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
 		if (isEnabled()) { enabledPeriodic(); }
@@ -89,37 +75,56 @@ public class Robot extends TimedRobot {
 	void enabledPeriodic() {
 		// run stuff periodically while enabled
 		Scheduler.getInstance().run();
+		autonomousHandler.run();
 	}
 	
 	public void disabledInit() {
 		enabledInitialized = false;
-		
-		//autonomousCommand.cancel();
 	}
 	
 	public void disabledPeriodic() {}
 	
 	public void autonomousInit() {
-		//autonomousCommand = (Command)autonomousChooser.getSelected();
-		//autonomousCommand.start();
+		/*
+		try {
+			autonomousManager.startRecording("test");
+		} catch (AutonomousManagerException ex) {
+			System.out.println(ex);
+		}
+		*/
 	}
 	
 	public void autonomousPeriodic() {
-		autonomousManager.run();
+		/*
+		try {
+			autonomousManager.run();
+		} catch (AutonomousManagerException ex) {
+			System.out.println(ex);
+		}
+		*/
 	}
 	
 	public void teleopInit() {
-		//autonomousCommand.cancel();
+		/*
+		try {
+			autonomousManager.startRecording("test");
+		} catch (AutonomousManagerException ex) {
+			System.out.println(ex);
+		}
+		*/
 	}
 	
 	public void teleopPeriodic() {
 		drive.betterArcadeDrive(controls.joystick);
-		autonomousManager.run(); // for testing
 	}
 	
-	public void testInit() {}
+	public void testInit() {
 	
-	public void testPeriodic() {}
+	}
+	
+	public void testPeriodic() {
+	
+	}
 	
 }
 

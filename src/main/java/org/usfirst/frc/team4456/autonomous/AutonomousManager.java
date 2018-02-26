@@ -63,7 +63,8 @@ public class AutonomousManager {
 		tickInterval = tickIntervalMs / 1000;
 		
 		tickTimer = new Timer();
-		tickTimer.reset(); // maybe unnecessary
+		tickTimer.start();
+		//tickTimer.reset(); // maybe unnecessary
 		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		autonomousData = inst.getTable("AutonomousData");
@@ -105,8 +106,8 @@ public class AutonomousManager {
 	}
 	
 	private void pingClient() {
-		if (!pingEntry.getBoolean(false)) {
-			pingEntry.setBoolean(true);
+		if (pingEntry.getBoolean(false)) {
+			pingEntry.setBoolean(false);
 			timeoutCounter = 0;
 		} else {
 			timeoutCounter++;
@@ -198,8 +199,6 @@ public class AutonomousManager {
 				
 				// update tick info
 				tickEntry.setNumber(tick);
-				tickTimer.reset(); // maybe not ideal solution
-				tickTimer.start(); // maybe not ideal solution
 				
 			} else if (mode == ManagerMode.PLAYBACK_RUNNING) {
 				
@@ -220,11 +219,11 @@ public class AutonomousManager {
 				
 				// update tick info
 				tickEntry.setNumber(tick);
-				tickTimer.reset(); // maybe not ideal solution
-				tickTimer.start(); // maybe not ideal solution
 				
 			}
 			
+			tickTimer.reset(); // maybe not ideal solution
+			tickTimer.start(); // maybe not ideal solution
 			pingClient();
 		}
 		
