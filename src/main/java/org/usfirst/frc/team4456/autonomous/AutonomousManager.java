@@ -169,30 +169,27 @@ public class AutonomousManager {
 			
 			if (mode == ManagerMode.RECORD_RUNNING) {
 				
-				if (timeoutCounter >= bufferSize) {
-					stopRecording();
+				if (timeoutCounter >= bufferSize - 1) {
+					stopRecording(true);
 					throw new AutonomousManagerException("timeout exceeded buffer size while recording!");
 				}
 				
 				if (clientIsReady) {
 					
 					if (!clientIsReadyEntry.getBoolean(false)) {
-						stopRecording();
+						stopRecording(true);
 						throw new AutonomousManagerException("client became unready while recording!");
 					}
 					
 					for (WPI_TalonSRX talon : talonArray) {
-						
 						if (talon.getControlMode() == ControlMode.Velocity) {
 							writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
 						} else {
 							writeToTalonBuffer(talon, talon.getOutputCurrent());
 						}
-						
 					}
 					
 					tick++;
-				
 				} else {
 					clientIsReady = clientIsReadyEntry.getBoolean(false);
 				}
@@ -202,7 +199,7 @@ public class AutonomousManager {
 				
 			} else if (mode == ManagerMode.PLAYBACK_RUNNING) {
 				
-				if (timeoutCounter >= bufferSize) {
+				if (timeoutCounter >= bufferSize - 1) {
 					stopPlayback();
 					throw new AutonomousManagerException("timeout exceeded buffer size during playback!");
 				}
@@ -212,7 +209,6 @@ public class AutonomousManager {
 					/* playback stuffs */
 					
 					tick++;
-				
 				} else {
 					clientIsReady = clientIsReadyEntry.getBoolean(false);
 				}
@@ -249,7 +245,7 @@ public class AutonomousManager {
 		}
 	}
 	
-	public void startPlayback(/*...*/) throws AutonomousManagerException {
+	public void startPlayback(String recordingName) throws AutonomousManagerException {
 		switch (mode) {
 			case RECORD_RUNNING:
 				throw new AutonomousManagerException("startPlayback() called while recording is running!");
@@ -262,7 +258,7 @@ public class AutonomousManager {
 		}
 	}
 	
-	public void stopRecording(/*...*/) throws AutonomousManagerException {
+	public void stopRecording(boolean cancelRecording) throws AutonomousManagerException {
 		switch (mode) {
 			case IDLE:
 				throw new AutonomousManagerException("stopRecording() called without starting recording!");
@@ -270,6 +266,7 @@ public class AutonomousManager {
 				throw new AutonomousManagerException("stopRecording() called while playback is running!");
 			case RECORD_RUNNING:
 				// recording stop stuff here
+				if (cancelRecording) { recordingNameEntry.setString("CLIENT::CANCEL_RECORDING"); }
 				syncStopTickEntry.setNumber(tick); // tell client to stop at tick
 				tickTimer.reset();
 				tickTimer.stop(); // maybe unnecessary
@@ -280,7 +277,7 @@ public class AutonomousManager {
 		}
 	}
 	
-	public void stopPlayback(/*...*/) throws AutonomousManagerException {
+	public void stopPlayback() throws AutonomousManagerException {
 		switch (mode) {
 			case IDLE:
 				throw new AutonomousManagerException("stopPlayback() called without starting playback!");
@@ -291,6 +288,14 @@ public class AutonomousManager {
 				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;
 		}
+	}
+	
+	public boolean isRecordRunning() {
+		return (mode == ManagerMode.RECORD_RUNNING);
+	}
+	
+	public boolean isPlaybackRunning() {
+		return (mode == ManagerMode.PLAYBACK_RUNNING);
 	}
 	
 }
