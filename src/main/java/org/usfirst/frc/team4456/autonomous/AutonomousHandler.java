@@ -11,8 +11,8 @@ public class AutonomousHandler {
 	private SendableChooser<Boolean> testingSelector;
 	private SendableChooser<String> modeSelector;
 	
-	boolean recordingRunning;
-	boolean playbackRunning;
+	private boolean recordingRunning;
+	private boolean playbackRunning;
 	
 	private String lastHandlerMessage;
 	private String lastManagerException;
