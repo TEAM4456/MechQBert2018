@@ -58,6 +58,7 @@ public class AutonomousHandler {
 		
 		if (recordingRunning && !isManagerInRecording()) {
 			putHandlerMessage("WARNING: manager stopped recording unexpectedly. Recording cancelled.");
+			// (AutonomousManager cancels the recording itself)
 			recordingRunning = false;
 		} else if (playbackRunning && !isMangerInPlayback()) {
 			putHandlerMessage("WARNING: manager stopped playback unexpectedly.");
@@ -69,35 +70,36 @@ public class AutonomousHandler {
 		
 		boolean buttonPressed = Robot.controls.joystick.getRawButtonPressed(buttonNumber);
 		
-		boolean isTesting = testingSelector.getSelected();
-		if (isTesting) {
+		
+		if (buttonPressed) {
 			
-			String testingMode = modeSelector.getSelected();
-			
-			if (testingMode.equals("RECORD") && isMangerInPlayback()) {
-				putHandlerMessage("ERROR: requested recording mode while playback is running!");
-				stopPlayback();
-			} else if (testingMode.equals("PLAYBACK") && isManagerInRecording()) {
-				putHandlerMessage("ERROR: requested playback mode while recording is running! Cancelling recording.");
-				stopRecording(true);
-			}
-			
-			if (testingMode.equals("RECORD")) {
-				if (buttonPressed) {
+			boolean isTesting = testingSelector.getSelected();
+			if (isTesting) {
+				String testingMode = modeSelector.getSelected();
+				
+				if (testingMode.equals("RECORD") && isMangerInPlayback()) {
+					putHandlerMessage("ERROR: requested recording mode while playback is running!");
+					stopPlayback();
+				} else if (testingMode.equals("PLAYBACK") && isManagerInRecording()) {
+					putHandlerMessage("ERROR: requested playback mode while recording is running! Cancelling recording.");
+					stopRecording(true);
+				}
+				
+				if (testingMode.equals("RECORD")) {
 					if (!recordingRunning) {
 						startRecording();
 					} else {
 						stopRecording(false);
 					}
-				}
-			} else if (testingMode.equals("PLAYBACK")) {
-				if (buttonPressed) {
+				} else if (testingMode.equals("PLAYBACK")) {
 					if (!playbackRunning) {
 						startPlayback();
 					} else {
 						stopPlayback();
 					}
 				}
+			} else {
+				putHandlerMessage("WARNING: control button activated while testing is disabled!");
 			}
 			
 		}

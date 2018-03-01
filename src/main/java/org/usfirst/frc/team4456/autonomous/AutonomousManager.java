@@ -24,8 +24,6 @@ public class AutonomousManager {
 	private double tickInterval;
 	private int bufferSize;
 	
-	private boolean clientIsReady;
-	
 	private Timer tickTimer;
 	
 	private NetworkTable autonomousData;
@@ -40,8 +38,6 @@ public class AutonomousManager {
 	private NetworkTableEntry bufferSizeEntry;
 	private NetworkTableEntry talonModesEntry;
 	private NetworkTableEntry managerModeEntry;
-	private NetworkTableEntry robotReadyEntry;
-	private NetworkTableEntry clientIsReadyEntry;
 	private NetworkTableEntry recordingNameEntry;
 	
 	private enum ManagerMode { IDLE, RECORD_RUNNING, PLAYBACK_RUNNING }
@@ -79,16 +75,12 @@ public class AutonomousManager {
 		bufferSizeEntry = robotData.getEntry("bufferSize");
 		talonModesEntry = robotData.getEntry("talonModes");
 		managerModeEntry = robotData.getEntry("managerMode");
-		robotReadyEntry = robotData.getEntry("robotReady");
-		clientIsReadyEntry = robotData.getEntry("clientIsReady");
 		recordingNameEntry = robotData.getEntry("recordingName");
 		
 		pingEntry.setBoolean(false); // false = robot->client ping, true = client->robot pong
 		syncStopTickEntry.setDefaultNumber(-1);
 		tickIntervalMsEntry.setDouble(tickIntervalMs);
 		bufferSizeEntry.setNumber(bufferSize);
-		robotReadyEntry.setBoolean(false);
-		clientIsReadyEntry.setDefaultBoolean(false); // sets if doesn't exist
 		recordingNameEntry.setDefaultString(""); // sets if doesn't exist
 		
 		setAndWriteManagerMode(ManagerMode.IDLE);
@@ -100,8 +92,6 @@ public class AutonomousManager {
 		for (int i = 0; i < talonArray.length; i++) {
 			talonBufferArray[i] = generateEntriesForTalonBuffer(talonArray[i]);
 		}
-		
-		clientIsReady = false;
 		
 	}
 	
@@ -167,6 +157,8 @@ public class AutonomousManager {
 		
 		if (tickTimerVal > tickInterval) {
 			
+			pingClient();
+			
 			if (mode == ManagerMode.RECORD_RUNNING) {
 				
 				if (timeoutCounter >= bufferSize - 1) {
@@ -174,25 +166,15 @@ public class AutonomousManager {
 					throw new AutonomousManagerException("timeout exceeded buffer size while recording!");
 				}
 				
-				if (clientIsReady) {
-					
-					if (!clientIsReadyEntry.getBoolean(false)) {
-						stopRecording(true);
-						throw new AutonomousManagerException("client became unready while recording!");
+				for (WPI_TalonSRX talon : talonArray) {
+					if (talon.getControlMode() == ControlMode.Velocity) {
+						writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
+					} else {
+						writeToTalonBuffer(talon, talon.getOutputCurrent());
 					}
-					
-					for (WPI_TalonSRX talon : talonArray) {
-						if (talon.getControlMode() == ControlMode.Velocity) {
-							writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
-						} else {
-							writeToTalonBuffer(talon, talon.getOutputCurrent());
-						}
-					}
-					
-					tick++;
-				} else {
-					clientIsReady = clientIsReadyEntry.getBoolean(false);
 				}
+				
+				tick++;
 				
 				// update tick info
 				tickEntry.setNumber(tick);
@@ -204,23 +186,20 @@ public class AutonomousManager {
 					throw new AutonomousManagerException("timeout exceeded buffer size during playback!");
 				}
 				
-				if (clientIsReady) {
 				
-					/* playback stuffs */
-					
-					tick++;
-				} else {
-					clientIsReady = clientIsReadyEntry.getBoolean(false);
-				}
+				tick++;
 				
 				// update tick info
 				tickEntry.setNumber(tick);
 				
+			} else {
+				if (timeoutCounter >= bufferSize - 1 && timeoutCounter % bufferSize - 1 == 0) {
+					throw new AutonomousManagerException("timeout exceeded buffer size! (IDLE WARNING)");
+				}
 			}
 			
 			tickTimer.reset(); // maybe not ideal solution
 			tickTimer.start(); // maybe not ideal solution
-			pingClient();
 		}
 		
 	}
@@ -240,7 +219,6 @@ public class AutonomousManager {
 				updateAndWriteTalonModes();
 				tickTimer.start();
 				setAndWriteManagerMode(ManagerMode.RECORD_RUNNING);
-				robotReadyEntry.setBoolean(true);
 				break;
 		}
 	}
@@ -271,8 +249,6 @@ public class AutonomousManager {
 				tickTimer.reset();
 				tickTimer.stop(); // maybe unnecessary
 				setAndWriteManagerMode(ManagerMode.IDLE);
-				clientIsReady = false;
-				robotReadyEntry.setBoolean(false);
 				break;
 		}
 	}
