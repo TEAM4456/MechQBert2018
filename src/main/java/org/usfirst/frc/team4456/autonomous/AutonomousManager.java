@@ -217,7 +217,6 @@ public class AutonomousManager {
 				syncStopTickEntry.setNumber(-1); // no tick to stop at
 				recordingNameEntry.setString(recordingName);
 				updateAndWriteTalonModes();
-				tickTimer.start();
 				setAndWriteManagerMode(ManagerMode.RECORD_RUNNING);
 				break;
 		}
@@ -246,8 +245,8 @@ public class AutonomousManager {
 				// recording stop stuff here
 				if (cancelRecording) { recordingNameEntry.setString("CLIENT::CANCEL_RECORDING"); }
 				syncStopTickEntry.setNumber(tick); // tell client to stop at tick
-				tickTimer.reset();
-				tickTimer.stop(); // maybe unnecessary
+				//tickTimer.reset();
+				//tickTimer.stop(); // maybe unnecessary
 				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;
 		}
