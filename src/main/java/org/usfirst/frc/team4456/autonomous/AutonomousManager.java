@@ -24,6 +24,8 @@ public class AutonomousManager {
 	private double tickInterval;
 	private int bufferSize;
 	
+	private boolean playbackDataInitialized;
+	
 	private Timer tickTimer;
 	
 	private NetworkTable autonomousData;
@@ -57,6 +59,8 @@ public class AutonomousManager {
 		bufferSize = bufferSizeAdvance + 1;
 		
 		tickInterval = tickIntervalMs / 1000;
+		
+		playbackDataInitialized = false;
 		
 		tickTimer = new Timer();
 		tickTimer.start();
@@ -118,6 +122,10 @@ public class AutonomousManager {
 		talonBufferArray[talonIndexMap.get(talon.getName())][tick % bufferSize].setDouble(value); // oh jeez
 	}
 	
+	private double readFromTalonBuffer(WPI_TalonSRX talon) {
+		return talonBufferArray[talonIndexMap.get(talon.getName())][tick % bufferSize].getDouble(0);
+	}
+	
 	private void updateAndWriteTalonModes() {
 		String talonModes = "";
 		for (WPI_TalonSRX talon : talonArray) {
@@ -135,9 +143,9 @@ public class AutonomousManager {
 	}
 	
 	private void readAndUpdateTalonModes() {
-		/* TODO: handle default of "" */
 		String talonModes = talonModesEntry.getString("");
 		if (!talonModes.equals("")) {
+			talonModeMap.clear();
 			for (String talonAndMode : talonModes.split("\\|")) {
 				String[] talonAndModeArray = talonAndMode.split(":");
 				talonModeMap.put(talonAndModeArray[0], ControlMode.valueOf(talonAndModeArray[1]));
@@ -168,7 +176,7 @@ public class AutonomousManager {
 				
 				for (WPI_TalonSRX talon : talonArray) {
 					if (talon.getControlMode() == ControlMode.Velocity) {
-						writeToTalonBuffer(talon, talon.getSelectedSensorVelocity(0));
+						writeToTalonBuffer(talon, talon.getClosedLoopTarget(0));
 					} else {
 						writeToTalonBuffer(talon, talon.getOutputCurrent());
 					}
@@ -186,8 +194,20 @@ public class AutonomousManager {
 					throw new AutonomousManagerException("timeout exceeded buffer size during playback!");
 				}
 				
-				
-				tick++;
+				if (playbackDataInitialized) {
+					
+					tick++;
+					
+				} else {
+					playbackDataInitialized = true;
+					double tickIntervalMs = tickIntervalMsEntry.getDouble(-1);
+					if  (tickIntervalMs == -1) { playbackDataInitialized = false; }
+					if (talonModesEntry.getString("") == "") { playbackDataInitialized = false; }
+					readAndUpdateTalonModes();
+					
+					// TODO: check if recording has talons which manager doesn't
+					
+				}
 				
 				// update tick info
 				tickEntry.setNumber(tick);
@@ -200,6 +220,12 @@ public class AutonomousManager {
 			
 			tickTimer.reset(); // maybe not ideal solution
 			tickTimer.start(); // maybe not ideal solution
+		}
+		
+		if (mode == ManagerMode.PLAYBACK_RUNNING) {
+			for (WPI_TalonSRX talon : talonArray) {
+				talon.set(talonModeMap.get(talon.getName()), readFromTalonBuffer(talon));
+			}
 		}
 		
 	}
@@ -229,8 +255,12 @@ public class AutonomousManager {
 			case PLAYBACK_RUNNING:
 				throw new AutonomousManagerException("startPlayback() called while playback is running!");
 			case IDLE:
-				setAndWriteManagerMode(ManagerMode.PLAYBACK_RUNNING);
 				// playback setup and start stuff here
+				tick = 0;
+				tickEntry.setNumber(0);
+				recordingNameEntry.setString(recordingName);
+				setAndWriteManagerMode(ManagerMode.PLAYBACK_RUNNING);
+				playbackDataInitialized = false;
 				break;
 		}
 	}

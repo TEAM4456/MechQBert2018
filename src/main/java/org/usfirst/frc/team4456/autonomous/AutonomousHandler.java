@@ -172,6 +172,14 @@ public class AutonomousHandler {
 		}
 	}
 	
+	public boolean isRecordingRunning() {
+		return recordingRunning;
+	}
+	
+	public boolean isPlaybackRunning() {
+		return playbackRunning;
+	}
+	
 	private void putHandlerMessage(String message) {
 		if (!message.equals(lastHandlerMessage)) {
 			lastHandlerMessage = message;

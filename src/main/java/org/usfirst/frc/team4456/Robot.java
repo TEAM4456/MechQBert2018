@@ -82,17 +82,15 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void teleopPeriodic() {
-		drive.betterArcadeDrive(controls.joystick);
-	}
-	
-	public void testInit() {
-	
-	}
-	
-	public void testPeriodic() {
-		drive.betterArcadeDrive(controls.joystick);
+		if (!autonomousHandler.isPlaybackRunning()) {
+			drive.betterArcadeDrive(controls.joystick);
+		}
 		autonomousHandler.run();
 	}
+	
+	public void testInit() {}
+	
+	public void testPeriodic() {}
 	
 }
 
