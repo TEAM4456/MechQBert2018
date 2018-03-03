@@ -22,17 +22,15 @@ public class Controls {
 							etc...
 		 */
 
-		//Possibly considering instantiating the buttons as public constants and using .get to resolve "infinite loop"
-		//issue with the commands.
 
 		JoystickButton aButton = new JoystickButton(joystick, 1);
 		aButton.whileHeld(new armDown());
 		JoystickButton bButton = new JoystickButton(joystick, 2);
 		bButton.whileHeld(new armUp());
 		JoystickButton xButton = new JoystickButton(joystick, 3);
-		xButton.whileHeld(new armDiagRetract());
+		xButton.whenPressed(new armDownOne());
 		JoystickButton yButton = new JoystickButton(joystick, 4);
-		yButton.whileHeld(new armDiagExtend());
+		yButton.whenPressed(new armUpOne());
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
 		leftBumper.whenPressed(new wristBack());
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);

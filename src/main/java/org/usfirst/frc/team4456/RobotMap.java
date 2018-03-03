@@ -90,12 +90,15 @@ public class RobotMap {
 		SmartDashboard.putNumber("Right F", rightF);
 		
 
-		vertActTalon = new WPI_TalonSRX(6);
+		vertActTalon = new WPI_TalonSRX(5);
 		vertActTalon.set(ControlMode.PercentOutput, 0);
-		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);
-		diagActTalon = new WPI_TalonSRX(8);
-		diagActTalon.set(ControlMode.Follower, vertActTalon.getDeviceID());
-		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);
+		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		vertActTalon.configNominalOutputReverse(0,10);
+		vertActTalon.configPeakOutputReverse(-1, 10);
+		vertActTalon.setSelectedSensorPosition(0,0,10);
+		//diagActTalon = new WPI_TalonSRX(8);
+		//diagActTalon.set(ControlMode.Follower, vertActTalon.getDeviceID());
+		//diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);
 
 		//winchTalon1 = new WPI_TalonSRX(3);
 		//winchTalon1.set(ControlMode.PercentOutput, 0);
@@ -103,10 +106,10 @@ public class RobotMap {
 		//winchTalon2 = new WPI_TalonSRX(10);
 		//winchTalon2.set(ControlMode.Follower, winchTalon1.getDeviceID());
 
-		wristTalon = new WPI_TalonSRX(5);
+		wristTalon = new WPI_TalonSRX(6);
 		wristTalon.set(ControlMode.PercentOutput, 0);
-		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		wristTalon.configOpenloopRamp(.5, 0);
+		//wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		//wristTalon.configOpenloopRamp(.5, 0);
 
 		//clawTalon = new WPI_TalonSRX(9);
 		//clawTalon.set(ControlMode.PercentOutput, 0);
@@ -121,7 +124,6 @@ public class RobotMap {
 			navx = new AHRS(SerialPort.Port.kMXP, AHRS.SerialDataType.kProcessedData, updateRateHz);
 		} catch (Exception ex) {
 			System.out.println("ERROR!: NAVX INIT" + "\n" + ex);
-<<<<<<< HEAD
 		}*/
 
 
