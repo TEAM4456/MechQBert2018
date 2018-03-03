@@ -9,16 +9,16 @@ public class Claw extends Subsystem {
     protected void initDefaultCommand() { }
 
     public void clawOpen(){
-        RobotMap.clawTalon.set(ControlMode.PercentOutput, .1);
+        RobotMap.clawTalon.set(ControlMode.PercentOutput, 1);
     }
 
     public void clawClose(){
-        RobotMap.clawTalon.set(ControlMode.PercentOutput, -.1);
+        RobotMap.clawTalon.set(ControlMode.PercentOutput, -1);
     }
 
 
     public void clawStop(){
-        RobotMap.clawTalon.set(ControlMode.Current, 0);
+        RobotMap.clawTalon.set(ControlMode.PercentOutput, 0);
     }
 
 

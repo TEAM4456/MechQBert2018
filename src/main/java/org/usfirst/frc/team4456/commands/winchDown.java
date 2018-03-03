@@ -14,7 +14,7 @@ public class winchDown extends Command{
         Robot.winch.winchDown();
     }
 
-    protected boolean isFinished() { return true; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.winch.winchStop();}
 

@@ -5,16 +5,16 @@ import org.usfirst.frc.team4456.commands.*;
 import org.usfirst.frc.team4456.subsystems.*;
 
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.CameraServer;
 
-public class Robot extends TimedRobot {
+public class Robot extends IterativeRobot {
 	
-	public static AutonomousManager autonomousManager;
+	//public static AutonomousManager autonomousManager;
 	
 	public static Controls controls;
 	
@@ -34,18 +34,18 @@ public class Robot extends TimedRobot {
 	boolean enabledInitialized = false;
 	
 
-	Command autonomousCommand;
+	//Command autonomousCommand;
 	
-	SendableChooser<Command> autonomousChooser;
+	//SendableChooser<Command> autonomousChooser;
 	
 	public void robotInit() {
 		
-		//CameraServer.getInstance().startAutomaticCapture();
-		
+		CameraServer.getInstance().startAutomaticCapture();
+
 
 		
 		// construct subsystems here
-
+		RobotMap.init();
 
 		drive = new Drive();
 
@@ -55,13 +55,14 @@ public class Robot extends TimedRobot {
 		claw = new Claw();
 
 		controls = new Controls();
-		
-		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
+
+
+		/*autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
-		});
+		});*/
 
-		RobotMap.init();
+
 		// autonomous choosing stuff here
 		/*autonomousCommand = new autoMiddle(); // default value, prevents null pointer exception
 		
@@ -75,8 +76,10 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void robotPeriodic() {
-		
-		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
+
+		SmartDashboard.putNumber("Testing Motor", RobotMap.wristTalon.getSensorCollection().getQuadraturePosition());
+
+		/*SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Left Velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
@@ -134,13 +137,12 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {}
 
 	public void autonomousInit() {
-		controls = new Controls();
 		//autonomousCommand = (Command)autonomousChooser.getSelected();
 		//autonomousCommand.start();
 	}
 	
 	public void autonomousPeriodic() {
-		autonomousManager.run();
+		//autonomousManager.run();
 	}
 	
 	public void teleopInit() {
@@ -149,7 +151,7 @@ public class Robot extends TimedRobot {
 	
 	public void teleopPeriodic() {
 		drive.betterArcadeDrive(controls.joystick);
-		autonomousManager.run(); // for testing
+		//autonomousManager.run(); // for testing
 	}
 	
 	public void testInit() {}

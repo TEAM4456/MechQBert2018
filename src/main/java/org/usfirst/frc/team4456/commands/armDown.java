@@ -10,7 +10,7 @@ public class armDown extends Command {
         Robot.arm.armDown();
     }
 
-    protected boolean isFinished() { return true; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.arm.armVertStop();}
 

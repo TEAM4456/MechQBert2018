@@ -8,12 +8,13 @@ public class wristBack extends Command {
     public wristBack() { requires(Robot.wrist); }
 
     protected void initialize() {
-        Robot.wrist.move(0);
+        Robot.wrist.wristUp();
+        //Robot.wrist.move(0);
     }
 
 
 
-    protected boolean isFinished() { return true; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.wrist.wristStop();}
 

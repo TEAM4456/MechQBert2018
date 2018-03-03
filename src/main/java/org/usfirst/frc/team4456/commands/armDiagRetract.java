@@ -11,7 +11,7 @@ public class armDiagRetract extends Command {
         Robot.arm.armDiagRetract();
     }
 
-    protected boolean isFinished() { return true; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.arm.armDiagStop();}
 

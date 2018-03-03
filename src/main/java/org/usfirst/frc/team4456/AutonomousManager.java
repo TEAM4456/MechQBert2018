@@ -8,7 +8,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
-
+/*
 public class AutonomousManager {
 	
 	private ManagerMode mode;
@@ -97,4 +97,4 @@ public class AutonomousManager {
 		
 	}
 	
-}
+}*/

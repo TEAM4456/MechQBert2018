@@ -10,25 +10,33 @@ public class Arm extends Subsystem{
 
     protected void initDefaultCommand() { }
 
-    public void armUp(){ RobotMap.vertActTalon.set(ControlMode.PercentOutput, .5); }
+    public void armUp(){
+        RobotMap.vertActTalon.configClosedloopRamp(1,0);
+        RobotMap.vertActTalon.set(ControlMode.PercentOutput, .5);
+    }
 
     public void armDown(){
+        RobotMap.vertActTalon.configClosedloopRamp(1,0);
         RobotMap.vertActTalon.set(ControlMode.PercentOutput, -.5);
     }
 
     public void armDiagExtend() {
+        RobotMap.diagActTalon.configClosedloopRamp(1,0);
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, .5);
     }
 
     public void armDiagRetract(){
+        RobotMap.diagActTalon.configClosedloopRamp(1,0);
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, -.5);
     }
 
     public void armVertStop(){
+        RobotMap.vertActTalon.configClosedloopRamp(1,0);
         RobotMap.vertActTalon.set(ControlMode.PercentOutput, 0);
     }
 
     public void armDiagStop(){
+        RobotMap.diagActTalon.configClosedloopRamp(1,0);
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, 0);
     }
 

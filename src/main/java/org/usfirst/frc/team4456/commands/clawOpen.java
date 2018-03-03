@@ -5,15 +5,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.subsystems.Claw;
 public class clawOpen extends Command {
 
-    boolean finished = true;
-
     public clawOpen() { requires(Robot.claw); }
 
     protected void initialize() {
         Robot.claw.clawOpen();
     }
 
-    protected boolean isFinished() { return finished; }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.claw.clawStop();}
 

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4456.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4456.Controls;
 import org.usfirst.frc.team4456.Robot;
 
 public class armUp extends Command {
@@ -11,7 +12,7 @@ public class armUp extends Command {
         Robot.arm.armUp();
     }
 
-    protected boolean isFinished() { return true; }
+    protected boolean isFinished() { return Controls.bButton.get(); }
 
     protected void end() {Robot.arm.armVertStop();}
 
