@@ -5,6 +5,7 @@ import org.usfirst.frc.team4456.Robot;
 
 public class clawClose extends Command {
 
+
     public clawClose() { requires(Robot.claw); }
 
     protected void initialize() {
@@ -16,6 +17,7 @@ public class clawClose extends Command {
     protected void end() {Robot.claw.clawStop();}
 
     protected void interrupted() { end(); }
+
 }
 
 

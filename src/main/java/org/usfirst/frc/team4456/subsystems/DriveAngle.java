@@ -4,10 +4,8 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import org.usfirst.frc.team4456.RobotMap;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
-
-
 public class DriveAngle extends PIDSubsystem { // This system extends PIDSubsystem
-
+	
 	public final WPI_TalonSRX leftDriveTalon1 = RobotMap.leftDriveTalon1;
 	public final WPI_TalonSRX rightDriveTalon1 = RobotMap.rightDriveTalon1;
 	
@@ -17,8 +15,7 @@ public class DriveAngle extends PIDSubsystem { // This system extends PIDSubsyst
 		getPIDController().setContinuous(false);
 	}
 	
-	public void initDefaultCommand() {
-	}
+	public void initDefaultCommand() {}
 	
 	protected double returnPIDInput() {
 		return RobotMap.navx.getYaw(); // returns the sensor value that is providing the feedback for the system
@@ -28,5 +25,5 @@ public class DriveAngle extends PIDSubsystem { // This system extends PIDSubsyst
 		leftDriveTalon1.pidWrite(-output); // this is where the computed output value fromthe PIDController is applied to the motor
 		rightDriveTalon1.pidWrite(-output);
 	}
-
+	
 }

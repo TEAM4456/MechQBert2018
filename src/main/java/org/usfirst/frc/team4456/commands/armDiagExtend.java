@@ -5,6 +5,7 @@ import org.usfirst.frc.team4456.Robot;
 
 public class armDiagExtend extends Command {
 
+
     public armDiagExtend() { requires(Robot.arm); }
 
     protected void initialize() {
@@ -16,4 +17,5 @@ public class armDiagExtend extends Command {
     protected void end() {Robot.arm.armDiagStop();}
 
     protected void interrupted() { end(); }
+
 }

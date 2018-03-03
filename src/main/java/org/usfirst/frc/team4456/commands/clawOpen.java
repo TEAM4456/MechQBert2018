@@ -3,6 +3,7 @@ package org.usfirst.frc.team4456.commands;
 import org.usfirst.frc.team4456.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.subsystems.Claw;
+
 public class clawOpen extends Command {
 
     public clawOpen() { requires(Robot.claw); }

@@ -12,9 +12,10 @@ public class armUp extends Command {
         Robot.arm.armUp();
     }
 
-    protected boolean isFinished() { return Controls.bButton.get(); }
+    protected boolean isFinished() { return false; }
 
     protected void end() {Robot.arm.armVertStop();}
 
     protected void interrupted() { end(); }
+
 }

@@ -21,5 +21,4 @@ public class winchDown extends Command{
     protected void interrupted() { end(); }
 
 
-
 }

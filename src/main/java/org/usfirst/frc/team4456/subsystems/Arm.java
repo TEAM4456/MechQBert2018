@@ -6,9 +6,9 @@ import org.usfirst.frc.team4456.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Arm extends Subsystem{
+public class Arm extends Subsystem {
 
-    protected void initDefaultCommand() { }
+	protected void initDefaultCommand() {}
 
     public void armUp(){
         RobotMap.vertActTalon.configClosedloopRamp(1,0);
@@ -40,8 +40,12 @@ public class Arm extends Subsystem{
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, 0);
     }
 
-    public double[] getArmPosition(){
-        double[] pos = {RobotMap.vertActTalon.getSensorCollection().getAnalogIn(), RobotMap.diagActTalon.getSensorCollection().getAnalogIn()};
-        return pos;
-    }
+
+	public double[] getArmPosition() {
+		double[] pos = {
+				RobotMap.vertActTalon.getSensorCollection().getAnalogIn(),
+				RobotMap.diagActTalon.getSensorCollection().getAnalogIn()
+		};
+		return pos;
+	}
 }

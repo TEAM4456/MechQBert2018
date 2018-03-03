@@ -40,10 +40,12 @@ public class Drive extends Subsystem {
 		leftDriveTalon1.set(ControlMode.Velocity, leftValue * 2900);
 		rightDriveTalon1.set(ControlMode.Velocity, rightValue * 2900);
 		
+		/*
 		SmartDashboard.putNumber("xValue", xValue);
 		SmartDashboard.putNumber("yValue", yValue);
 		SmartDashboard.putNumber("leftValue", leftValue);
 		SmartDashboard.putNumber("rightValue", rightValue);
+		*/
 		
 	}
 	

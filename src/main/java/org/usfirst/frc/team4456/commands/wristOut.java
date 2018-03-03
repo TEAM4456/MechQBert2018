@@ -30,4 +30,5 @@ public class wristOut extends Command{
     protected void end() {Robot.wrist.wristStop();}
 
     protected void interrupted() { end(); }
+
 }
