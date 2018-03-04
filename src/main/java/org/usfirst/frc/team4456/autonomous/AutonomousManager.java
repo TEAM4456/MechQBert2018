@@ -3,10 +3,10 @@ package org.usfirst.frc.team4456.autonomous;
 import java.util.Map;
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -21,12 +21,14 @@ public class AutonomousManager {
 	
 	private int timeoutCounter;
 	private int tick;
-	private double tickInterval;
 	private int bufferSize;
 	
 	private boolean playbackDataInitialized;
 	
-	private Timer tickTimer;
+	private Timer cycleTimer; // maybe remove
+	
+	private int cycleCounter;
+	private int interval;
 	
 	private NetworkTable autonomousData;
 	private NetworkTable robotData;
@@ -35,16 +37,19 @@ public class AutonomousManager {
 	private NetworkTableEntry pingEntry;
 	private NetworkTableEntry tickEntry;
 	private NetworkTableEntry syncStopTickEntry;
-	private NetworkTableEntry tickIntervalMsEntry;
-	private NetworkTableEntry tickTimerEntry;
+	private NetworkTableEntry intervalEntry;
 	private NetworkTableEntry bufferSizeEntry;
 	private NetworkTableEntry talonModesEntry;
 	private NetworkTableEntry managerModeEntry;
 	private NetworkTableEntry recordingNameEntry;
+	private NetworkTableEntry cycleTimerEntry; // maybe remove
 	
 	private enum ManagerMode { IDLE, RECORD_RUNNING, PLAYBACK_RUNNING }
 	
-	public AutonomousManager(int bufferSizeAdvance, double tickIntervalMs, WPI_TalonSRX[] talons) {
+	public AutonomousManager(int bufferSizeAdvance, int cycleInterval, WPI_TalonSRX[] talons) {
+		
+		cycleCounter = 1;
+		interval = cycleInterval;
 		
 		talonArray = talons;
 		talonIndexMap = new HashMap<>();
@@ -58,13 +63,10 @@ public class AutonomousManager {
 		
 		bufferSize = bufferSizeAdvance + 1;
 		
-		tickInterval = tickIntervalMs / 1000;
-		
 		playbackDataInitialized = false;
 		
-		tickTimer = new Timer();
-		tickTimer.start();
-		//tickTimer.reset(); // maybe unnecessary
+		cycleTimer = new Timer(); // maybe remove
+		cycleTimer.start(); // maybe remove
 		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		autonomousData = inst.getTable("AutonomousData");
@@ -74,16 +76,16 @@ public class AutonomousManager {
 		pingEntry = robotData.getEntry("ping");
 		tickEntry = robotData.getEntry("tick");
 		syncStopTickEntry = robotData.getEntry("syncStopTick");
-		tickIntervalMsEntry = robotData.getEntry("tickIntervalMs");
-		tickTimerEntry = robotData.getEntry("tickTimer");
+		intervalEntry = robotData.getEntry("interval");
 		bufferSizeEntry = robotData.getEntry("bufferSize");
 		talonModesEntry = robotData.getEntry("talonModes");
 		managerModeEntry = robotData.getEntry("managerMode");
 		recordingNameEntry = robotData.getEntry("recordingName");
+		cycleTimerEntry = robotData.getEntry("cycleTimer"); // maybe remove
 		
 		pingEntry.setBoolean(false); // false = robot->client ping, true = client->robot pong
 		syncStopTickEntry.setDefaultNumber(-1);
-		tickIntervalMsEntry.setDouble(tickIntervalMs);
+		intervalEntry.setDouble(interval);
 		bufferSizeEntry.setNumber(bufferSize);
 		recordingNameEntry.setDefaultString(""); // sets if doesn't exist
 		
@@ -160,10 +162,7 @@ public class AutonomousManager {
 	
 	public void run() throws AutonomousManagerException {
 		
-		double tickTimerVal = tickTimer.get();
-		tickTimerEntry.setDouble(tickTimerVal); // testing (maybe not?)
-		
-		if (tickTimerVal > tickInterval) {
+		if (cycleCounter >= interval) { // should hopefully never be greater than
 			
 			pingClient();
 			
@@ -200,8 +199,8 @@ public class AutonomousManager {
 					
 				} else {
 					playbackDataInitialized = true;
-					double tickIntervalMs = tickIntervalMsEntry.getDouble(-1);
-					if  (tickIntervalMs == -1) { playbackDataInitialized = false; }
+					interval = (int)intervalEntry.getDouble(-1);
+					if  (interval == -1) { playbackDataInitialized = false; }
 					if (talonModesEntry.getString("") == "") { playbackDataInitialized = false; }
 					readAndUpdateTalonModes();
 					
@@ -218,8 +217,12 @@ public class AutonomousManager {
 				}
 			}
 			
-			tickTimer.reset(); // maybe not ideal solution
-			tickTimer.start(); // maybe not ideal solution
+			cycleCounter = 1;
+			cycleTimerEntry.setDouble(cycleTimer.get()); // maybe remove
+			cycleTimer.reset(); // maybe remove
+			cycleTimer.start(); // maybe remove
+		} else {
+			cycleCounter++;
 		}
 		
 		if (mode == ManagerMode.PLAYBACK_RUNNING) {
@@ -274,9 +277,7 @@ public class AutonomousManager {
 			case RECORD_RUNNING:
 				// recording stop stuff here
 				if (cancelRecording) { recordingNameEntry.setString("CLIENT::CANCEL_RECORDING"); }
-				syncStopTickEntry.setNumber(tick); // tell client to stop at tick
-				//tickTimer.reset();
-				//tickTimer.stop(); // maybe unnecessary
+				syncStopTickEntry.setNumber(tick - 1); // tell client to stop at tick
 				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;
 		}

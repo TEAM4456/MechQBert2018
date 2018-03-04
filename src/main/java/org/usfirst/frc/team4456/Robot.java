@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
 		
 		controls = new Controls();
 		
-		autonomousManager = new AutonomousManager(10, 100, new WPI_TalonSRX[] {
+		autonomousManager = new AutonomousManager(20, 4, new WPI_TalonSRX[] {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
 		});
@@ -40,13 +40,6 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void robotPeriodic() {
-		/*
-		SmartDashboard.putNumber("leftDriveTalon1", RobotMap.leftDriveTalon1.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("rightDriveTalon1", RobotMap.rightDriveTalon1.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Left Velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
-		SmartDashboard.putNumber("Right Velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
-		*/
-		
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
 		if (isEnabled()) { enabledPeriodic(); }
@@ -69,9 +62,7 @@ public class Robot extends TimedRobot {
 	
 	public void disabledPeriodic() {}
 	
-	public void autonomousInit() {
-	
-	}
+	public void autonomousInit() {}
 	
 	public void autonomousPeriodic() {
 		autonomousHandler.run();
