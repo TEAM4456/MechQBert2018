@@ -15,7 +15,7 @@ public class Drive extends Subsystem {
 	public final WPI_TalonSRX leftDriveTalon1 = RobotMap.leftDriveTalon1;
 	public final WPI_TalonSRX rightDriveTalon1 = RobotMap.rightDriveTalon1;
 	
-	protected void initDefaultCommand() { /* setDefaultCommand(new teleopDrive()); */ }
+	protected void initDefaultCommand() {}
 	
 	public void betterArcadeDrive(Joystick joystick) {
 		
