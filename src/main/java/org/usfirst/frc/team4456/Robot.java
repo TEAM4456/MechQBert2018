@@ -10,15 +10,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Robot extends TimedRobot {
 	
-	public static AutonomousHandler autonomousHandler;
-	public static AutonomousManager autonomousManager;
+	private AutonomousHandler autonomousHandler;
+	private AutonomousManager autonomousManager;
 	
 	public static Controls controls;
 	
 	// Subsystem declarations here
 	public static Drive drive;
 	
-	boolean enabledInitialized = false;
+	private boolean enabledInitialized = false;
 	
 	public void robotInit() {
 		
@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
 		
 		controls = new Controls();
 		
-		autonomousManager = new AutonomousManager(20, 4, new WPI_TalonSRX[] {
+		autonomousManager = new AutonomousManager(20, 2, new WPI_TalonSRX[] {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1
 		});
@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void robotPeriodic() {
+		autonomousManager.updateEnabledStatus(isEnabled());
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
 		if (isEnabled()) { enabledPeriodic(); }
@@ -68,9 +69,7 @@ public class Robot extends TimedRobot {
 		autonomousHandler.run();
 	}
 	
-	public void teleopInit() {
-	
-	}
+	public void teleopInit() {}
 	
 	public void teleopPeriodic() {
 		if (!autonomousHandler.isPlaybackRunning()) {

@@ -34,6 +34,7 @@ public class AutonomousManager {
 	private NetworkTable robotData;
 	private NetworkTable bufferData;
 	
+	private NetworkTableEntry enabledEntry;
 	private NetworkTableEntry pingEntry;
 	private NetworkTableEntry tickEntry;
 	private NetworkTableEntry syncStopTickEntry;
@@ -73,6 +74,7 @@ public class AutonomousManager {
 		robotData = autonomousData.getSubTable("RobotState");
 		bufferData = autonomousData.getSubTable("BufferData");
 		
+		enabledEntry = robotData.getEntry("enabled");
 		pingEntry = robotData.getEntry("ping");
 		tickEntry = robotData.getEntry("tick");
 		syncStopTickEntry = robotData.getEntry("syncStopTick");
@@ -118,6 +120,14 @@ public class AutonomousManager {
 			entries[i] = entry;
 		}
 		return entries;
+	}
+	
+	private void flushTalonBuffer() {
+		for (NetworkTableEntry[] entries : talonBufferArray) {
+			for (NetworkTableEntry entry : entries) {
+				entry.setDouble(0);
+			}
+		}
 	}
 	
 	private void writeToTalonBuffer(WPI_TalonSRX talon, double value) {
@@ -168,7 +178,7 @@ public class AutonomousManager {
 			
 			if (mode == ManagerMode.RECORD_RUNNING) {
 				
-				if (timeoutCounter >= bufferSize - 1) {
+				if (timeoutCounter > bufferSize) {
 					stopRecording(true);
 					throw new AutonomousManagerException("timeout exceeded buffer size while recording!");
 				}
@@ -188,14 +198,18 @@ public class AutonomousManager {
 				
 			} else if (mode == ManagerMode.PLAYBACK_RUNNING) {
 				
-				if (timeoutCounter >= bufferSize - 1) {
+				if (timeoutCounter > bufferSize) {
 					stopPlayback();
 					throw new AutonomousManagerException("timeout exceeded buffer size during playback!");
 				}
 				
 				if (playbackDataInitialized) {
 					
-					tick++;
+					if (tick > syncStopTickEntry.getDouble(0)) {
+						stopPlayback();
+					} else {
+						tick++;
+					}
 					
 				} else {
 					playbackDataInitialized = true;
@@ -212,7 +226,7 @@ public class AutonomousManager {
 				tickEntry.setNumber(tick);
 				
 			} else {
-				if (timeoutCounter >= bufferSize - 1 && timeoutCounter % bufferSize - 1 == 0) {
+				if (timeoutCounter > bufferSize && timeoutCounter % bufferSize - 1 == 0) {
 					throw new AutonomousManagerException("timeout exceeded buffer size! (IDLE WARNING)");
 				}
 			}
@@ -245,6 +259,7 @@ public class AutonomousManager {
 				tickEntry.setNumber(0);
 				syncStopTickEntry.setNumber(-1); // no tick to stop at
 				recordingNameEntry.setString(recordingName);
+				flushTalonBuffer();
 				updateAndWriteTalonModes();
 				setAndWriteManagerMode(ManagerMode.RECORD_RUNNING);
 				break;
@@ -262,6 +277,7 @@ public class AutonomousManager {
 				tick = 0;
 				tickEntry.setNumber(0);
 				recordingNameEntry.setString(recordingName);
+				flushTalonBuffer();
 				setAndWriteManagerMode(ManagerMode.PLAYBACK_RUNNING);
 				playbackDataInitialized = false;
 				break;
@@ -291,9 +307,14 @@ public class AutonomousManager {
 				throw new AutonomousManagerException("stopPlayback() called while recording is running!");
 			case PLAYBACK_RUNNING:
 				// playback stop stuff here
+				syncStopTickEntry.setNumber(tick - 1); // tell client to stop at tick
 				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;
 		}
+	}
+	
+	public void updateEnabledStatus(boolean enabled) {
+		enabledEntry.setBoolean(enabled);
 	}
 	
 	public boolean isRecordRunning() {
