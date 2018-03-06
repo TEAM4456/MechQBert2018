@@ -205,7 +205,7 @@ public class AutonomousManager {
 				
 				if (playbackDataInitialized) {
 					
-					if (tick > syncStopTickEntry.getDouble(0)) {
+					if (tick > syncStopTickEntry.getDouble(0) - 2) {
 						stopPlayback();
 					} else {
 						tick++;
@@ -307,7 +307,7 @@ public class AutonomousManager {
 				throw new AutonomousManagerException("stopPlayback() called while recording is running!");
 			case PLAYBACK_RUNNING:
 				// playback stop stuff here
-				syncStopTickEntry.setNumber(tick - 1); // tell client to stop at tick
+				syncStopTickEntry.setNumber(tick); // tell client to stop at tick
 				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;
 		}

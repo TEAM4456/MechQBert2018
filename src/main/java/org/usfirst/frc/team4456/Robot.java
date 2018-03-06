@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void robotPeriodic() {
-		autonomousManager.updateEnabledStatus(isEnabled());
+		autonomousHandler.updateEnabledStatus(isEnabled());
 		// call custom enabled methods
 		if (!enabledInitialized && isEnabled()) { enabledInit(); }
 		if (isEnabled()) { enabledPeriodic(); }
@@ -58,7 +58,6 @@ public class Robot extends TimedRobot {
 	
 	public void disabledInit() {
 		enabledInitialized = false;
-		autonomousHandler.onDisable();
 	}
 	
 	public void disabledPeriodic() {}

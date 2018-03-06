@@ -11,6 +11,8 @@ public class AutonomousHandler {
 	private SendableChooser<Boolean> testingSelector;
 	private SendableChooser<String> modeSelector;
 	
+	private boolean robotEnabled;
+	
 	private boolean recordingRunning;
 	private boolean playbackRunning;
 	
@@ -26,6 +28,8 @@ public class AutonomousHandler {
 		autonomousManager = am;
 		
 		buttonNumber = controlButton;
+		
+		robotEnabled = false;
 		
 		recordingRunning = false;
 		playbackRunning = false;
@@ -71,7 +75,7 @@ public class AutonomousHandler {
 		boolean buttonPressed = Robot.controls.joystick.getRawButtonPressed(buttonNumber);
 		
 		
-		if (buttonPressed) {
+		if (buttonPressed && robotEnabled) {
 			
 			boolean isTesting = testingSelector.getSelected();
 			if (isTesting) {
@@ -112,18 +116,22 @@ public class AutonomousHandler {
 		
 	}
 	
-	public void onDisable() {
-		if (isManagerInRecording()) {
-			putHandlerMessage("WARNING: robot disabled while recording is running! Cancelling recording.");
-			stopRecording(true);
-			recordingRunning = false;
-			SmartDashboard.putBoolean("RECORDING", false);
-		} else if (isMangerInPlayback()) {
-			putHandlerMessage("WARNING: robot disabled while playback is running!");
-			stopPlayback();
-			playbackRunning = false;
-			SmartDashboard.putBoolean("PLAYBACK", false);
+	public void updateEnabledStatus(boolean enabled) {
+		robotEnabled = enabled;
+		if (!robotEnabled) {
+			if (isManagerInRecording()) {
+				putHandlerMessage("WARNING: robot disabled while recording is running! Cancelling recording.");
+				stopRecording(true);
+				recordingRunning = false;
+				SmartDashboard.putBoolean("RECORDING", false);
+			} else if (isMangerInPlayback()) {
+				putHandlerMessage("WARNING: robot disabled while playback is running!");
+				stopPlayback();
+				playbackRunning = false;
+				SmartDashboard.putBoolean("PLAYBACK", false);
+			}
 		}
+		autonomousManager.updateEnabledStatus(enabled);
 	}
 	
 	public void startRecording() {
