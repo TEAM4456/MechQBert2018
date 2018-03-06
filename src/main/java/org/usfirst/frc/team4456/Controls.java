@@ -38,7 +38,7 @@ public class Controls {
 		JoystickButton backButton = new JoystickButton(joystick, 7);
 		backButton.whileHeld(new winchUp());
 		JoystickButton startButton = new JoystickButton(joystick, 8);
-		startButton.whileHeld(new winchDown());
+		//startButton.whileHeld(new winchDown());
 		JoystickButton leftStick = new JoystickButton(joystick, 9);
 		
 		JoystickButton rightStick = new JoystickButton(joystick, 10);
