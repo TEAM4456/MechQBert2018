@@ -95,7 +95,6 @@ public class RobotMap {
 		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		vertActTalon.configNominalOutputReverse(0,10);
 		vertActTalon.configPeakOutputReverse(-1, 10);
-		vertActTalon.setSelectedSensorPosition(0,0,10);
 		//diagActTalon = new WPI_TalonSRX(8);
 		//diagActTalon.set(ControlMode.Follower, vertActTalon.getDeviceID());
 		//diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);

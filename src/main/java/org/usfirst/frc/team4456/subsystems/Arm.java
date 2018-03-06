@@ -3,16 +3,21 @@ package org.usfirst.frc.team4456.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import org.usfirst.frc.team4456.RobotMap;
+import org.usfirst.frc.team4456.Constants;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Arm extends Subsystem {
-    public static double[] armPositions = {0, 1000, 2000, 3000};
+
     int armPositionIndex = 0;
 
     protected void initDefaultCommand() {
-        RobotMap.vertActTalon.configClosedloopRamp(.25,0);
-        setPIDF(0.1, 0, 0, 0);
+        RobotMap.vertActTalon.configClosedloopRamp(Constants.armRampRate,0);
+        setPIDF(Constants.armP, Constants.armI, Constants.armD, Constants.armF);
+        RobotMap.vertActTalon.configForwardSoftLimitThreshold(Constants.armSoftForwardLimit,10);
+        RobotMap.vertActTalon.configForwardSoftLimitEnable(true, 10);
+        RobotMap.vertActTalon.configReverseSoftLimitThreshold(Constants.armSoftReverseLimit,10);
+        RobotMap.vertActTalon.configReverseSoftLimitEnable(true, 10);
         //RobotMap.diagActTalon.configClosedloopRamp(1,0);
     }
 
@@ -28,14 +33,17 @@ public class Arm extends Subsystem {
         //RobotMap.diagActTalon.set(ControlMode.Position, target);
     }
 
+    public void  resetArmPosition(){
+        RobotMap.vertActTalon.setSelectedSensorPosition(0,0,10);
+    }
 
 	public void armUpOne(){
-	    if (armPositionIndex == armPositions.length - 1){
+	    if (armPositionIndex == Constants.armPositions.length - 1){
 	        return;
         } else {
 	        armPositionIndex++;
         }
-        moveToPosition(armPositions[armPositionIndex]);
+        moveToPosition(Constants.armPositions[armPositionIndex]);
     }
 
     public void armDownOne(){
@@ -44,7 +52,7 @@ public class Arm extends Subsystem {
         } else {
             armPositionIndex--;
         }
-        moveToPosition(armPositions[armPositionIndex]);
+        moveToPosition(Constants.armPositions[armPositionIndex]);
     }
 
     public void armUp(){

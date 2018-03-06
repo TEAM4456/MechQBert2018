@@ -116,6 +116,7 @@ public class Robot extends IterativeRobot {
 	// custom methods called by robotPeriodic()
 	void enabledInit() {
 		// init stuff upon enable here
+		arm.resetArmPosition();
 		enabledInitialized = true;
 	}
 	
