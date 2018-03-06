@@ -65,7 +65,7 @@ public class AutonomousHandler {
 			// (AutonomousManager cancels the recording itself)
 			recordingRunning = false;
 		} else if (playbackRunning && !isMangerInPlayback()) {
-			putHandlerMessage("WARNING: manager stopped playback unexpectedly.");
+			putHandlerMessage("WARNING: manager stopped playback.");
 			playbackRunning = false;
 		}
 		
