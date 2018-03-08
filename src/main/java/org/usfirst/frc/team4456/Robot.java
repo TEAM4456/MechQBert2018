@@ -1,16 +1,19 @@
 package org.usfirst.frc.team4456;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.usfirst.frc.team4456.autonomous.AutonomousHandler;
 import org.usfirst.frc.team4456.autonomous.AutonomousManager;
 import org.usfirst.frc.team4456.subsystems.*;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-public class Robot extends IterativeRobot {
+import edu.wpi.first.wpilibj.Timer; // QUICK BODGE FOR BASELINE AUTO
+
+public class Robot extends TimedRobot {
+	
+	private final Timer autoTimer = new Timer(); // QUICK BODGE FOR BASELINE AUTO
 	
 	private AutonomousHandler autonomousHandler;
 	private AutonomousManager autonomousManager;
@@ -64,7 +67,6 @@ public class Robot extends IterativeRobot {
 	}
 	void enabledPeriodic() {
 		// run stuff periodically while enabled
-		Scheduler.getInstance().run();
 	}
 	
 	public void disabledInit() {
@@ -73,15 +75,28 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {}
 	
-	public void autonomousInit() {}
+	public void autonomousInit() {
+		autoTimer.reset(); // QUICK BODGE FOR BASELINE AUTO
+		autoTimer.start(); // QUICK BODGE FOR BASELINE AUTO
+	}
 	
 	public void autonomousPeriodic() {
-		autonomousHandler.run();
+		//autonomousHandler.run();
+		// QUICK BODGE FOR BASELINE AUTO IN CASE WE HAVE NO RECORDINGS
+		if (autoTimer.get() < 2.0 && autoTimer.get() > 0.1) { // disgusting
+			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 750); // gross
+			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 750); // ew
+		} else  {
+			RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, 0); // why
+			RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, 0); // please no
+			autoTimer.stop(); // just don't
+		}
 	}
 	
 	public void teleopInit() {}
 	
 	public void teleopPeriodic() {
+		Scheduler.getInstance().run();
 		if (!autonomousHandler.isPlaybackRunning()) {
 			drive.betterArcadeDrive(controls.joystick);
 		}
