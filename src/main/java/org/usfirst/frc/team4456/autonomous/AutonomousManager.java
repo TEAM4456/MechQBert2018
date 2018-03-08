@@ -141,11 +141,9 @@ public class AutonomousManager {
 	private void updateAndWriteTalonModes() {
 		String talonModes = "";
 		for (WPI_TalonSRX talon : talonArray) {
-			ControlMode controlMode;
-			if (talon.getControlMode() == ControlMode.Velocity) {
-				controlMode = ControlMode.Velocity;
-			} else {
-				controlMode = ControlMode.Current;
+			ControlMode controlMode = talon.getControlMode();
+			if (!(controlMode == ControlMode.Velocity || controlMode == ControlMode.Position)) {
+				controlMode = ControlMode.PercentOutput;
 			}
 			talonModeMap.put(talon.getName(), controlMode); // will overwrite value for key
 			talonModes += talon.getName() + ":" + controlMode.toString() + "|";
@@ -184,10 +182,11 @@ public class AutonomousManager {
 				}
 				
 				for (WPI_TalonSRX talon : talonArray) {
-					if (talon.getControlMode() == ControlMode.Velocity) {
+					ControlMode controlMode = talon.getControlMode();
+					if (controlMode == ControlMode.Velocity || controlMode == ControlMode.Position) {
 						writeToTalonBuffer(talon, talon.getClosedLoopTarget(0));
 					} else {
-						writeToTalonBuffer(talon, talon.getOutputCurrent());
+						writeToTalonBuffer(talon, talon.getMotorOutputPercent());
 					}
 				}
 				
