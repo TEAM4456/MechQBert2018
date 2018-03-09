@@ -1,15 +1,18 @@
 package org.usfirst.frc.team4456;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.usfirst.frc.team4456.autonomous.AutonomousHandler;
 import org.usfirst.frc.team4456.autonomous.AutonomousManager;
 import org.usfirst.frc.team4456.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Timer; // QUICK BODGE FOR BASELINE AUTO
+import com.ctre.phoenix.motorcontrol.ControlMode; // QUICK BODGE FOR BASELINE AUTO
 
 public class Robot extends TimedRobot {
 	
@@ -17,6 +20,8 @@ public class Robot extends TimedRobot {
 	
 	private AutonomousHandler autonomousHandler;
 	private AutonomousManager autonomousManager;
+	
+	private SendableChooser<String> positionChooser;
 	
 	public static Controls controls;
 	
@@ -50,6 +55,12 @@ public class Robot extends TimedRobot {
 		});
 		autonomousHandler = new AutonomousHandler(autonomousManager, 8);
 		
+		positionChooser = new SendableChooser<>();
+		positionChooser.addDefault("Middle", "middle");
+		positionChooser.addObject("Left", "left");
+		positionChooser.addObject("Right", "right");
+		SmartDashboard.putData("Starting Position", positionChooser);
+		
 	}
 	
 	public void robotPeriodic() {
@@ -78,10 +89,17 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		autoTimer.reset(); // QUICK BODGE FOR BASELINE AUTO
 		autoTimer.start(); // QUICK BODGE FOR BASELINE AUTO
+		
+		/*
+		String gameData = DriverStation.getInstance().getGameSpecificMessage(); // should have data by init time
+		String robotPos = positionChooser.getSelected();
+		autonomousHandler.startCompetitionAuto(gameData, robotPos);
+		*/
 	}
 	
 	public void autonomousPeriodic() {
 		//autonomousHandler.run();
+		
 		// QUICK BODGE FOR BASELINE AUTO IN CASE WE HAVE NO RECORDINGS
 		if (autoTimer.get() < 2.0 && autoTimer.get() > 0.1) { // disgusting
 			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 750); // gross
