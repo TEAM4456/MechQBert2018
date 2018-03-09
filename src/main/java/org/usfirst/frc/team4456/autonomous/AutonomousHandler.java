@@ -97,7 +97,7 @@ public class AutonomousHandler {
 					}
 				} else if (testingMode.equals("PLAYBACK")) {
 					if (!playbackRunning) {
-						startPlayback();
+						startTestingPlayback();
 					} else {
 						stopPlayback();
 					}
@@ -114,6 +114,56 @@ public class AutonomousHandler {
 			putManagerException(ex);
 		}
 		
+	}
+	
+	public void startCompetitionAuto(String gameData, String robotPos) {
+		char switchPos = gameData.charAt(0);
+		char scalePos = gameData.charAt(1);
+		switch (robotPos) {
+			case "left":
+				// uncomment if we are able to do both switch and scale
+				/*if (switchPos == 'L' && scalePos == 'L') {
+					// start left, do switch and scale left
+					// startCompetitionPlayback("L-both");
+				} else*/
+				if (scalePos == 'L') {
+					// start left, do scale left
+					// startCompetitionPlayback("L-scale");
+				} else if (switchPos == 'L') {
+					// start left, do switch left
+					// startCompetitionPlayback("L-switch");
+				} else {
+					// neither switch nor scale are left, do baseline or other
+					// startCompetitionPlayback("L-fallback");
+				}
+				break;
+			case "middle":
+				if (switchPos == 'L') {
+					// start middle, do switch left
+					// startCompetitionPlayback("M-switch-left");
+				} else if (switchPos == 'R') {
+					// start middle, do switch right
+					// startCompetitionPlayback("M-switch-right");
+				} /* else { logic machine br0ke } */
+				break;
+			case "right":
+				// uncomment if we are able to do both switch and scale
+				/*if (switchPos == 'R' && scalePos == 'R') {
+					// start right, do switch and scale right
+					// startCompetitionPlayback("R-both");
+				} else*/
+				if (scalePos == 'R') {
+					// start right, do scale right
+					// startCompetitionPlayback("R-scale");
+				} else if (switchPos == 'R') {
+					// start right, do switch right
+					// startCompetitionPlayback("R-switch");
+				} else {
+					// neither switch nor scale are right, do baseline or other
+					// startCompetitionPlayback("R-fallback");
+				}
+				break;
+		}
 	}
 	
 	public void updateEnabledStatus(boolean enabled) {
@@ -134,7 +184,7 @@ public class AutonomousHandler {
 		autonomousManager.updateEnabledStatus(enabled);
 	}
 	
-	public void startRecording() {
+	private void startRecording() {
 		String recordingName = SmartDashboard.getString("Recording name", "");
 		if (!recordingName.equals("")) {
 			recordingRunning = true;
@@ -148,7 +198,7 @@ public class AutonomousHandler {
 		}
 	}
 	
-	public void stopRecording(boolean cancelRecording) {
+	private void stopRecording(boolean cancelRecording) {
 		recordingRunning = false;
 		try {
 			autonomousManager.stopRecording(cancelRecording);
@@ -157,7 +207,16 @@ public class AutonomousHandler {
 		}
 	}
 	
-	public void startPlayback() {
+	private void startCompetitionPlayback(String recordingName) {
+		playbackRunning = true;
+		try {
+			autonomousManager.startPlayback(recordingName);
+		} catch (AutonomousManagerException ex) {
+			putManagerException(ex);
+		}
+	}
+	
+	private void startTestingPlayback() {
 		String recordingName = SmartDashboard.getString("Recording name", "");
 		if (!recordingName.equals("")) {
 			playbackRunning = true;
@@ -171,7 +230,7 @@ public class AutonomousHandler {
 		}
 	}
 	
-	public void stopPlayback() {
+	private void stopPlayback() {
 		playbackRunning = false;
 		try {
 			autonomousManager.stopPlayback();

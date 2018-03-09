@@ -79,18 +79,8 @@ public class RobotMap {
 		rightDriveTalon1.config_kI(0, rightI, 0);
 		rightDriveTalon1.config_kD(0, rightD, 0);
 		rightDriveTalon1.config_kF(0, rightF, 0);
-		
-		SmartDashboard.putNumber("Left P", leftP);
-		SmartDashboard.putNumber("Left I", leftI);
-		SmartDashboard.putNumber("Left D", leftD);
-		SmartDashboard.putNumber("Left F", leftF);
-		SmartDashboard.putNumber("Right P", rightP);
-		SmartDashboard.putNumber("Right I", rightI);
-		SmartDashboard.putNumber("Right D", rightD);
-		SmartDashboard.putNumber("Right F", rightF);
-		
 
-		vertActTalon = new WPI_TalonSRX(6);
+		vertActTalon = new WPI_TalonSRX(5);
 		vertActTalon.set(ControlMode.PercentOutput, 0);
 		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		vertActTalon.configNominalOutputReverse(0,10);
