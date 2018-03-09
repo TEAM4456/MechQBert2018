@@ -9,6 +9,7 @@ public class armUpOne extends Command {
 
     protected void initialize() {
         Robot.arm.armUpOne();
+        Robot.wrist.wristUpOne();
     }
 
     protected boolean isFinished() { return true; }

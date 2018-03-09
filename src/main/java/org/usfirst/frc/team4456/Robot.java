@@ -60,6 +60,7 @@ public class Robot extends IterativeRobot {
 	void enabledInit() {
 		// init stuff upon enable here
 		arm.resetArmPosition();
+		wrist.resetWristPosition();
 		enabledInitialized = true;
 	}
 	void enabledPeriodic() {

@@ -7,7 +7,10 @@ public class armDownOne extends Command {
 
     public armDownOne() { requires(Robot.arm); }
 
-    protected void initialize() { Robot.arm.armDownOne(); }
+    protected void initialize() {
+        Robot.arm.armDownOne();
+        Robot.wrist.wristDownOne();
+    }
 
     protected boolean isFinished() { return true; }
 
