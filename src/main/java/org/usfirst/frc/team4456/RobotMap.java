@@ -28,7 +28,7 @@ public class RobotMap {
 		
 		// NOTE: drive talons may need to be re-tested for motor/sensor polarity reversal
 		
-		leftDriveTalon1 = new WPI_TalonSRX(4);
+		leftDriveTalon1 = new WPI_TalonSRX(3);
 		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
 		leftDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		leftDriveTalon1.setInverted(true);
@@ -38,9 +38,9 @@ public class RobotMap {
 		//leftDriveTalon1.configMotionAcceleration(2900, 0);
 		//leftDriveTalon1.configMotionCruiseVelocity(2900, 0);
 		//leftDriveTalon1.configAllowableClosedloopError(0, 100, 0);
-		leftDriveTalon2 = new WPI_TalonSRX(6);
-		leftDriveTalon2.setInverted(true);
-		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
+		//leftDriveTalon2 = new WPI_TalonSRX(6);
+		//leftDriveTalon2.setInverted(true);
+		//leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
 		
 		rightDriveTalon1 = new WPI_TalonSRX(1);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
@@ -52,9 +52,9 @@ public class RobotMap {
 		//rightDriveTalon1.configMotionAcceleration(2900, 0);
 		//rightDriveTalon1.configMotionCruiseVelocity(2900, 0);
 		///rightDriveTalon1.configAllowableClosedloopError(0, 50, 0);
-		rightDriveTalon2 = new WPI_TalonSRX(2);
+		//rightDriveTalon2 = new WPI_TalonSRX(2);
 		//rightDriveTalon2.setInverted(true);
-		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
+		//rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
 		// PID CONTROL
 		
@@ -85,19 +85,16 @@ public class RobotMap {
 		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		vertActTalon.configNominalOutputReverse(0,10);
 		vertActTalon.configPeakOutputReverse(-1, 10);
-		diagActTalon = new WPI_TalonSRX(8);
+		diagActTalon = new WPI_TalonSRX(6);
 		diagActTalon.set(ControlMode.Follower, vertActTalon.getDeviceID());
 		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		diagActTalon.configNominalOutputReverse(0,10);
 		diagActTalon.configPeakOutputReverse(-1, 10);
 
-		winchTalon1 = new WPI_TalonSRX(3);
+		winchTalon1 = new WPI_TalonSRX(10);
 		winchTalon1.set(ControlMode.PercentOutput, 0);
 
-		winchTalon2 = new WPI_TalonSRX(10);
-		winchTalon2.set(ControlMode.Follower, winchTalon1.getDeviceID());
-
-		wristTalon = new WPI_TalonSRX(6);
+		wristTalon = new WPI_TalonSRX(7);
 		wristTalon.set(ControlMode.PercentOutput, 0);
 		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		//wristTalon.configOpenloopRamp(.5, 0);

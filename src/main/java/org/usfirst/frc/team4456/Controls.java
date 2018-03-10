@@ -25,12 +25,15 @@ public class Controls {
 
 		JoystickButton aButton = new JoystickButton(joystick, 1);
 		aButton.whileHeld(new armDown());
+		//aButton.whenPressed(new armDownOne());
 		JoystickButton bButton = new JoystickButton(joystick, 2);
 		bButton.whileHeld(new armUp());
+		//bButton.whenPressed(new armUpOne());
 		JoystickButton xButton = new JoystickButton(joystick, 3);
 		xButton.whenPressed(new armDownOne());
 		JoystickButton yButton = new JoystickButton(joystick, 4);
 		yButton.whenPressed(new armUpOne());
+		//yButton.whileHeld(new winchUp());
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
 		leftBumper.whenPressed(new wristBack());
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);

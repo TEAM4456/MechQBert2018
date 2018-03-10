@@ -79,6 +79,9 @@ public class Robot extends TimedRobot {
 	}
 	void enabledPeriodic() {
 		// run stuff periodically while enabled
+		SmartDashboard.putNumber("vertActTalon pos", RobotMap.vertActTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("diagActTalon pos", RobotMap.diagActTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("wristTalon pos", RobotMap.wristTalon.getSelectedSensorPosition(0));
 	}
 	
 	public void disabledInit() {
