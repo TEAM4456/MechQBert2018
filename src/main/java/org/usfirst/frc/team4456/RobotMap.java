@@ -45,7 +45,7 @@ public class RobotMap {
 		rightDriveTalon1 = new WPI_TalonSRX(1);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
 		rightDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		//rightDriveTalon1.setInverted(true);
+		rightDriveTalon1.setInverted(true);
 		rightDriveTalon1.setSensorPhase(false);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
 		rightDriveTalon1.configClosedloopRamp(0.1, 0);
@@ -82,24 +82,30 @@ public class RobotMap {
 
 		vertActTalon = new WPI_TalonSRX(5);
 		vertActTalon.set(ControlMode.PercentOutput, 0);
-		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		vertActTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		vertActTalon.setSensorPhase(true);
 		vertActTalon.configNominalOutputReverse(0,10);
 		vertActTalon.configPeakOutputReverse(-1, 10);
 		diagActTalon = new WPI_TalonSRX(6);
-		diagActTalon.set(ControlMode.Follower, vertActTalon.getDeviceID());
-		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		diagActTalon.set(ControlMode.PercentOutput, 0);
+		diagActTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		diagActTalon.setSensorPhase(true);
 		diagActTalon.configNominalOutputReverse(0,10);
 		diagActTalon.configPeakOutputReverse(-1, 10);
 
 		winchTalon1 = new WPI_TalonSRX(10);
+		winchTalon1.setInverted(true);
 		winchTalon1.set(ControlMode.PercentOutput, 0);
 
 		wristTalon = new WPI_TalonSRX(7);
+		//wristTalon.setInverted(true);
+		//wristTalon.setSensorPhase(true);
 		wristTalon.set(ControlMode.PercentOutput, 0);
-		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		//wristTalon.configOpenloopRamp(.5, 0);
 
 		clawTalon = new WPI_TalonSRX(9);
+		clawTalon.setInverted(true);
 		clawTalon.set(ControlMode.PercentOutput, 0);
 		clawTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 

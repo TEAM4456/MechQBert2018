@@ -5,7 +5,9 @@ import org.usfirst.frc.team4456.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class wristOut extends Command{
-
+    
+    boolean finished = false;
+    
     public wristOut() {
         requires(Robot.wrist);
         //requires(Robot.arm);
@@ -21,6 +23,7 @@ public class wristOut extends Command{
             Robot.wrist.move(20.0);
             */
         Robot.wrist.wristDown();
+        finished = true;
     }
 
 

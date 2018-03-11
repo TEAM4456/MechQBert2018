@@ -24,28 +24,41 @@ public class Controls {
 
 
 		JoystickButton aButton = new JoystickButton(joystick, 1);
-		aButton.whileHeld(new armDown());
-		//aButton.whenPressed(new armDownOne());
+		// TODO: PUT BACK
+		aButton.whileHeld(new clawOpen());
+		//aButton.whileHeld(new armVertRetract());
+		
 		JoystickButton bButton = new JoystickButton(joystick, 2);
-		bButton.whileHeld(new armUp());
-		//bButton.whenPressed(new armUpOne());
+		//bButton.whileHeld();
+		//bButton.whileHeld(new armVertExtend());
+		
 		JoystickButton xButton = new JoystickButton(joystick, 3);
-		xButton.whenPressed(new armDownOne());
+		// TODO: PUT BACK
+		xButton.whileHeld(new wristBack());
+		//xButton.whileHeld(new armDiagRetract());
+		
 		JoystickButton yButton = new JoystickButton(joystick, 4);
-		yButton.whenPressed(new armUpOne());
-		//yButton.whileHeld(new winchUp());
+		// TODO: PUT BACK
+		yButton.whileHeld(new wristOut());
+		//yButton.whileHeld(new armDiagExtend());
+		
 		JoystickButton leftBumper = new JoystickButton(joystick, 5);
-		leftBumper.whenPressed(new wristBack());
+		leftBumper.whenPressed(new armDownOne());
+		
 		JoystickButton rightBumper = new JoystickButton(joystick, 6);
-		rightBumper.whileHeld(new wristOut());
+		rightBumper.whenPressed(new armUpOne());
+		
 		JoystickButton backButton = new JoystickButton(joystick, 7);
 		backButton.whileHeld(new winchUp());
-		JoystickButton startButton = new JoystickButton(joystick, 8);
-		//startButton.whileHeld(new winchDown());
+		
+		//JoystickButton startButton = new JoystickButton(joystick, 8);
+		//startButton.whileHeld();
+		
 		JoystickButton leftStick = new JoystickButton(joystick, 9);
+		//leftStick.whileHeld()
 		
 		JoystickButton rightStick = new JoystickButton(joystick, 10);
-		//rightStick.whileHeld(new clawOpen());
+		//rightStick.whileHeld(;
 	}
 	
 }

@@ -9,7 +9,8 @@ public class armUp extends Command {
     public armUp() { requires(Robot.arm); }
 
     protected void initialize() {
-        Robot.arm.armUp();
+    	Robot.arm.armUp();
+    	Robot.arm.armDiagExtend();
     }
 
     protected boolean isFinished() { return false; }

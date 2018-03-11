@@ -9,21 +9,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Arm extends Subsystem {
 
-
-
-    protected void initDefaultCommand() {
+    public Arm() {
+    	RobotMap.vertActTalon.configOpenloopRamp(Globals.armRampRate, 0);
         RobotMap.vertActTalon.configClosedloopRamp(Globals.armRampRate,0);
+        RobotMap.diagActTalon.configOpenloopRamp(Globals.armRampRate, 0);
+        RobotMap.diagActTalon.configClosedloopRamp(Globals.armRampRate,  0);
         setPIDF(Globals.armP, Globals.armI, Globals.armD, Globals.armF);
-        RobotMap.vertActTalon.configForwardSoftLimitThreshold(Globals.armSoftForwardLimit,10);
-        RobotMap.vertActTalon.configForwardSoftLimitEnable(true, 10);
-        RobotMap.vertActTalon.configReverseSoftLimitThreshold(Globals.armSoftReverseLimit,10);
-        RobotMap.vertActTalon.configReverseSoftLimitEnable(true, 10);
-        RobotMap.diagActTalon.configClosedloopRamp(Globals.armRampRate,0);
-        RobotMap.diagActTalon.configForwardSoftLimitThreshold(Globals.armSoftForwardLimit,10);
-        RobotMap.diagActTalon.configForwardSoftLimitEnable(true, 10);
-        RobotMap.diagActTalon.configReverseSoftLimitThreshold(Globals.armSoftReverseLimit,10);
-        RobotMap.diagActTalon.configReverseSoftLimitEnable(true, 10);
     }
+
+    protected void initDefaultCommand() {}
 
     private void setPIDF(double p, double i, double d, double f){
 	    RobotMap.vertActTalon.config_kP(0, p,10);
@@ -36,22 +30,27 @@ public class Arm extends Subsystem {
         RobotMap.diagActTalon.config_kF(0, f,10);
     }
 
-	public void moveToPosition(double target){
-	    RobotMap.vertActTalon.set(ControlMode.Position, target);
-        RobotMap.diagActTalon.set(ControlMode.Position, target);
+	public void moveVertToPosition(double vertTarget){
+	    RobotMap.vertActTalon.set(ControlMode.Position, vertTarget);
+    }
+    
+    public void moveDiagToPosition(double diagTarget) {
+    	RobotMap.diagActTalon.set(ControlMode.Position, diagTarget);
     }
 
-    public void  resetArmPosition(){
+    public void resetArmPosition(){
         RobotMap.vertActTalon.setSelectedSensorPosition(0,0,10);
+        RobotMap.diagActTalon.setSelectedSensorPosition(0, 0, 10);
     }
 
 	public void armUpOne(){
-	    if (Globals.positionIndex == Globals.armPositions.length - 1){
+	    if (Globals.positionIndex == Globals.armVertPositions.length - 1){
 	        return;
         } else {
 	        Globals.positionIndex++;
         }
-        moveToPosition(Globals.armPositions[Globals.positionIndex]);
+        moveVertToPosition(Globals.armVertPositions[Globals.positionIndex]);
+	    moveDiagToPosition(Globals.armDiagPositions[Globals.positionIndex]);
     }
 
     public void armDownOne(){
@@ -60,7 +59,8 @@ public class Arm extends Subsystem {
         } else {
             Globals.positionIndex--;
         }
-        moveToPosition(Globals.armPositions[Globals.positionIndex]);
+        moveVertToPosition(Globals.armVertPositions[Globals.positionIndex]);
+        moveDiagToPosition(Globals.armDiagPositions[Globals.positionIndex]);
     }
 
     public void armUp(){
@@ -75,7 +75,7 @@ public class Arm extends Subsystem {
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, .5);
     }
 
-    public void armDiagRetract(){
+    public void armDiagRetract() {
         RobotMap.diagActTalon.set(ControlMode.PercentOutput, -.5);
     }
 

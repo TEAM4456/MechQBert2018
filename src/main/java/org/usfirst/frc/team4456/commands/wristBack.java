@@ -4,12 +4,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4456.Robot;
 
 public class wristBack extends Command {
-
+    
+    boolean finished = false;
+    
     public wristBack() { requires(Robot.wrist); }
 
     protected void initialize() {
         Robot.wrist.wristUp();
         //Robot.wrist.move(0);
+	    finished = true;
     }
 
 

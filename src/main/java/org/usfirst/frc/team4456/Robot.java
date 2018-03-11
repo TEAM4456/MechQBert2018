@@ -5,6 +5,7 @@ import org.usfirst.frc.team4456.autonomous.AutonomousManager;
 import org.usfirst.frc.team4456.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.Timer; // QUICK BODGE FOR BASELINE AUTO
 import com.ctre.phoenix.motorcontrol.ControlMode; // QUICK BODGE FOR BASELINE AUTO
 
 public class Robot extends TimedRobot {
+	
+	/* TODO: FIX AUTONOMOUS STUFF WITH MATCHDATA IN AUTONOMOUSHANDLER */
 	
 	private final Timer autoTimer = new Timer(); // QUICK BODGE FOR BASELINE AUTO
 	
@@ -36,7 +39,7 @@ public class Robot extends TimedRobot {
 	
 	public void robotInit() {
 		
-		//CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		// construct subsystems here
 		RobotMap.init();
@@ -79,9 +82,7 @@ public class Robot extends TimedRobot {
 	}
 	void enabledPeriodic() {
 		// run stuff periodically while enabled
-		SmartDashboard.putNumber("vertActTalon pos", RobotMap.vertActTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("diagActTalon pos", RobotMap.diagActTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("wristTalon pos", RobotMap.wristTalon.getSelectedSensorPosition(0));
+		
 	}
 	
 	public void disabledInit() {
@@ -105,7 +106,7 @@ public class Robot extends TimedRobot {
 		//autonomousHandler.run();
 		
 		// QUICK BODGE FOR BASELINE AUTO IN CASE WE HAVE NO RECORDINGS
-		if (autoTimer.get() < 2.0 && autoTimer.get() > 0.1) { // disgusting
+		if (autoTimer.get() < 5.0) { // disgusting
 			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 750); // gross
 			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 750); // ew
 		} else  {
@@ -123,6 +124,20 @@ public class Robot extends TimedRobot {
 			drive.betterArcadeDrive(controls.joystick);
 		}
 		autonomousHandler.run();
+		SmartDashboard.putNumber("vertActTalon pos", RobotMap.vertActTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("diagActTalon pos", RobotMap.diagActTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("wristTalon pos", RobotMap.wristTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putBoolean("Position 1", Globals.positionIndex == 0);
+		SmartDashboard.putBoolean("Position 2", Globals.positionIndex == 1);
+		SmartDashboard.putBoolean("Position 3", Globals.positionIndex == 2);
+		SmartDashboard.putBoolean("Position 4", Globals.positionIndex == 3);
+		SmartDashboard.putBoolean("Position 5", Globals.positionIndex == 4);
+		SmartDashboard.putBoolean("Position 6", Globals.positionIndex == 5);
+		SmartDashboard.putBoolean("Position 7", Globals.positionIndex == 6);
+		RobotMap.wristTalon.config_kP(0, SmartDashboard.getNumber("Wrist P", 0), 0);
+		RobotMap.wristTalon.config_kI(0, SmartDashboard.getNumber("Wrist I", 0), 0);
+		RobotMap.wristTalon.config_kD(0, SmartDashboard.getNumber("Wrist D", 0), 0);
+		RobotMap.wristTalon.config_kF(0, SmartDashboard.getNumber("Wrist F", 0), 0);
 	}
 	
 	public void testInit() {}
