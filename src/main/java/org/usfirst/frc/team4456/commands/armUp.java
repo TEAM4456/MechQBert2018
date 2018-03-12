@@ -15,7 +15,10 @@ public class armUp extends Command {
 
     protected boolean isFinished() { return false; }
 
-    protected void end() {Robot.arm.armVertStop();}
+    protected void end() {
+    	Robot.arm.armVertStop();
+    	Robot.arm.armDiagStop();
+    }
 
     protected void interrupted() { end(); }
 
