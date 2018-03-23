@@ -1,12 +1,11 @@
 package org.usfirst.frc.team4456.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.usfirst.frc.team4456.RobotMap;
 
 import edu.wpi.first.wpilibj.Joystick;
-import com.ctre.phoenix.motorcontrol.can.*;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class Drive extends Subsystem {
 	

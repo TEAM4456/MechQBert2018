@@ -212,9 +212,10 @@ public class AutonomousManager {
 					
 				} else {
 					playbackDataInitialized = true;
-					interval = (int)intervalEntry.getDouble(-1);
-					if  (interval == -1) { playbackDataInitialized = false; }
-					if (talonModesEntry.getString("") == "") { playbackDataInitialized = false; }
+					interval = (int) intervalEntry.getDouble(-1);
+					if (interval == -1 || talonModesEntry.getString("").equals("")) {
+						playbackDataInitialized = false;
+					}
 					readAndUpdateTalonModes();
 					
 					// TODO: check if recording has talons which manager doesn't
@@ -291,7 +292,9 @@ public class AutonomousManager {
 				throw new AutonomousManagerException("stopRecording() called while playback is running!");
 			case RECORD_RUNNING:
 				// recording stop stuff here
-				if (cancelRecording) { recordingNameEntry.setString("CLIENT::CANCEL_RECORDING"); }
+				if (cancelRecording) {
+					recordingNameEntry.setString("CLIENT::CANCEL_RECORDING");
+				}
 				syncStopTickEntry.setNumber(tick - 1); // tell client to stop at tick
 				setAndWriteManagerMode(ManagerMode.IDLE);
 				break;

@@ -255,7 +255,7 @@ public class AutonomousHandler {
 		} else {
 			handlerMessageRepeatCount++;
 			SmartDashboard.putString("AutonomousHandler message", message +
-																  " (x" + handlerMessageRepeatCount + ")");
+					" (x" + handlerMessageRepeatCount + ")");
 		}
 	}
 	
@@ -267,7 +267,7 @@ public class AutonomousHandler {
 		} else {
 			managerExceptionRepeatCount++;
 			SmartDashboard.putString("AutonomousManager exception", ex.getMessage() +
-																	" (x" + managerExceptionRepeatCount + ")");
+					" (x" + managerExceptionRepeatCount + ")");
 		}
 	}
 	

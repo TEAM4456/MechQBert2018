@@ -52,9 +52,11 @@ public class Robot extends TimedRobot {
 		
 		controls = new Controls();
 		
-		autonomousManager = new AutonomousManager(20, 2, new WPI_TalonSRX[] {
+		autonomousManager = new AutonomousManager(20, 2, new WPI_TalonSRX[]{
 				RobotMap.leftDriveTalon1,
-				RobotMap.rightDriveTalon1
+				RobotMap.rightDriveTalon1,
+				RobotMap.armTalon,
+				RobotMap.wristTalon
 		});
 		autonomousHandler = new AutonomousHandler(autonomousManager, 8);
 		
@@ -69,8 +71,12 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		autonomousHandler.updateEnabledStatus(isEnabled());
 		// call custom enabled methods
-		if (!enabledInitialized && isEnabled()) { enabledInit(); }
-		if (isEnabled()) { enabledPeriodic(); }
+		if (!enabledInitialized && isEnabled()) {
+			enabledInit();
+		}
+		if (isEnabled()) {
+			enabledPeriodic();
+		}
 	}
 	
 	// custom methods called by robotPeriodic()
@@ -80,9 +86,9 @@ public class Robot extends TimedRobot {
 		wrist.resetWristPosition();
 		enabledInitialized = true;
 	}
+	
 	void enabledPeriodic() {
 		// run stuff periodically while enabled
-		
 	}
 	
 	public void disabledInit() {
@@ -109,7 +115,7 @@ public class Robot extends TimedRobot {
 		if (autoTimer.get() < 5.0) { // disgusting
 			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 750); // gross
 			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 750); // ew
-		} else  {
+		} else {
 			RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, 0); // why
 			RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, 0); // please no
 			autoTimer.stop(); // just don't
@@ -124,9 +130,10 @@ public class Robot extends TimedRobot {
 			drive.betterArcadeDrive(controls.joystick);
 		}
 		autonomousHandler.run();
-		SmartDashboard.putNumber("vertActTalon pos", RobotMap.vertActTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("diagActTalon pos", RobotMap.diagActTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("armTalon pos", RobotMap.armTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("wristTalon pos", RobotMap.wristTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("leftDriveTalon1 velocity", RobotMap.leftDriveTalon1.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("rightDriveTalon1 velocity", RobotMap.rightDriveTalon1.getSelectedSensorVelocity(0));
 		SmartDashboard.putBoolean("Position 1", Globals.positionIndex == 0);
 		SmartDashboard.putBoolean("Position 2", Globals.positionIndex == 1);
 		SmartDashboard.putBoolean("Position 3", Globals.positionIndex == 2);
@@ -138,6 +145,10 @@ public class Robot extends TimedRobot {
 		RobotMap.wristTalon.config_kI(0, SmartDashboard.getNumber("Wrist I", 0), 0);
 		RobotMap.wristTalon.config_kD(0, SmartDashboard.getNumber("Wrist D", 0), 0);
 		RobotMap.wristTalon.config_kF(0, SmartDashboard.getNumber("Wrist F", 0), 0);
+		RobotMap.armTalon.config_kP(0, SmartDashboard.getNumber("Arm P", 0), 0);
+		RobotMap.armTalon.config_kI(0, SmartDashboard.getNumber("Arm I", 0), 0);
+		RobotMap.armTalon.config_kD(0, SmartDashboard.getNumber("Arm D", 0), 0);
+		RobotMap.armTalon.config_kF(0, SmartDashboard.getNumber("Arm F", 0), 0);
 	}
 	
 	public void testInit() {}
