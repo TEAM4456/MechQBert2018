@@ -21,8 +21,6 @@ public class RobotMap {
 	
 	public static void init() {
 		
-		// NOTE: drive talons may need to be re-tested for motor/sensor polarity reversal
-		
 		leftDriveTalon1 = new WPI_TalonSRX(3);
 		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
 		leftDriveTalon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
@@ -66,8 +64,10 @@ public class RobotMap {
 		rightDriveTalon1.config_kF(0, Globals.rightDriveF, 0);
 		
 		armTalon = new WPI_TalonSRX(5);
-		armTalon.set(ControlMode.Position, 0);
 		armTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		armTalon.set(ControlMode.Position, 0);
+		//armTalon.configPeakOutputReverse(-0.5, 10); // TESTING, pacify bmac
+		//armTalon.configPeakOutputForward(0.5, 10);  // TESTING, pacify bmac
 		//armTalon.setInverted(true);
 		armTalon.setSensorPhase(true);
 		
@@ -78,8 +78,8 @@ public class RobotMap {
 		wristTalon = new WPI_TalonSRX(7);
 		//wristTalon.setInverted(true);
 		//wristTalon.setSensorPhase(true);
-		wristTalon.set(ControlMode.Position, 0);
 		wristTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		wristTalon.set(ControlMode.Position, 0);
 		//wristTalon.configOpenloopRamp(.5, 0);
 		
 		clawTalon = new WPI_TalonSRX(9);

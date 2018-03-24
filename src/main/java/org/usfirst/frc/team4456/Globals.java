@@ -2,6 +2,9 @@ package org.usfirst.frc.team4456;
 
 public class Globals {
 	
+	// methinks that those drive PID values won't ever get re-tuned.
+	// eh, might not need to anyways. -Amy
+	
 	public static double leftDriveP = 0.001; // MUST BE RE-TUNED FOR 2018 ROBOT
 	public static double leftDriveI = 0.000001; // MUST BE RE-TUNED FOR 2018 ROBOT
 	public static double leftDriveD = 1.0; // MUST BE RE-TUNED FOR 2018 ROBOT
