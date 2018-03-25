@@ -19,7 +19,7 @@ public class Globals {
 	public static double armI = 0;
 	public static double armD = 0;
 	public static double armF = 0;
-	public static double armRampRate = .4;
+	public static double armRampRate = .3;
 	
 	public static double wristP = 0.6;
 	public static double wristI = 0.0001;
@@ -30,6 +30,6 @@ public class Globals {
 	public static int positionIndex = 0;
 	
 	public static double[] armPositions   = { 0,    0,    0,  0, 4522, 4522, 5096 };
-	public static double[] wristPositions = { 0, 2446, 1051, 50,   50, 3495, 2748 }; // TODO: raise #6
+	public static double[] wristPositions = { 0, 2446, 1051, 50,   50, 2951, 2748 };
 	
 }

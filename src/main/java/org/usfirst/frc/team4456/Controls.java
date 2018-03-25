@@ -27,7 +27,7 @@ public class Controls {
 		aButton.whileHeld(new clawOpen());
 		
 		JoystickButton bButton = new JoystickButton(joystick, 2);
-		//bButton.whileHeld();
+		bButton.whileHeld(new winchUp());
 		
 		JoystickButton xButton = new JoystickButton(joystick, 3);
 		xButton.whileHeld(new wristBack());
@@ -42,7 +42,7 @@ public class Controls {
 		rightBumper.whenPressed(new armUpOne());
 		
 		JoystickButton backButton = new JoystickButton(joystick, 7);
-		backButton.whileHeld(new winchUp());
+		backButton.whileHeld(new winchDown());
 		
 		/* START BUTTON USED FOR AUTONOMOUSHANDLER */
 		//JoystickButton startButton = new JoystickButton(joystick, 8);
