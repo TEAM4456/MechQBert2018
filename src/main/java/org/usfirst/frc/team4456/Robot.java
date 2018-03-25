@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Timer; // QUICK BODGE FOR BASELINE AUTO
-import com.ctre.phoenix.motorcontrol.ControlMode; // QUICK BODGE FOR BASELINE AUTO
+import edu.wpi.first.wpilibj.Timer; // QUICK BODGE AUTO
+import com.ctre.phoenix.motorcontrol.ControlMode; // QUICK BODGE AUTO
 
 public class Robot extends TimedRobot {
 	
 	/* TODO: FIX AUTONOMOUS STUFF WITH MATCHDATA IN AUTONOMOUSHANDLER */
 	
-	private final Timer autoTimer = new Timer(); // QUICK BODGE FOR BASELINE AUTO
+	private final Timer autoTimer = new Timer(); // QUICK BODGE AUTO
 	
 	private AutonomousHandler autonomousHandler;
 	private AutonomousManager autonomousManager;
@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
 	public static Winch winch;
 	public static Claw claw;
+	
+	private static boolean dropCube = false; // QUICK BODGE AUTO
 	
 	private boolean enabledInitialized = false;
 	
@@ -98,26 +100,41 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {}
 	
 	public void autonomousInit() {
-		autoTimer.reset(); // QUICK BODGE FOR BASELINE AUTO
-		autoTimer.start(); // QUICK BODGE FOR BASELINE AUTO
+		autoTimer.reset(); // QUICK BODGE AUTO
+		autoTimer.start(); // QUICK BODGE AUTO
 		
 		/*
 		String gameData = DriverStation.getInstance().getGameSpecificMessage(); // should have data by init time
 		String robotPos = positionChooser.getSelected();
 		autonomousHandler.startCompetitionAuto(gameData, robotPos);
 		*/
+		
+		String gameData = DriverStation.getInstance().getGameSpecificMessage(); // QUICK BODGE AUTO
+		String robotPos = positionChooser.getSelected(); // QUICK BODGE AUTO
+		dropCube = (gameData.charAt(0) == 'L' && robotPos.equals("left") || // QUICK BODGE AUTO
+					gameData.charAt(0) == 'R' && robotPos.equals("right")); // QUICK BODGE AUTO
 	}
 	
 	public void autonomousPeriodic() {
 		//autonomousHandler.run();
 		
-		// QUICK BODGE FOR BASELINE AUTO IN CASE WE HAVE NO RECORDINGS
-		if (autoTimer.get() < 5.0) { // disgusting
-			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 750); // gross
-			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 750); // ew
-		} else {
-			RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, 0); // why
-			RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, 0); // please no
+		// QUICK BODGE AUTO IN CASE WE HAVE NO RECORDINGS
+		double autoTimerVal = autoTimer.get(); // horrid
+		if (autoTimerVal < 5.0) { // disgusting
+			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 750); // putrid
+			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 750); // toxic
+		} else if (dropCube && autoTimerVal >= 5.0 && autoTimerVal < 6.0) { // my eyes
+			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 0); // why
+			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 0); // please no
+			RobotMap.wristTalon.set(ControlMode.Position, 969); // ouch
+		} else if (dropCube && autoTimerVal >= 6.0 && autoTimerVal < 7.0) { // oof
+			RobotMap.clawTalon.set(ControlMode.PercentOutput, 1.0); // filthy
+		} else if (dropCube && autoTimerVal >= 7.0 && autoTimerVal < 8.0) { // oh no
+			RobotMap.clawTalon.set(ControlMode.PercentOutput, 0.0); // yuck
+			RobotMap.wristTalon.set(ControlMode.Position, 0); // nasty
+		} else { // vile
+			RobotMap.leftDriveTalon1.set(ControlMode.Velocity, 0); // gross
+			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 0); // ew
 			autoTimer.stop(); // just don't
 		}
 	}
@@ -141,6 +158,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Position 5", Globals.positionIndex == 4);
 		SmartDashboard.putBoolean("Position 6", Globals.positionIndex == 5);
 		SmartDashboard.putBoolean("Position 7", Globals.positionIndex == 6);
+		/*
 		RobotMap.wristTalon.config_kP(0, SmartDashboard.getNumber("Wrist P", 0), 0);
 		RobotMap.wristTalon.config_kI(0, SmartDashboard.getNumber("Wrist I", 0), 0);
 		RobotMap.wristTalon.config_kD(0, SmartDashboard.getNumber("Wrist D", 0), 0);
@@ -149,6 +167,7 @@ public class Robot extends TimedRobot {
 		RobotMap.armTalon.config_kI(0, SmartDashboard.getNumber("Arm I", 0), 0);
 		RobotMap.armTalon.config_kD(0, SmartDashboard.getNumber("Arm D", 0), 0);
 		RobotMap.armTalon.config_kF(0, SmartDashboard.getNumber("Arm F", 0), 0);
+		*/
 	}
 	
 	public void testInit() {}

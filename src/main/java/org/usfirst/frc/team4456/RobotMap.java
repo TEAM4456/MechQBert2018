@@ -31,9 +31,9 @@ public class RobotMap {
 		//leftDriveTalon1.configMotionAcceleration(2900, 0);
 		//leftDriveTalon1.configMotionCruiseVelocity(2900, 0);
 		//leftDriveTalon1.configAllowableClosedloopError(0, 100, 0);
-		//leftDriveTalon2 = new WPI_TalonSRX(6);
+		leftDriveTalon2 = new WPI_TalonSRX(4);
 		//leftDriveTalon2.setInverted(true);
-		//leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
+		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
 		
 		rightDriveTalon1 = new WPI_TalonSRX(1);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
@@ -45,9 +45,9 @@ public class RobotMap {
 		//rightDriveTalon1.configMotionAcceleration(2900, 0);
 		//rightDriveTalon1.configMotionCruiseVelocity(2900, 0);
 		///rightDriveTalon1.configAllowableClosedloopError(0, 50, 0);
-		//rightDriveTalon2 = new WPI_TalonSRX(2);
+		rightDriveTalon2 = new WPI_TalonSRX(2);
 		//rightDriveTalon2.setInverted(true);
-		//rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
+		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
 		// PID CONTROL
 		
@@ -63,11 +63,11 @@ public class RobotMap {
 		rightDriveTalon1.config_kD(0, Globals.rightDriveD, 0);
 		rightDriveTalon1.config_kF(0, Globals.rightDriveF, 0);
 		
-		armTalon = new WPI_TalonSRX(5);
+		armTalon = new WPI_TalonSRX(6);
 		armTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		armTalon.set(ControlMode.Position, 0);
-		//armTalon.configPeakOutputReverse(-0.5, 10); // TESTING, pacify bmac
-		//armTalon.configPeakOutputForward(0.5, 10);  // TESTING, pacify bmac
+		//armTalon.configPeakOutputReverse(-1, 10); // TESTING, pacify bmac
+		//armTalon.configPeakOutputForward(1, 10);  // TESTING, pacify bmac
 		//armTalon.setInverted(true);
 		armTalon.setSensorPhase(true);
 		

@@ -44,6 +44,7 @@ public class Controls {
 		JoystickButton backButton = new JoystickButton(joystick, 7);
 		backButton.whileHeld(new winchUp());
 		
+		/* START BUTTON USED FOR AUTONOMOUSHANDLER */
 		//JoystickButton startButton = new JoystickButton(joystick, 8);
 		//startButton.whileHeld();
 		
