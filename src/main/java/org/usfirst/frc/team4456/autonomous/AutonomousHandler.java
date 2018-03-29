@@ -4,6 +4,7 @@ import org.usfirst.frc.team4456.Robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import openrio.powerup.MatchData;
 
 public class AutonomousHandler {
 	
@@ -22,6 +23,9 @@ public class AutonomousHandler {
 	private int managerExceptionRepeatCount;
 	
 	private int buttonNumber;
+	
+	private final MatchData.OwnedSide LEFT = MatchData.OwnedSide.LEFT;
+	private final MatchData.OwnedSide RIGHT = MatchData.OwnedSide.RIGHT;
 	
 	public AutonomousHandler(AutonomousManager am, int controlButton) {
 		
@@ -116,51 +120,52 @@ public class AutonomousHandler {
 		
 	}
 	
-	public void startCompetitionAuto(String gameData, String robotPos) {
-		char switchPos = gameData.charAt(0);
-		char scalePos = gameData.charAt(1);
+	public void startCompetitionAuto(String robotPos) {
+		/* TODO: probably redo available choices, allow for explicit priorities */
+		MatchData.OwnedSide switchSide = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+		MatchData.OwnedSide scaleSide = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		switch (robotPos) {
 			case "left":
 				// uncomment if we are able to do both switch and scale
-				/*if (switchPos == 'L' && scalePos == 'L') {
+				/*if (switchSide == LEFT && scaleSide == LEFT) {
 					// start left, do switch and scale left
-					// startCompetitionPlayback("L-both");
+					//startCompetitionPlayback("L-both");
 				} else*/
-				if (scalePos == 'L') {
+				if (scaleSide == LEFT) {
 					// start left, do scale left
-					// startCompetitionPlayback("L-scale");
-				} else if (switchPos == 'L') {
+					//startCompetitionPlayback("L-scale");
+				} else if (switchSide == LEFT) {
 					// start left, do switch left
-					// startCompetitionPlayback("L-switch");
+					//startCompetitionPlayback("L-switch");
 				} else {
 					// neither switch nor scale are left, do baseline or other
-					// startCompetitionPlayback("L-fallback");
+					//startCompetitionPlayback("L-fallback");
 				}
 				break;
 			case "middle":
-				if (switchPos == 'L') {
+				if (switchSide == LEFT) {
 					// start middle, do switch left
-					// startCompetitionPlayback("M-switch-left");
-				} else if (switchPos == 'R') {
+					//startCompetitionPlayback("M-switch-left");
+				} else if (switchSide == RIGHT) {
 					// start middle, do switch right
-					// startCompetitionPlayback("M-switch-right");
+					//startCompetitionPlayback("M-switch-right");
 				} /* else { logic machine br0ke } */
 				break;
 			case "right":
 				// uncomment if we are able to do both switch and scale
-				/*if (switchPos == 'R' && scalePos == 'R') {
+				/*if (switchSide == RIGHT && scaleSide == RIGHT) {
 					// start right, do switch and scale right
-					// startCompetitionPlayback("R-both");
+					//startCompetitionPlayback("R-both");
 				} else*/
-				if (scalePos == 'R') {
+				if (scaleSide == RIGHT) {
 					// start right, do scale right
-					// startCompetitionPlayback("R-scale");
-				} else if (switchPos == 'R') {
+					//startCompetitionPlayback("R-scale");
+				} else if (switchSide == RIGHT) {
 					// start right, do switch right
-					// startCompetitionPlayback("R-switch");
+					//startCompetitionPlayback("R-switch");
 				} else {
 					// neither switch nor scale are right, do baseline or other
-					// startCompetitionPlayback("R-fallback");
+					//startCompetitionPlayback("R-fallback");
 				}
 				break;
 		}

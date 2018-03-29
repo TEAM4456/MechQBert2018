@@ -6,7 +6,7 @@ import org.usfirst.frc.team4456.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation; // QUICK BODGE AUTO
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.Timer; // QUICK BODGE AUTO
 import com.ctre.phoenix.motorcontrol.ControlMode; // QUICK BODGE AUTO
 
 public class Robot extends TimedRobot {
-	
-	/* TODO: FIX AUTONOMOUS STUFF WITH MATCHDATA IN AUTONOMOUSHANDLER */
 	
 	private final Timer autoTimer = new Timer(); // QUICK BODGE AUTO
 	
@@ -58,7 +56,8 @@ public class Robot extends TimedRobot {
 				RobotMap.leftDriveTalon1,
 				RobotMap.rightDriveTalon1,
 				RobotMap.armTalon,
-				RobotMap.wristTalon
+				RobotMap.wristTalon,
+				RobotMap.clawTalon
 		});
 		autonomousHandler = new AutonomousHandler(autonomousManager, 8);
 		
@@ -100,14 +99,10 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {}
 	
 	public void autonomousInit() {
+		//autonomousHandler.startCompetitionAuto(positionChooser.getSelected());
+		
 		autoTimer.reset(); // QUICK BODGE AUTO
 		autoTimer.start(); // QUICK BODGE AUTO
-		
-		/*
-		String gameData = DriverStation.getInstance().getGameSpecificMessage(); // should have data by init time
-		String robotPos = positionChooser.getSelected();
-		autonomousHandler.startCompetitionAuto(gameData, robotPos);
-		*/
 		
 		String gameData = DriverStation.getInstance().getGameSpecificMessage(); // QUICK BODGE AUTO
 		String robotPos = positionChooser.getSelected(); // QUICK BODGE AUTO
