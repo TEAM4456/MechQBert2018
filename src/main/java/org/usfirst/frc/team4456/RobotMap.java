@@ -27,7 +27,7 @@ public class RobotMap {
 		leftDriveTalon1.setInverted(true);
 		//leftDriveTalon1.setSensorPhase(false);
 		leftDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		leftDriveTalon1.configClosedloopRamp(0.1, 0);
+		leftDriveTalon1.configClosedloopRamp(0.2, 0);
 		//leftDriveTalon1.configMotionAcceleration(2900, 0);
 		//leftDriveTalon1.configMotionCruiseVelocity(2900, 0);
 		//leftDriveTalon1.configAllowableClosedloopError(0, 100, 0);
@@ -41,7 +41,7 @@ public class RobotMap {
 		rightDriveTalon1.setInverted(true);
 		rightDriveTalon1.setSensorPhase(true);
 		rightDriveTalon1.setSelectedSensorPosition(0, 0, 0);
-		rightDriveTalon1.configClosedloopRamp(0.1, 0);
+		rightDriveTalon1.configClosedloopRamp(0.2, 0);
 		//rightDriveTalon1.configMotionAcceleration(2900, 0);
 		//rightDriveTalon1.configMotionCruiseVelocity(2900, 0);
 		///rightDriveTalon1.configAllowableClosedloopError(0, 50, 0);

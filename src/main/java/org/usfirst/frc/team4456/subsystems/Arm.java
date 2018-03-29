@@ -55,11 +55,11 @@ public class Arm extends Subsystem {
 	}
 	
 	public void armUp() {
-		RobotMap.armTalon.set(ControlMode.PercentOutput, .25);
+		RobotMap.armTalon.set(ControlMode.PercentOutput, .6);
 	}
 	
 	public void armDown() {
-		RobotMap.armTalon.set(ControlMode.PercentOutput, -.25);
+		RobotMap.armTalon.set(ControlMode.PercentOutput, -.6);
 	}
 	
 	public void armStop() {

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class Controls {
 	
 	public Joystick joystick;
+	public Joystick auxJoystick;
 	
 	public Controls() {
 		
@@ -53,6 +54,41 @@ public class Controls {
 		
 		JoystickButton rightStick = new JoystickButton(joystick, 10);
 		rightStick.whileHeld(new armUp());
+		
+		
+		
+		auxJoystick = new Joystick(1);
+		
+		JoystickButton auxAButton = new JoystickButton(auxJoystick, 1);
+		auxAButton.whileHeld(new clawOpen());
+		
+		JoystickButton auxBButton = new JoystickButton(auxJoystick, 2);
+		auxBButton.whileHeld(new winchUp());
+		
+		JoystickButton auxXButton = new JoystickButton(auxJoystick, 3);
+		auxXButton.whileHeld(new armDown());
+		
+		JoystickButton auxYButton = new JoystickButton(auxJoystick, 4);
+		auxYButton.whileHeld(new armUp());
+		
+		JoystickButton auxLeftBumper = new JoystickButton(auxJoystick, 5);
+		auxLeftBumper.whenPressed(new armDownOne());
+		
+		JoystickButton auxRightBumper = new JoystickButton(auxJoystick, 6);
+		auxRightBumper.whenPressed(new armUpOne());
+		
+		JoystickButton auxBackButton = new JoystickButton(auxJoystick, 7);
+		auxBackButton.whileHeld(new winchDown());
+		
+		JoystickButton auxStartButton = new JoystickButton(joystick, 8);
+		//auxStartButton.whileHeld();
+		
+		JoystickButton auxLeftStick = new JoystickButton(auxJoystick, 9);
+		auxLeftStick.whileHeld(new wristBack());
+		
+		JoystickButton auxRightStick = new JoystickButton(auxJoystick, 10);
+		auxRightStick.whileHeld(new wristOut());
+		
 		
 	}
 	
