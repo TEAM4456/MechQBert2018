@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4456.autonomous;
 
 import org.usfirst.frc.team4456.Robot;
+import org.usfirst.frc.team4456.Globals;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -122,15 +123,15 @@ public class AutonomousHandler {
 	
 	public void startCompetitionAuto(String robotPos) {
 		/* TODO: probably redo available choices, allow for explicit priorities */
-		MatchData.OwnedSide switchSide = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-		MatchData.OwnedSide scaleSide = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		switch (robotPos) {
 			case "left":
+				startCompetitionPlayback("Baseline");
 				// uncomment if we are able to do both switch and scale
 				/*if (switchSide == LEFT && scaleSide == LEFT) {
 					// start left, do switch and scale left
 					//startCompetitionPlayback("L-both");
 				} else*/
+				/*
 				if (scaleSide == LEFT) {
 					// start left, do scale left
 					//startCompetitionPlayback("L-scale");
@@ -141,12 +142,13 @@ public class AutonomousHandler {
 					// neither switch nor scale are left, do baseline or other
 					//startCompetitionPlayback("L-fallback");
 				}
+				*/
 				break;
 			case "middle":
-				if (switchSide == LEFT) {
+				if (Globals.switchSide == LEFT) {
 					// start middle, do switch left
 					//startCompetitionPlayback("M-switch-left");
-				} else if (switchSide == RIGHT) {
+				} else if (Globals.switchSide == RIGHT) {
 					// start middle, do switch right
 					//startCompetitionPlayback("M-switch-right");
 				} /* else { logic machine br0ke } */
@@ -157,15 +159,15 @@ public class AutonomousHandler {
 					// start right, do switch and scale right
 					//startCompetitionPlayback("R-both");
 				} else*/
-				if (scaleSide == RIGHT) {
+				if (Globals.scaleSide == RIGHT) {
 					// start right, do scale right
-					//startCompetitionPlayback("R-scale");
-				} else if (switchSide == RIGHT) {
+					startCompetitionPlayback("R-scale");
+				} else if (Globals.switchSide == RIGHT) {
 					// start right, do switch right
-					//startCompetitionPlayback("R-switch");
+					startCompetitionPlayback("R-switch");
 				} else {
 					// neither switch nor scale are right, do baseline or other
-					//startCompetitionPlayback("R-fallback");
+					startCompetitionPlayback("Baseline");
 				}
 				break;
 		}
@@ -214,6 +216,13 @@ public class AutonomousHandler {
 	
 	private void startCompetitionPlayback(String recordingName) {
 		playbackRunning = true;
+		/*
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+			System.out.println(ex.getMessage()); // not really gonna do anything
+		}
+		*/
 		try {
 			autonomousManager.startPlayback(recordingName);
 		} catch (AutonomousManagerException ex) {

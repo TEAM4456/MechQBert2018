@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4456;
 
+import openrio.powerup.MatchData;
 import org.usfirst.frc.team4456.autonomous.AutonomousHandler;
 import org.usfirst.frc.team4456.autonomous.AutonomousManager;
 import org.usfirst.frc.team4456.subsystems.*;
@@ -32,6 +33,8 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
 	public static Winch winch;
 	public static Claw claw;
+	
+	private static String robotPos;
 	
 	private static boolean dropCube = false; // QUICK BODGE AUTO
 	
@@ -96,10 +99,18 @@ public class Robot extends TimedRobot {
 		enabledInitialized = false;
 	}
 	
-	public void disabledPeriodic() {}
+	public void disabledPeriodic() {
+		/*
+		autonomousHandler.run();
+		robotPos = positionChooser.getSelected();
+		Globals.switchSide = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+		Globals.scaleSide = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+		*/
+	}
 	
 	public void autonomousInit() {
-		//autonomousHandler.startCompetitionAuto(positionChooser.getSelected());
+		//autonomousHandler.startCompetitionAuto(robotPos);
+		
 		
 		autoTimer.reset(); // QUICK BODGE AUTO
 		autoTimer.start(); // QUICK BODGE AUTO
@@ -108,10 +119,11 @@ public class Robot extends TimedRobot {
 		String robotPos = positionChooser.getSelected(); // QUICK BODGE AUTO
 		dropCube = (gameData.charAt(0) == 'L' && robotPos.equals("left") || // QUICK BODGE AUTO
 					gameData.charAt(0) == 'R' && robotPos.equals("right")); // QUICK BODGE AUTO
+		
 	}
 	
 	public void autonomousPeriodic() {
-		//autonomousHandler.run();
+		autonomousHandler.run();
 		
 		// QUICK BODGE AUTO IN CASE WE HAVE NO RECORDINGS
 		double autoTimerVal = autoTimer.get(); // horrid
@@ -132,6 +144,7 @@ public class Robot extends TimedRobot {
 			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 0); // ew
 			autoTimer.stop(); // just don't
 		}
+		
 	}
 	
 	public void teleopInit() {}

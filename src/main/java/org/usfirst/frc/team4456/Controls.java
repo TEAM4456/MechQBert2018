@@ -56,7 +56,7 @@ public class Controls {
 		rightStick.whileHeld(new armUp());
 		
 		
-		
+		/*
 		auxJoystick = new Joystick(1);
 		
 		JoystickButton auxAButton = new JoystickButton(auxJoystick, 1);
@@ -88,7 +88,7 @@ public class Controls {
 		
 		JoystickButton auxRightStick = new JoystickButton(auxJoystick, 10);
 		auxRightStick.whileHeld(new wristOut());
-		
+		*/
 		
 	}
 	

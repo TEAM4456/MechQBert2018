@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4456;
 
+import openrio.powerup.MatchData;
+
 public class Globals {
 	
 	// methinks that those drive PID values won't ever get re-tuned.
@@ -30,6 +32,10 @@ public class Globals {
 	public static int positionIndex = 0;
 	
 	public static double[] armPositions   = { 0,    0,    0,  0, 4522, 4522, 5096 };
-	public static double[] wristPositions = { 0, 2446, 1051, 50,   50, 2951, 2748 };
+	public static double[] wristPositions = { 0, 2600, 1051, 50,   50, 2951, 2748 };
+	
+	public static MatchData.OwnedSide switchSide = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+	public static MatchData.OwnedSide scaleSide = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+	
 	
 }
