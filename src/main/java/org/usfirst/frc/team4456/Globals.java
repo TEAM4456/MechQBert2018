@@ -37,5 +37,8 @@ public class Globals {
 	public static MatchData.OwnedSide switchSide = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 	public static MatchData.OwnedSide scaleSide = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 	
+	public static boolean switchIsRight = false;
+	public static boolean scaleIsRight = false;
+	
 	
 }

@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
 	private static boolean dropCube = false; // QUICK BODGE AUTO
 	
 	private boolean enabledInitialized = false;
+	private boolean autoInitialized = false;
 	
 	public void robotInit() {
 		
@@ -100,25 +101,31 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void disabledPeriodic() {
+		//autonomousHandler.run();
 		/*
-		autonomousHandler.run();
 		robotPos = positionChooser.getSelected();
 		Globals.switchSide = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 		Globals.scaleSide = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		*/
+		//String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		//Globals.switchIsRight = (gameData.charAt(0) == 'R');
+		//Globals.scaleIsRight = (gameData.charAt(1) == 'R');
 	}
 	
 	public void autonomousInit() {
+		//autonomousHandler.startCompetitionPlayback("Baseline");
 		//autonomousHandler.startCompetitionAuto(robotPos);
-		
 		
 		autoTimer.reset(); // QUICK BODGE AUTO
 		autoTimer.start(); // QUICK BODGE AUTO
 		
 		String gameData = DriverStation.getInstance().getGameSpecificMessage(); // QUICK BODGE AUTO
 		String robotPos = positionChooser.getSelected(); // QUICK BODGE AUTO
+		/*
 		dropCube = (gameData.charAt(0) == 'L' && robotPos.equals("left") || // QUICK BODGE AUTO
 					gameData.charAt(0) == 'R' && robotPos.equals("right")); // QUICK BODGE AUTO
+					*/
+		dropCube = false; // QUICK BODGE AUTO
 		
 	}
 	
@@ -144,7 +151,6 @@ public class Robot extends TimedRobot {
 			RobotMap.rightDriveTalon1.set(ControlMode.Velocity, 0); // ew
 			autoTimer.stop(); // just don't
 		}
-		
 	}
 	
 	public void teleopInit() {}

@@ -123,6 +123,7 @@ public class AutonomousHandler {
 	
 	public void startCompetitionAuto(String robotPos) {
 		/* TODO: probably redo available choices, allow for explicit priorities */
+		putHandlerMessage("startCompetitionAuto() called with " + robotPos);
 		switch (robotPos) {
 			case "left":
 				startCompetitionPlayback("Baseline");
@@ -214,7 +215,7 @@ public class AutonomousHandler {
 		}
 	}
 	
-	private void startCompetitionPlayback(String recordingName) {
+	public void startCompetitionPlayback(String recordingName) {
 		playbackRunning = true;
 		/*
 		try {
